@@ -1,0 +1,125 @@
+{
+  "Version": 1,
+  "Hash": "Vb5T4owRGtOb0y719yAIMykiQXI47vy47c76qdoBe+4=",
+  "Source": "Qtemplate",
+  "BasePath": "_content/Qtemplate",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Qtemplate\\wwwroot",
+      "Source": "Qtemplate",
+      "ContentRoot": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\",
+      "BasePath": "_content/Qtemplate",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\avatarUser\\e568a36054de4d48a8c743aa88e5aa55.png",
+      "SourceId": "Qtemplate",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\",
+      "BasePath": "_content/Qtemplate",
+      "RelativePath": "avatarUser/e568a36054de4d48a8c743aa88e5aa55#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rtxj814iua",
+      "Integrity": "/52oOvvTCghhsvWK5x7TiJQA2ch+ExAPumjWI1dOV20=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\avatarUser\\e568a36054de4d48a8c743aa88e5aa55.png"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "avatarUser/e568a36054de4d48a8c743aa88e5aa55.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\avatarUser\\e568a36054de4d48a8c743aa88e5aa55.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "895781"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/52oOvvTCghhsvWK5x7TiJQA2ch+ExAPumjWI1dOV20=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 24 Feb 2026 18:05:03 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-/52oOvvTCghhsvWK5x7TiJQA2ch+ExAPumjWI1dOV20="
+        }
+      ]
+    },
+    {
+      "Route": "avatarUser/e568a36054de4d48a8c743aa88e5aa55.rtxj814iua.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\avatarUser\\e568a36054de4d48a8c743aa88e5aa55.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "895781"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/52oOvvTCghhsvWK5x7TiJQA2ch+ExAPumjWI1dOV20=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 24 Feb 2026 18:05:03 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rtxj814iua"
+        },
+        {
+          "Name": "label",
+          "Value": "avatarUser/e568a36054de4d48a8c743aa88e5aa55.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-/52oOvvTCghhsvWK5x7TiJQA2ch+ExAPumjWI1dOV20="
+        }
+      ]
+    }
+  ]
+}
