@@ -1,2 +1,29 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# ── Sensitive config ─────────────────────────────────────
+appsettings.json
+appsettings.*.json
+!appsettings.Development.json.example
+
+# ── Build output ──────────────────────────────────────────
+bin/
+obj/
+out/
+
+# ── Visual Studio ─────────────────────────────────────────
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vscode/
+
+# ── Private storage (uploads, previews, versions) ─────────
+Qtemplate/private-storage/
+wwwroot/uploads/
+
+# ── Logs ──────────────────────────────────────────────────
+logs/
+*.log
+
+# ── OS ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
