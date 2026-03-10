@@ -13,6 +13,6 @@ namespace Qtemplate.Application.Features.Affiliates.Commands.ApproveAffiliate
     {
         public int AffiliateId { get; set; }
         public bool IsActive { get; set; }
-        public decimal CommissionRate { get; set; } = 10;
+
     }
 }

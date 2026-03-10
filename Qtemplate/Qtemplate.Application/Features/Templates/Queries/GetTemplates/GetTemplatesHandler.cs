@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Qtemplate.Application.DTOs;
 using Qtemplate.Application.DTOs.Template;
+using Qtemplate.Application.Mappers;
 using Qtemplate.Domain.Interfaces.Repositories;
 
 namespace Qtemplate.Application.Features.Templates.Queries.GetTemplates;
@@ -10,13 +11,16 @@ public class GetTemplatesHandler : IRequestHandler<GetTemplatesQuery, ApiRespons
     private readonly ITemplateRepository _templateRepo;
     private readonly IWishlistRepository _wishlistRepo;
 
-    public GetTemplatesHandler(ITemplateRepository templateRepo, IWishlistRepository wishlistRepo)
+    public GetTemplatesHandler(
+        ITemplateRepository templateRepo,
+        IWishlistRepository wishlistRepo)
     {
         _templateRepo = templateRepo;
         _wishlistRepo = wishlistRepo;
     }
 
-    public async Task<ApiResponse<PaginatedResult<TemplateListDto>>> Handle(GetTemplatesQuery request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<PaginatedResult<TemplateListDto>>> Handle(
+        GetTemplatesQuery request, CancellationToken cancellationToken)
     {
         var (items, total) = await _templateRepo.GetPublicListAsync(
             search: request.Search,
@@ -27,7 +31,11 @@ public class GetTemplatesHandler : IRequestHandler<GetTemplatesQuery, ApiRespons
             maxPrice: request.MaxPrice,
             sortBy: request.SortBy,
             page: request.Page,
-            pageSize: request.PageSize);
+            pageSize: request.PageSize,
+            onSale: request.OnSale,
+            isFeatured: request.IsFeatured,
+            isNew: request.IsNew,
+            techStack: request.TechStack);
 
         HashSet<Guid> wishlistIds = new();
         if (request.CurrentUserId.HasValue)
@@ -36,33 +44,9 @@ public class GetTemplatesHandler : IRequestHandler<GetTemplatesQuery, ApiRespons
             wishlistIds = ids.ToHashSet();
         }
 
-        var dtos = items.Select(t => new TemplateListDto
-        {
-            Id = t.Id,
-            Name = t.Name,
-            Slug = t.Slug,
-            ShortDescription = t.ShortDescription,
-            ThumbnailUrl = t.ThumbnailUrl,
-            Price = t.Price,
-            SalePrice = t.SalePrice,
-            IsFree = t.IsFree,
-            IsFeatured = t.IsFeatured,
-            IsNew = t.IsNew,
-            PreviewType = t.PreviewType,
-            SalesCount = t.SalesCount,
-            ViewCount = t.ViewCount,
-            AverageRating = t.AverageRating,
-            ReviewCount = t.ReviewCount,
-            CategoryName = t.Category.Name,
-            CategorySlug = t.Category.Slug,
-            Tags = t.TemplateTags.Select(tt => tt.Tag.Name).ToList(),
-            CreatedAt = t.CreatedAt,
-            IsInWishlist = wishlistIds.Contains(t.Id)
-        }).ToList();
-
         return ApiResponse<PaginatedResult<TemplateListDto>>.Ok(new PaginatedResult<TemplateListDto>
         {
-            Items = dtos,
+            Items = items.Select(t => TemplateMapper.ToListDto(t, wishlistIds.Contains(t.Id))).ToList(),
             TotalCount = total,
             Page = request.Page,
             PageSize = request.PageSize

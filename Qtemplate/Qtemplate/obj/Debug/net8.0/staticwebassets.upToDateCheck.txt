@@ -1,1 +1,7 @@
+wwwroot\avatarUser\526a66e3937c4a69b614832d437431d6.png
 wwwroot\avatarUser\e568a36054de4d48a8c743aa88e5aa55.png
+wwwroot\banners\7dc3d5b21f4b4f0dabdf96d3d03aee1e.png
+wwwroot\template-images\2ab99d80fe884328b30a14057ad29dd9.png
+wwwroot\template-images\9a28e041dc174858bd6d9348f37b7f20.png
+wwwroot\thumbnails\407166b3fbe74a579007739922ae2bfb.png
+wwwroot\thumbnails\b8c1e30d18714f1890132562ddb249af.png

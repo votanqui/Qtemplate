@@ -113,7 +113,7 @@ public class UserController : ControllerBase
 
     /// <summary>Lịch sử mua hàng</summary>
     [HttpGet("purchases")]
-    public async Task<IActionResult> GetPurchaseHistory([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<IActionResult> GetPurchaseHistory([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? status = null)
     {
         var userId = GetUserId();
         if (userId == Guid.Empty) return Unauthorized();
@@ -122,7 +122,8 @@ public class UserController : ControllerBase
         {
             UserId = userId,
             Page = page,
-            PageSize = pageSize
+            PageSize = pageSize,
+            Status = status
         });
 
         return Ok(result);

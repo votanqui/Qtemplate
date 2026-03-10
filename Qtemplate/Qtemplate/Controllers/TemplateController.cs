@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Qtemplate.Application.Features.Templates.Queries.DownloadTemplate;
+using Qtemplate.Application.Features.Templates.Queries.GetOnSaleTemplates;
 using Qtemplate.Application.Features.Templates.Queries.GetTemplateDetail;
-using Qtemplate.Application.Features.Templates.Queries.GetTemplates;
 using System.Security.Claims;
 
 namespace Qtemplate.Controllers;
@@ -20,13 +20,27 @@ public class TemplateController : ControllerBase
         var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         return Guid.TryParse(claim, out var id) ? id : Guid.Empty;
     }
+
     private string GetIpAddress() =>
-    Request.Headers.ContainsKey("X-Forwarded-For")
-        ? Request.Headers["X-Forwarded-For"].ToString()
-        : HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
-    // GET /api/templates?search=&categorySlug=&tagSlug=&isFree=&minPrice=&maxPrice=&sortBy=newest&page=1&pageSize=12
+        Request.Headers.ContainsKey("X-Forwarded-For")
+            ? Request.Headers["X-Forwarded-For"].ToString()
+            : HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+    // GET /api/templates?search=&categorySlug=&tagSlug=&isFree=&minPrice=&maxPrice=
+    //                   &sortBy=newest&page=1&pageSize=12
+    //                   &onSale=&isFeatured=&isNew=&techStack=   ← params mới
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] GetTemplatesQuery query)
+    {
+        query.CurrentUserId = GetUserId();
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    // GET /api/templates/on-sale?search=&categorySlug=&page=1&pageSize=12
+    // Trang Săn Sale — chỉ trả templates đang sale, kèm countdown & % giảm
+    [HttpGet("on-sale")]
+    public async Task<IActionResult> GetOnSale([FromQuery] GetOnSaleTemplatesQuery query)
     {
         query.CurrentUserId = GetUserId();
         var result = await _mediator.Send(query);
@@ -44,6 +58,8 @@ public class TemplateController : ControllerBase
         });
         return result.Success ? Ok(result) : NotFound(result);
     }
+
+    // GET /api/templates/{slug}/download
     [HttpGet("{slug}/download")]
     [Authorize]
     public async Task<IActionResult> Download(string slug)
@@ -62,7 +78,6 @@ public class TemplateController : ControllerBase
         if (!result.Success)
             return BadRequest(new { success = false, message = result.ErrorMessage });
 
-        // External → trả URL về cho frontend tự mở
         if (result.IsExternal)
             return Ok(new
             {
@@ -71,7 +86,6 @@ public class TemplateController : ControllerBase
                 redirectUrl = result.RedirectUrl
             });
 
-        // Local → stream file
         var stream = new FileStream(result.FilePath!, FileMode.Open, FileAccess.Read);
         Response.Headers.Append("Content-Disposition",
             $"attachment; filename=\"{result.FileName}\"");

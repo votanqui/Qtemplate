@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Qtemplate.Application;
 using Qtemplate.Application.Services.Interfaces;
 using Qtemplate.Infrastructure;
+using Qtemplate.Infrastructure.Hubs;          // ← THÊM
 using Qtemplate.Infrastructure.Services.FileUpload;
 using Qtemplate.Middleware;
 
@@ -20,6 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddMemoryCache();
+builder.Services.AddSignalR();                 // ← THÊM
 
 builder.Services.Configure<IpRateLimitOptions>(
     builder.Configuration.GetSection("IpRateLimiting"));
@@ -32,6 +34,7 @@ var jwtIssuer = builder.Configuration["Jwt:Issuer"]
     ?? throw new InvalidOperationException("Jwt:Issuer chưa được cấu hình");
 var jwtAudience = builder.Configuration["Jwt:Audience"]
     ?? throw new InvalidOperationException("Jwt:Audience chưa được cấu hình");
+
 builder.Services.Configure<IpRateLimitOptions>(options =>
 {
     options.QuotaExceededResponse = new QuotaExceededResponse
@@ -58,15 +61,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             RoleClaimType = ClaimTypes.Role
         };
 
-
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = context =>
             {
+                // Cookie (giữ nguyên)
                 if (context.Request.Cookies.ContainsKey("accessToken"))
-                {
                     context.Token = context.Request.Cookies["accessToken"];
-                }
+
+                // Query string cho SignalR WebSocket   ← THÊM
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken)
+                    && path.StartsWithSegments("/hubs/notifications"))
+                    context.Token = accessToken;
+
                 return Task.CompletedTask;
             },
             OnChallenge = context =>
@@ -83,8 +92,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 return context.Response.WriteAsync("{\"message\": \"Bạn không có quyền truy cập tài nguyên này.\"}");
             }
         };
-
     });
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
@@ -92,7 +101,20 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireHost", policy => policy.RequireRole("host"));
 });
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins(
+                    "http://localhost:5173",
+                    "http://localhost:5174"
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -102,13 +124,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseHttpsRedirection();
-// Program.cs — thêm sau UseRequestLogging
+app.UseCors("AllowFrontend");
 app.UseAnalyticsTracking();
-app.UseIpBlacklist();        // Chặn IP blacklist trước
-app.UseRequestLogging();     // Log tất cả request
+app.UseIpBlacklist();
+app.UseRequestLogging();
 app.UseIpRateLimiting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<NotificationHub>("/hubs/notifications");  // ← THÊM
+app.UseStaticFiles();
 app.Run();

@@ -28,6 +28,7 @@ namespace Qtemplate.Application.Features.UserManagement.Queries.DownloadHistoryQ
                 TemplateId = d.TemplateId,
                 TemplateName = d.Template?.Name ?? string.Empty,
                 ThumbnailUrl = d.Template?.ThumbnailUrl,
+                Slug = d.Template?.Slug, 
                 DownloadCount = d.DownloadCount,
                 LastDownloadAt = d.LastDownloadAt
             }).ToList();

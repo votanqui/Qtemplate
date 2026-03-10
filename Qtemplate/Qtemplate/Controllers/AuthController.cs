@@ -39,8 +39,8 @@ public class AuthController : ControllerBase
         Response.Cookies.Append("accessToken", accessToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = false,
-            SameSite = SameSiteMode.Strict,
+            Secure = true,
+            SameSite = SameSiteMode.None,
             Expires = expiry
         });
     }
@@ -89,14 +89,14 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("RefreshToken")]
-    public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto dto)
     {
-        if (string.IsNullOrEmpty(refreshToken))
+        if (string.IsNullOrEmpty(dto.RefreshToken))
             return Unauthorized(new { success = false, message = "Không tìm thấy refresh token" });
 
         var result = await _mediator.Send(new RenewTokenCommand
         {
-            RefreshToken = refreshToken,
+            RefreshToken = dto.RefreshToken,
             IpAddress = GetIpAddress(),
             UserAgent = GetUserAgent()
         });
@@ -109,10 +109,10 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Logout")]
-    public async Task<IActionResult> Logout([FromBody] string refreshToken)
+    public async Task<IActionResult> Logout([FromBody] LogoutRequestDto dto)
     {
-        if (!string.IsNullOrEmpty(refreshToken))
-            await _mediator.Send(new LogoutCommand { RefreshToken = refreshToken });
+        if (!string.IsNullOrEmpty(dto.RefreshToken))
+            await _mediator.Send(new LogoutCommand { RefreshToken = dto.RefreshToken });
 
         ClearAccessTokenCookie();
         return Ok(new { success = true, message = "Đăng xuất thành công" });

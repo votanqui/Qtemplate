@@ -13,4 +13,6 @@ public interface IAffiliateRepository
     Task UpdateAsync(Affiliate affiliate);
     Task AddTransactionAsync(AffiliateTransaction tx);
     Task<List<AffiliateTransaction>> GetTransactionsByAffiliateIdAsync(int affiliateId);
+    Task<AffiliateTransaction?> GetTransactionByIdAsync(int id);   // 👈 thêm
+    Task UpdateTransactionAsync(AffiliateTransaction tx);
 }

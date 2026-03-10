@@ -9,4 +9,6 @@ public interface INotificationRepository
     Task<List<Notification>> GetUnreadByUserIdAsync(Guid userId);
     Task UpdateAsync(Notification notification);
     Task UpdateRangeAsync(List<Notification> notifications);
+    Task AddAsync(Notification notification);
+    Task AddRangeAsync(List<Notification> notifications);
 }

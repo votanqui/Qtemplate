@@ -14,7 +14,10 @@ public class GetOrderDetailHandler : IRequestHandler<GetOrderDetailQuery, ApiRes
     public async Task<ApiResponse<OrderDto>> Handle(
         GetOrderDetailQuery request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepo.GetByIdWithDetailsAsync(request.OrderId);
+        var order = !string.IsNullOrEmpty(request.OrderCode)
+            ? await _orderRepo.GetByOrderCodeAsync(request.OrderCode)
+            : await _orderRepo.GetByIdWithDetailsAsync(request.OrderId);
+
         if (order is null)
             return ApiResponse<OrderDto>.Fail("Không tìm thấy đơn hàng");
 

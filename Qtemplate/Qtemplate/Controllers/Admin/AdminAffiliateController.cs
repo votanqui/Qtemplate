@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Qtemplate.Application.DTOs.Affiliate;
-using Qtemplate.Application.Features.Affiliates.Commands;
 using Qtemplate.Application.Features.Affiliates.Commands.ApproveAffiliate;
-using Qtemplate.Application.Features.Affiliates.Queries;
+using Qtemplate.Application.Features.Affiliates.Commands.PayoutTransaction;
 using Qtemplate.Application.Features.Affiliates.Queries.GetAdminAffiliates;
 
 namespace Qtemplate.Controllers.Admin;
@@ -17,7 +16,7 @@ public class AdminAffiliateController : ControllerBase
     private readonly IMediator _mediator;
     public AdminAffiliateController(IMediator mediator) => _mediator = mediator;
 
-    // GET /api/admin/affiliates?isActive=true&page=1
+
     [HttpGet]
     public async Task<IActionResult> GetList(
         [FromQuery] bool? isActive,
@@ -33,7 +32,7 @@ public class AdminAffiliateController : ControllerBase
         return Ok(result);
     }
 
-    // PATCH /api/admin/affiliates/{id}/approve
+
     [HttpPatch("{id:int}/approve")]
     public async Task<IActionResult> Approve(int id, [FromBody] ApproveAffiliateDto dto)
     {
@@ -41,8 +40,16 @@ public class AdminAffiliateController : ControllerBase
         {
             AffiliateId = id,
             IsActive = dto.IsActive,
-            CommissionRate = dto.CommissionRate
+        
         });
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+
+    [HttpPatch("transactions/{id:int}/pay")]
+    public async Task<IActionResult> Payout(int id)
+    {
+        var result = await _mediator.Send(new PayoutTransactionCommand { TransactionId = id });
         return result.Success ? Ok(result) : BadRequest(result);
     }
 }

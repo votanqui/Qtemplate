@@ -7,23 +7,26 @@ Qtemplate
 │  │  ├─ qtemplate.metadata.v9.bin
 │  │  ├─ qtemplate.projects.v9.bin
 │  │  └─ qtemplate.strings.v9.bin
-│  └─ Qtemplate
-│     ├─ config
-│     │  └─ applicationhost.config
-│     ├─ DesignTimeBuild
-│     │  └─ .dtbcache.v2
-│     ├─ FileContentIndex
-│     │  ├─ 19ab8545-98b0-4c77-ab2e-f2e1dfb36797.vsidx
-│     │  ├─ 96726d08-6a37-411f-8129-dbedf1e906b1.vsidx
-│     │  ├─ 9f8fa2b2-c828-47f9-b83f-e4d84e97bae7.vsidx
-│     │  ├─ cceda8fc-1665-4fe9-bc3a-5a982b9fdda4.vsidx
-│     │  └─ ff301dee-bce5-4058-a363-dc9801d878b0.vsidx
-│     └─ v17
-│        ├─ .futdcache.v2
-│        ├─ .suo
-│        ├─ DocumentLayout.backup.json
-│        ├─ DocumentLayout.json
-│        └─ fileList.bin
+│  ├─ Qtemplate
+│  │  ├─ config
+│  │  │  └─ applicationhost.config
+│  │  ├─ DesignTimeBuild
+│  │  │  └─ .dtbcache.v2
+│  │  ├─ FileContentIndex
+│  │  │  ├─ 017dc214-d7cb-4e67-80ea-5a715b52ebc3.vsidx
+│  │  │  ├─ 0d8204b2-5144-49c4-adb4-818f8c3c63a3.vsidx
+│  │  │  ├─ 40c57b49-b9d2-4929-862f-d551a765a1c3.vsidx
+│  │  │  ├─ 4d63152a-5e0d-4cca-9fba-df3330cacbf1.vsidx
+│  │  │  └─ 884b3e87-f0ce-493c-8847-aa5fc6a780fd.vsidx
+│  │  └─ v17
+│  │     ├─ .futdcache.v2
+│  │     ├─ .suo
+│  │     ├─ DocumentLayout.backup.json
+│  │     ├─ DocumentLayout.json
+│  │     └─ fileList.bin
+│  └─ sd
+├─ obj
+│  └─ Qtemplate2.EntityFrameworkCore.targets
 ├─ Qtemplate
 │  ├─ appsettings.Development.json
 │  ├─ appsettings.json
@@ -202,6 +205,7 @@ Qtemplate
 │  │  │  ├─ AdminIpBlacklistController.cs
 │  │  │  ├─ AdminLogController.cs
 │  │  │  ├─ AdminMediaController.cs
+│  │  │  ├─ AdminNotificationController.cs
 │  │  │  ├─ AdminOrderController.cs
 │  │  │  ├─ AdminReviewController.cs
 │  │  │  ├─ AdminSettingController.cs
@@ -280,71 +284,9 @@ Qtemplate
 │  │  ├─ downloads
 │  │  ├─ previews
 │  │  │  └─ 9112a971-6d05-4a8a-b639-db9ed131739f
-│  │  │     ├─ .htaccess
-│  │  │     ├─ config
-│  │  │     │  ├─ Config.php
-│  │  │     │  └─ Database.php
-│  │  │     ├─ controllers
-│  │  │     │  ├─ ActivationController.php
-│  │  │     │  ├─ admin
-│  │  │     │  │  ├─ AdminAuthController.php
-│  │  │     │  │  ├─ AdminConfigController.php
-│  │  │     │  │  ├─ AdminGiftcodeController.php
-│  │  │     │  │  ├─ AdminItemController.php
-│  │  │     │  │  ├─ AdminMilestoneController.php
-│  │  │     │  │  ├─ AdminRechargeController.php
-│  │  │     │  │  ├─ AdminServerController.php
-│  │  │     │  │  ├─ AdminSocialLinksController.php
-│  │  │     │  │  ├─ AdminTopicController.php
-│  │  │     │  │  └─ AdminTopRewardController.php
-│  │  │     │  ├─ AuthController.php
-│  │  │     │  ├─ CharacterController.php
-│  │  │     │  ├─ GiftcodeController.php
-│  │  │     │  ├─ LeaderboardController.php
-│  │  │     │  ├─ MilestoneController.php
-│  │  │     │  ├─ PublicConfigController.php
-│  │  │     │  ├─ RechargeController.php
-│  │  │     │  ├─ ServerController.php
-│  │  │     │  ├─ SocialLinksController.php
-│  │  │     │  ├─ TopicController.php
-│  │  │     │  ├─ TransactionController.php
-│  │  │     │  └─ WebhookController.php
-│  │  │     ├─ core
-│  │  │     │  └─ Router.php
-│  │  │     ├─ error_log
-│  │  │     ├─ helpers
-│  │  │     │  ├─ JWTHelper.php
-│  │  │     │  ├─ RateLimiter.php
-│  │  │     │  └─ Response.php
 │  │  │     ├─ index.html
-│  │  │     ├─ index.php
-│  │  │     ├─ middlewares
-│  │  │     │  ├─ AdminMiddleware.php
-│  │  │     │  └─ RateLimitMiddleware.php
-│  │  │     └─ services
-│  │  │        ├─ ActivationService.php
-│  │  │        ├─ admin
-│  │  │        │  ├─ AdminGiftcodeService.php
-│  │  │        │  ├─ AdminItemService.php
-│  │  │        │  ├─ AdminMilestoneService.php
-│  │  │        │  ├─ AdminRechargeService.php
-│  │  │        │  ├─ AdminServerService.php
-│  │  │        │  ├─ AdminService.php
-│  │  │        │  ├─ AdminSocialLinksService.php
-│  │  │        │  ├─ AdminTopicService.php
-│  │  │        │  ├─ AdminTopRewardService.php
-│  │  │        │  └─ ConfigAdminService.php
-│  │  │        ├─ AuthService.php
-│  │  │        ├─ CharacterService.php
-│  │  │        ├─ ConfigService.php
-│  │  │        ├─ GiftcodeService.php
-│  │  │        ├─ LeaderboardService.php
-│  │  │        ├─ MilestoneService.php
-│  │  │        ├─ RechargeService.php
-│  │  │        ├─ ServerService.php
-│  │  │        ├─ TopicService.php
-│  │  │        ├─ TransactionService.php
-│  │  │        └─ WebhookService.php
+│  │  │     ├─ main.js
+│  │  │     └─ style.css
 │  │  └─ versions
 │  │     ├─ 02ab6a6a-84a6-497f-b413-5542d10793c1
 │  │     ├─ 9112a971-6d05-4a8a-b639-db9ed131739f
@@ -357,11 +299,15 @@ Qtemplate
 │  ├─ Qtemplate.csproj
 │  ├─ Qtemplate.csproj.user
 │  ├─ Qtemplate.http
+│  ├─ Qtemplate.zip
 │  └─ wwwroot
 │     ├─ avatarUser
+│     │  ├─ 526a66e3937c4a69b614832d437431d6.png
 │     │  └─ e568a36054de4d48a8c743aa88e5aa55.png
 │     ├─ template-images
 │     └─ thumbnails
+│        ├─ 407166b3fbe74a579007739922ae2bfb.png
+│        └─ b8c1e30d18714f1890132562ddb249af.png
 ├─ Qtemplate.Application
 │  ├─ Behaviors
 │  │  └─ ValidationBehavior.cs
@@ -375,7 +321,6 @@ Qtemplate
 │  │        └─ Qtemplate.Domain.pdb
 │  ├─ Constants
 │  │  └─ SettingKeys.cs
-│  ├─ Consumers
 │  ├─ DependencyInjection.cs
 │  ├─ DTOs
 │  │  ├─ Affiliate
@@ -441,6 +386,8 @@ Qtemplate
 │  │  │  ├─ ChangePasswordDto.cs
 │  │  │  ├─ ForgotPasswordDto.cs
 │  │  │  ├─ LoginDto.cs
+│  │  │  ├─ LogoutRequestDto.cs
+│  │  │  ├─ RefreshTokenDto.cs
 │  │  │  ├─ RegisterDto.cs
 │  │  │  ├─ ResetPasswordDto.cs
 │  │  │  ├─ Userdtos.cs
@@ -450,6 +397,38 @@ Qtemplate
 │  │     ├─ TopWishlistedDto.cs
 │  │     └─ WishlistItemDto.cs
 │  ├─ Features
+│  │  ├─ Admin
+│  │  │  ├─ IpBlacklist
+│  │  │  │  ├─ Commands
+│  │  │  │  │  ├─ AddIpBlacklist
+│  │  │  │  │  │  ├─ AddIpBlacklistCommand.cs
+│  │  │  │  │  │  └─ AddIpBlacklistHandler.cs
+│  │  │  │  │  ├─ DeleteIpBlacklist
+│  │  │  │  │  │  ├─ DeleteIpBlacklistCommand.cs
+│  │  │  │  │  │  └─ DeleteIpBlacklistHandler.cs
+│  │  │  │  │  └─ ToggleIpBlacklist
+│  │  │  │  │     ├─ ToggleIpBlacklistCommand.cs
+│  │  │  │  │     └─ ToggleIpBlacklistHandler.cs
+│  │  │  │  └─ Queries
+│  │  │  │     └─ GetIpBlacklist
+│  │  │  │        ├─ GetIpBlacklistHandler.cs
+│  │  │  │        └─ GetIpBlacklistQuery.cs
+│  │  │  ├─ Logs
+│  │  │  │  └─ Queries
+│  │  │  │     ├─ GetEmailLogs
+│  │  │  │     │  ├─ GetEmailLogsHandler.cs
+│  │  │  │     │  └─ GetEmailLogsQuery.cs
+│  │  │  │     ├─ GetRefreshTokens
+│  │  │  │     │  ├─ GetRefreshTokensHandler.cs
+│  │  │  │     │  └─ GetRefreshTokensQuery.cs
+│  │  │  │     └─ GetRequestLogs
+│  │  │  │        ├─ GetRequestLogsHandler.cs
+│  │  │  │        └─ GetRequestLogsQuery.cs
+│  │  │  └─ Notifications
+│  │  │     └─ Commands
+│  │  │        └─ SendNotification
+│  │  │           ├─ SendNotificationCommand.cs
+│  │  │           └─ SendNotificationHandler.cs
 │  │  ├─ Affiliates
 │  │  │  ├─ Commands
 │  │  │  │  ├─ ApproveAffiliate
@@ -477,9 +456,11 @@ Qtemplate
 │  │  │  └─ Commands
 │  │  │     ├─ ChangePassword
 │  │  │     │  ├─ ChangePasswordCommand.cs
+│  │  │     │  ├─ ChangePasswordCommandValidator.cs
 │  │  │     │  └─ ChangePasswordHandler.cs
 │  │  │     ├─ ForgotPassword
 │  │  │     │  ├─ ForgotPasswordCommand.cs
+│  │  │     │  ├─ Forgotpasswordcommandvalidator.cs
 │  │  │     │  └─ ForgotPasswordHandler.cs
 │  │  │     ├─ Login
 │  │  │     │  ├─ LoginCommand.cs
@@ -500,6 +481,7 @@ Qtemplate
 │  │  │     │  └─ ResendVerifyEmailHandler.cs
 │  │  │     ├─ ResetPassword
 │  │  │     │  ├─ ResetPasswordCommand.cs
+│  │  │     │  ├─ Resetpasswordcommandvalidator.cs
 │  │  │     │  └─ ResetPasswordHandler.cs
 │  │  │     └─ VerifyEmail
 │  │  │        ├─ VerifyEmailCommand.cs
@@ -541,43 +523,19 @@ Qtemplate
 │  │  │  ├─ Commands
 │  │  │  │  ├─ CreateCoupon
 │  │  │  │  │  ├─ CreateCouponCommand.cs
+│  │  │  │  │  ├─ CreateCouponCommandValidator.cs
 │  │  │  │  │  └─ CreateCouponHandler.cs
 │  │  │  │  ├─ DeleteCoupon
 │  │  │  │  │  ├─ DeleteCouponCommand.cs
 │  │  │  │  │  └─ DeleteCouponHandler.cs
 │  │  │  │  └─ UpdateCoupon
 │  │  │  │     ├─ UpdateCouponCommand.cs
+│  │  │  │     ├─ UpdateCouponCommandValidator.cs
 │  │  │  │     └─ UpdateCouponHandler.cs
 │  │  │  └─ Queries
 │  │  │     └─ GetCoupons
 │  │  │        ├─ GetCouponsHandler.cs
 │  │  │        └─ GetCouponsQuery.cs
-│  │  ├─ IpBlacklist
-│  │  │  ├─ Commands
-│  │  │  │  ├─ AddIpBlacklist
-│  │  │  │  │  ├─ AddIpBlacklistCommand.cs
-│  │  │  │  │  └─ AddIpBlacklistHandler.cs
-│  │  │  │  ├─ DeleteIpBlacklist
-│  │  │  │  │  ├─ DeleteIpBlacklistCommand.cs
-│  │  │  │  │  └─ DeleteIpBlacklistHandler.cs
-│  │  │  │  └─ ToggleIpBlacklist
-│  │  │  │     ├─ ToggleIpBlacklistCommand.cs
-│  │  │  │     └─ ToggleIpBlacklistHandler.cs
-│  │  │  └─ Queries
-│  │  │     └─ GetIpBlacklist
-│  │  │        ├─ GetIpBlacklistHandler.cs
-│  │  │        └─ GetIpBlacklistQuery.cs
-│  │  ├─ Logs
-│  │  │  └─ Queries
-│  │  │     ├─ GetEmailLogs
-│  │  │     │  ├─ GetEmailLogsHandler.cs
-│  │  │     │  └─ GetEmailLogsQuery.cs
-│  │  │     ├─ GetRefreshTokens
-│  │  │     │  ├─ GetRefreshTokensHandler.cs
-│  │  │     │  └─ GetRefreshTokensQuery.cs
-│  │  │     └─ GetRequestLogs
-│  │  │        ├─ GetRequestLogsHandler.cs
-│  │  │        └─ GetRequestLogsQuery.cs
 │  │  ├─ Media
 │  │  │  ├─ Commands
 │  │  │  │  ├─ DeleteMedia
@@ -626,6 +584,10 @@ Qtemplate
 │  │  │     └─ GetPaymentStatus
 │  │  │        ├─ GetPaymentStatusHandler.cs
 │  │  │        └─ GetPaymentStatusQuery.cs
+│  │  ├─ Preview
+│  │  │  └─ Queries
+│  │  │     ├─ ServePreviewFileQuery.cs
+│  │  │     └─ ServePreviewFileQueryHandler.cs
 │  │  ├─ Reviews
 │  │  │  ├─ Commands
 │  │  │  │  ├─ AdminApproveReview
@@ -636,6 +598,7 @@ Qtemplate
 │  │  │  │  │  └─ AdminReplyReviewHandler.cs
 │  │  │  │  ├─ CreateReview
 │  │  │  │  │  ├─ CreateReviewCommand.cs
+│  │  │  │  │  ├─ CreateReviewCommandValidator.cs
 │  │  │  │  │  └─ CreateReviewHandler.cs
 │  │  │  │  ├─ DeleteReview
 │  │  │  │  │  ├─ DeleteReviewCommand.cs
@@ -731,7 +694,8 @@ Qtemplate
 │  │  │  │  │  └─ AddTemplateVersionHandler.cs
 │  │  │  │  ├─ ChangeTemplatePricing
 │  │  │  │  │  ├─ ChangeTemplatePricingCommand.cs
-│  │  │  │  │  └─ ChangeTemplatePricingHandler.cs
+│  │  │  │  │  ├─ ChangeTemplatePricingHandler.cs
+│  │  │  │  │  └─ hangeTemplatePricingCommandValidator.cs
 │  │  │  │  ├─ ChangeTemplateStatus
 │  │  │  │  │  ├─ ChangeTemplateStatusCommand.cs
 │  │  │  │  │  └─ ChangeTemplateStatusHandler.cs
@@ -762,6 +726,7 @@ Qtemplate
 │  │  │  │  │  └─ UpdatePreviewHandler.cs
 │  │  │  │  ├─ UpdateTemplate
 │  │  │  │  │  ├─ UpdateTemplateCommand.cs
+│  │  │  │  │  ├─ UpdateTemplateCommandValidator.cs
 │  │  │  │  │  └─ UpdateTemplateHandler.cs
 │  │  │  │  └─ UpdateThumbnail
 │  │  │  │     ├─ UpdateThumbnailCommand.cs
@@ -773,9 +738,6 @@ Qtemplate
 │  │  │     ├─ DownloadTemplate
 │  │  │     │  ├─ DownloadTemplateHandler.cs
 │  │  │     │  └─ DownloadTemplateQuery.cs
-│  │  │     ├─ GetTemplateById
-│  │  │     │  ├─ GetTemplateByIdHandler.cs
-│  │  │     │  └─ GetTemplateByIdQuery.cs
 │  │  │     ├─ GetTemplateDetail
 │  │  │     │  ├─ GetTemplateDetailHandler.cs
 │  │  │     │  └─ GetTemplateDetailQuery.cs
@@ -875,7 +837,10 @@ Qtemplate
 │  │           ├─ GetWishlistHandler.cs
 │  │           └─ GetWishlistQuery.cs
 │  ├─ Mappers
-│  │  └─ TicketMapper.cs
+│  │  ├─ OrderMapper.cs
+│  │  ├─ TemplateMapper.cs
+│  │  ├─ TicketMapper.cs
+│  │  └─ UserMapper.cs
 │  ├─ obj
 │  │  ├─ Debug
 │  │  │  └─ net8.0
@@ -903,7 +868,6 @@ Qtemplate
 │  │  └─ Qtemplate.Application.csproj.nuget.g.targets
 │  ├─ Qtemplate.Application.csproj
 │  └─ Services
-│     ├─ AuthHandlers
 │     ├─ EmailTemplates.cs
 │     └─ Interfaces
 │        ├─ IAiModerationService.cs
@@ -911,7 +875,8 @@ Qtemplate
 │        ├─ IEmailSender.cs
 │        ├─ IEmailService.cs
 │        ├─ IFileUploadService.cs
-│        └─ IJwtTokenService.cs
+│        ├─ IJwtTokenService.cs
+│        └─ INotificationService.cs
 ├─ Qtemplate.domain
 │  ├─ bin
 │  │  └─ Debug
@@ -953,7 +918,6 @@ Qtemplate
 │  ├─ Enums
 │  │  └─ UserRole.cs
 │  ├─ Interfaces
-│  │  ├─ ITemplateVersionRepository.cs
 │  │  └─ Repositories
 │  │     ├─ IAffiliateRepository.cs
 │  │     ├─ IAnalyticsRepository.cs
@@ -974,6 +938,7 @@ Qtemplate
 │  │     ├─ ITagRepository.cs
 │  │     ├─ ITemplateImageRepository.cs
 │  │     ├─ ITemplateRepository.cs
+│  │     ├─ ITemplateVersionRepository.cs
 │  │     ├─ ITicketRepository.cs
 │  │     ├─ IUserDownloadRepository.cs
 │  │     ├─ IUserRepository.cs
@@ -1019,6 +984,8 @@ Qtemplate
 │  ├─ Data
 │  │  └─ AppDbContext.cs
 │  ├─ DependencyInjection.cs
+│  ├─ Hubs
+│  │  └─ NotificationHub.cs
 │  ├─ Migrations
 │  │  ├─ 20260223071037_InitDb.cs
 │  │  ├─ 20260223071037_InitDb.Designer.cs
@@ -1101,8 +1068,11 @@ Qtemplate
 │     │  ├─ EmailRetryBackgroundService.cs
 │     │  ├─ EmailSender.cs
 │     │  └─ EmailService.cs
-│     └─ FileUpload
-│        └─ FileUploadService.cs
-└─ Qtemplate.sln
+│     ├─ FileUpload
+│     │  └─ FileUploadService.cs
+│     └─ Notification
+│        └─ NotificationService.cs
+├─ Qtemplate.sln
+└─ Qtemplate.zip
 
 ```

@@ -23,8 +23,6 @@ namespace Qtemplate.Application.Features.Banners.Commands.CreateBanne
             var d = request.Data;
             if (string.IsNullOrWhiteSpace(d.Title))
                 return ApiResponse<BannerDto>.Fail("Title không được để trống");
-            if (string.IsNullOrWhiteSpace(d.ImageUrl))
-                return ApiResponse<BannerDto>.Fail("ImageUrl không được để trống");
 
             var validPositions = new[] { "Home", "Sidebar", "Popup" };
             if (!validPositions.Contains(d.Position))

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Qtemplate.Application.DTOs;
-using Qtemplate.Application.DTOs.Order;
 using Qtemplate.Application.DTOs.User;
+using Qtemplate.Application.Mappers;
 using Qtemplate.Domain.Interfaces.Repositories;
 
 namespace Qtemplate.Application.Features.Admin.Users.Queries.GetUserOrders;
@@ -28,41 +28,10 @@ public class GetUserOrdersHandler
         var (orders, total) = await _orderRepo.GetPagedByUserIdAsync(
             request.UserId, request.Page, request.PageSize);
 
-        var isPaidStatuses = new[] { "Paid", "Completed" };
-
-        var dtos = orders.Select(o => new PurchaseHistoryItemDto
-        {
-            OrderId = o.Id,
-            OrderCode = o.OrderCode,
-            TotalAmount = o.TotalAmount,
-            DiscountAmount = o.DiscountAmount,
-            FinalAmount = o.FinalAmount,
-            CouponCode = o.CouponCode,
-            Status = o.Status,
-            CancelReason = o.CancelReason,
-            PaymentStatus = o.Payment?.Status,
-            BankCode = o.Payment?.BankCode,
-            PaidAt = o.Payment?.PaidAt,
-            CreatedAt = o.CreatedAt,
-            Items = o.Items.Select(i => new OrderItemDto
-            {
-                Id = i.Id,
-                TemplateId = i.TemplateId,
-                TemplateName = i.TemplateName,
-                OriginalPrice = i.OriginalPrice,
-                Price = i.Price,
-                ThumbnailUrl = i.Template?.ThumbnailUrl,
-                TemplateSlug = i.Template?.Slug,
-                DownloadUrl = isPaidStatuses.Contains(o.Status) && i.Template?.Slug != null
-                    ? $"/api/templates/{i.Template.Slug}/download"
-                    : null
-            }).ToList()
-        }).ToList();
-
         return ApiResponse<PaginatedResult<PurchaseHistoryItemDto>>.Ok(
             new PaginatedResult<PurchaseHistoryItemDto>
             {
-                Items = dtos,
+                Items = orders.Select(UserMapper.ToPurchaseHistoryDto).ToList(),
                 TotalCount = total,
                 Page = request.Page,
                 PageSize = request.PageSize

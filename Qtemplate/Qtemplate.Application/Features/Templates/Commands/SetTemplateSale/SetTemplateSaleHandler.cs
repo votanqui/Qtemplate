@@ -9,11 +9,12 @@ public class SetTemplateSaleHandler : IRequestHandler<SetTemplateSaleCommand, Ap
 {
     private readonly ITemplateRepository _templateRepo;
     private readonly IAuditLogService _auditLogService;
-
-    public SetTemplateSaleHandler(ITemplateRepository templateRepo, IAuditLogService auditLogService)
+    private readonly INotificationService _notifService;
+    public SetTemplateSaleHandler(ITemplateRepository templateRepo, INotificationService notifService, IAuditLogService auditLogService)
     {
         _templateRepo = templateRepo;
         _auditLogService = auditLogService;
+        _notifService = notifService;
     }
 
     public async Task<ApiResponse<object>> Handle(SetTemplateSaleCommand request, CancellationToken cancellationToken)
@@ -61,7 +62,11 @@ public class SetTemplateSaleHandler : IRequestHandler<SetTemplateSaleCommand, Ap
         template.UpdatedAt = DateTime.UtcNow;
 
         await _templateRepo.UpdateAsync(template);
-
+        await _notifService.BroadcastAsync(
+                $"🔥 {template.Name} đang giảm giá!",
+                $"Chỉ còn {request.SalePrice:N0}đ (gốc {template.Price:N0}đ). Nhanh tay!",
+                type: "Info",
+                redirectUrl: $"/templates/{template.Slug}");
         await _auditLogService.LogAsync(
             userId: request.AdminId, userEmail: request.AdminEmail,
             action: "SetSale", entityName: "Template",

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Qtemplate.Application.DTOs;
 using Qtemplate.Application.DTOs.User;
+using Qtemplate.Application.Mappers;
 using Qtemplate.Application.Services.Interfaces;
 using Qtemplate.Domain.Interfaces.Repositories;
 
@@ -17,7 +18,8 @@ public class UpdateProfileHandler : IRequestHandler<UpdateProfileCommand, ApiRes
         _auditLogService = auditLogService;
     }
 
-    public async Task<ApiResponse<UserProfileDto>> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<UserProfileDto>> Handle(
+        UpdateProfileCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepo.GetByIdAsync(request.UserId);
         if (user is null)
@@ -39,20 +41,9 @@ public class UpdateProfileHandler : IRequestHandler<UpdateProfileCommand, ApiRes
             entityId: user.Id.ToString(),
             oldValues: oldValues,
             newValues: new { user.FullName, user.PhoneNumber },
-            ipAddress: request.IpAddress
-        );
+            ipAddress: request.IpAddress);
 
-        return ApiResponse<UserProfileDto>.Ok(new UserProfileDto
-        {
-            Id = user.Id,
-            FullName = user.FullName,
-            Email = user.Email,
-            PhoneNumber = user.PhoneNumber,
-            AvatarUrl = user.AvatarUrl,
-            Role = user.Role,
-            IsEmailVerified = user.IsEmailVerified,
-            LastLoginAt = user.LastLoginAt,
-            CreatedAt = user.CreatedAt
-        }, "Cập nhật thông tin thành công");
+        return ApiResponse<UserProfileDto>.Ok(
+            UserMapper.ToProfileDto(user), "Cập nhật thông tin thành công");
     }
 }

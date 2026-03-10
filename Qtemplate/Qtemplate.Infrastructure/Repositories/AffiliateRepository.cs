@@ -68,4 +68,14 @@ public class AffiliateRepository : IAffiliateRepository
             .Where(t => t.AffiliateId == affiliateId)
             .OrderByDescending(t => t.CreatedAt)
             .ToListAsync();
+    public async Task<AffiliateTransaction?> GetTransactionByIdAsync(int id) =>
+       await _db.AffiliateTransactions
+           .Include(t => t.Affiliate)
+           .FirstOrDefaultAsync(t => t.Id == id);
+
+    public async Task UpdateTransactionAsync(AffiliateTransaction tx)
+    {
+        _db.AffiliateTransactions.Update(tx);
+        await _db.SaveChangesAsync();
+    }
 }

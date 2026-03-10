@@ -15,4 +15,5 @@ public static class SettingKeys
     public const string OpenAiModel = "openai_model";
     public const string GeminiApiKey = "gemini_api_key";
     public const string GeminiModel = "gemini_model";
+    public const string AffiliateCommissionRate = "Affiliate.CommissionRate";
 }

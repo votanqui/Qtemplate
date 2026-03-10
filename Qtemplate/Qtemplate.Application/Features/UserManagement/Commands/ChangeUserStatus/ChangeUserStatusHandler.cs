@@ -13,17 +13,19 @@ public class ChangeUserStatusHandler : IRequestHandler<ChangeUserStatusCommand, 
     private readonly IRefreshTokenRepository _tokenRepo;
     private readonly IAuditLogService _auditLogService;
     private readonly IEmailSender _emailSender;
-
+    private readonly INotificationService _notifService;
     public ChangeUserStatusHandler(
         IUserRepository userRepo,
         IRefreshTokenRepository tokenRepo,
         IAuditLogService auditLogService,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        INotificationService notifService)
     {
         _userRepo = userRepo;
         _tokenRepo = tokenRepo;
         _auditLogService = auditLogService;
         _emailSender = emailSender;
+        _notifService = notifService;
     }
 
     public async Task<ApiResponse<object>> Handle(
@@ -53,7 +55,13 @@ public class ChangeUserStatusHandler : IRequestHandler<ChangeUserStatusCommand, 
             oldValues: new { IsActive = oldStatus },
             newValues: new { IsActive = request.IsActive, request.Reason },
             ipAddress: request.IpAddress);
-
+        await _notifService.SendToUserAsync(
+                user.Id,
+                request.IsActive ? "Tài khoản đã được mở khoá" : "Tài khoản đã bị khoá",
+                request.IsActive
+                    ? "Tài khoản của bạn đã được khôi phục, bạn có thể đăng nhập bình thường."
+                    : $"Tài khoản của bạn đã bị khoá. Lý do: {request.Reason}",
+    type: request.IsActive ? "Success" : "Warning");
         // Gửi email thông báo khoá / mở khoá tài khoản
         _ = _emailSender.SendAsync(new SendEmailMessage
         {

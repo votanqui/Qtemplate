@@ -47,6 +47,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Qtemplate.Controllers.Admin.AdminAffiliateController",
+    "Method": "Payout",
+    "RelativePath": "api/admin/affiliates/transactions/{id}/pay",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Qtemplate.Controllers.Admin.AdminBannerController",
     "Method": "GetList",
     "RelativePath": "api/admin/banners",
@@ -76,9 +92,54 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "dto",
-        "Type": "Qtemplate.Application.DTOs.Banner.UpsertBannerDto",
-        "IsRequired": true
+        "Name": "imageFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "subTitle",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "imageUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "linkUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "position",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "sortOrder",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "isActive",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "startAt",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "endAt",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -97,9 +158,54 @@
         "IsRequired": true
       },
       {
-        "Name": "dto",
-        "Type": "Qtemplate.Application.DTOs.Banner.UpsertBannerDto",
-        "IsRequired": true
+        "Name": "imageFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "subTitle",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "imageUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "linkUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "position",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "sortOrder",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "isActive",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "startAt",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "endAt",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -458,6 +564,22 @@
         "Name": "TemplateId",
         "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Qtemplate.Controllers.Admin.AdminNotificationController",
+    "Method": "Send",
+    "RelativePath": "api/admin/notifications/send",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "Qtemplate.Application.Features.Admin.Notifications.Commands.SendNotification.SendNotificationCommand",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -1842,8 +1964,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "refreshToken",
-        "Type": "System.String",
+        "Name": "dto",
+        "Type": "Qtemplate.Application.DTOs.User.LogoutRequestDto",
         "IsRequired": true
       }
     ],
@@ -1858,8 +1980,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "refreshToken",
-        "Type": "System.String",
+        "Name": "dto",
+        "Type": "Qtemplate.Application.DTOs.User.RefreshTokenDto",
         "IsRequired": true
       }
     ],
@@ -1949,6 +2071,16 @@
     "ContainingType": "Qtemplate.Controllers.CategoryController",
     "Method": "GetAll",
     "RelativePath": "api/categories",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Qtemplate.Controllers.CouponController",
+    "Method": "GetPublic",
+    "RelativePath": "api/coupons",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -2057,6 +2189,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Qtemplate.Controllers.OrderController",
+    "Method": "GetDetailByCode",
+    "RelativePath": "api/orders/code/{orderCode}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderCode",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Qtemplate.Controllers.PaymentController",
     "Method": "SepayCallback",
     "RelativePath": "api/payments/sepay-callback",
@@ -2090,7 +2238,7 @@
   },
   {
     "ContainingType": "Qtemplate.Controllers.PreviewController",
-    "Method": "Serve",
+    "Method": "ServeFile",
     "RelativePath": "api/preview/{templateId}/{filePath}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -2170,6 +2318,26 @@
       {
         "Name": "PageSize",
         "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "OnSale",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsFeatured",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsNew",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "TechStack",
+        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -2255,6 +2423,42 @@
         "Name": "dto",
         "Type": "Qtemplate.Application.DTOs.Review.CreateReviewDto",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Qtemplate.Controllers.TemplateController",
+    "Method": "GetOnSale",
+    "RelativePath": "api/templates/on-sale",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CategorySlug",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "CurrentUserId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -2517,6 +2721,11 @@
       {
         "Name": "pageSize",
         "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],

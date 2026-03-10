@@ -15,15 +15,17 @@ public class ReplyTicketHandler : IRequestHandler<ReplyTicketCommand, ApiRespons
     private readonly ITicketRepository _ticketRepo;
     private readonly IUserRepository _userRepo;
     private readonly IEmailSender _emailSender;
-
+    private readonly INotificationService _notifService;
     public ReplyTicketHandler(
         ITicketRepository ticketRepo,
         IUserRepository userRepo,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        INotificationService notifService)
     {
         _ticketRepo = ticketRepo;
         _userRepo = userRepo;
         _emailSender = emailSender;
+        _notifService = notifService;
     }
 
     public async Task<ApiResponse<TicketReplyDto>> Handle(
@@ -65,7 +67,12 @@ public class ReplyTicketHandler : IRequestHandler<ReplyTicketCommand, ApiRespons
             ticket.UpdatedAt = DateTime.UtcNow;
             await _ticketRepo.UpdateAsync(ticket);
         }
-
+        await _notifService.SendToUserAsync(
+                ticket.UserId,
+                "Ticket của bạn có phản hồi mới",
+                $"[{ticket.TicketCode}] {ticket.Subject} vừa được admin phản hồi.",
+                type: "Info",
+                redirectUrl: $"/dashboard/tickets/{ticket.Id}");
         // ── Gửi email thông báo reply ─────────────────────────────────────────
         if (request.IsFromAdmin)
         {

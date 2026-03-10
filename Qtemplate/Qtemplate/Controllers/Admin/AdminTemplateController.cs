@@ -18,7 +18,6 @@ using Qtemplate.Application.Features.Templates.Commands.UpdatePreview;
 using Qtemplate.Application.Features.Templates.Commands.UpdateTemplate;
 using Qtemplate.Application.Features.Templates.Commands.UpdateThumbnail;
 using Qtemplate.Application.Features.Templates.Queries.AdminGetTemplates;
-using Qtemplate.Application.Features.Templates.Queries.GetTemplateById;
 using Qtemplate.Application.Features.Templates.Queries.GetTemplateDetail;
 using Qtemplate.Application.Features.Templates.Queries.GetTemplateVersions;
 using Qtemplate.Application.Services.Interfaces;
@@ -115,13 +114,6 @@ public class AdminTemplateController : ControllerBase
     [RequestSizeLimit(5 * 1024 * 1024)]
     public async Task<IActionResult> UploadThumbnail(Guid id, IFormFile file)
     {
-        var queryResult = await _mediator.Send(new GetTemplateByIdQuery { Id = id });
-        if (!queryResult.Success) return NotFound(queryResult);
-
-        // Xóa thumbnail cũ trước khi lưu mới
-        if (!string.IsNullOrEmpty(queryResult.Data?.ThumbnailUrl))
-            _fileUploadService.DeleteThumbnail(queryResult.Data.ThumbnailUrl);
-
         string url;
         try
         {
@@ -133,7 +125,8 @@ public class AdminTemplateController : ControllerBase
             return BadRequest(ApiResponse<string>.Fail(ex.Message));
         }
 
-        await _mediator.Send(new UpdateThumbnailCommand
+        // Handler tự xóa thumbnail cũ bên trong
+        var result = await _mediator.Send(new UpdateThumbnailCommand
         {
             TemplateId = id,
             ThumbnailUrl = url,
@@ -142,18 +135,15 @@ public class AdminTemplateController : ControllerBase
             IpAddress = GetIpAddress()
         });
 
+        if (!result.Success) return NotFound(result);
+
         return Ok(ApiResponse<string>.Ok(url, "Upload thumbnail thành công"));
     }
     [HttpDelete("{id:guid}/thumbnail")]
     public async Task<IActionResult> DeleteThumbnail(Guid id)
     {
-        var queryResult = await _mediator.Send(new GetTemplateByIdQuery { Id = id });
-        if (!queryResult.Success) return NotFound(queryResult);
-
-        if (!string.IsNullOrEmpty(queryResult.Data?.ThumbnailUrl))
-            _fileUploadService.DeleteThumbnail(queryResult.Data.ThumbnailUrl);
-
-        await _mediator.Send(new UpdateThumbnailCommand
+        // Handler tự fetch template, xóa file cũ, set null
+        var result = await _mediator.Send(new UpdateThumbnailCommand
         {
             TemplateId = id,
             ThumbnailUrl = null!,
@@ -161,6 +151,8 @@ public class AdminTemplateController : ControllerBase
             AdminEmail = GetUserEmail(),
             IpAddress = GetIpAddress()
         });
+
+        if (!result.Success) return NotFound(result);
 
         return Ok(ApiResponse<object>.Ok(null!, "Đã xóa thumbnail"));
     }

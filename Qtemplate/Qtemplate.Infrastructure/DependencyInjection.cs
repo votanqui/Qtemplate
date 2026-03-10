@@ -12,6 +12,7 @@ using Qtemplate.Infrastructure.Services.Email;
 using Qtemplate.Infrastructure.Services.FileUpload;
 using MassTransit;
 using Qtemplate.Infrastructure.Services.Email;
+using Qtemplate.Infrastructure.Services.Notification;
 namespace Qtemplate.Infrastructure;
 
 public static class DependencyInjection
@@ -73,7 +74,7 @@ public static class DependencyInjection
         // ── Services ──────────────────────────────────────────────────────────
         services.AddScoped<IAuditLogService, AuditLogService>();
         services.AddScoped<IFileUploadService, FileUploadService>();
-
+        services.AddScoped<INotificationService, NotificationService>();
         // ── AI Moderation ─────────────────────────────────────────────────────
         services.AddHttpClient<IAiModerationService, AiModerationService>();
         services.AddHostedService<AiModerationBackgroundService>();

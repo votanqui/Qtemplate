@@ -17,7 +17,7 @@ public class FileUploadService : IFileUploadService
         { ".webp", new byte[] { 0x52, 0x49, 0x46, 0x46 } },
     };
 
-    private const long MaxImageSizeBytes = 5 * 1024 * 1024;  // 5MB
+    private const long MaxImageSizeBytes = 10 * 1024 * 1024;  // 5MB
     private const long MaxZipSizeBytes = 50 * 1024 * 1024;  // 50MB
 
     public FileUploadService(IHostEnvironment env)
@@ -71,6 +71,9 @@ public class FileUploadService : IFileUploadService
     public Task<string> SaveTemplateImageAsync(Stream s, string name, long size)
         => SaveImageAsync(s, name, size, "template-images");
 
+    public Task<string> SaveBannerImageAsync(Stream s, string name, long size)
+        => SaveImageAsync(s, name, size, "banners");
+
     // ── Preview ZIP → giải nén + lưu ZIP gốc ────────────────────────────────
     public async Task<string> SavePreviewZipAsync(
      Stream stream, string fileName, long fileSize, Guid templateId)
@@ -100,6 +103,7 @@ public class FileUploadService : IFileUploadService
     // ── Delete helpers ────────────────────────────────────────────────────────
     public void DeleteAvatar(string? relativeUrl) => DeleteFileInWebRoot("avatarUser", relativeUrl);
     public void DeleteThumbnail(string? relativeUrl) => DeleteFileInWebRoot("thumbnails", relativeUrl);
+    public void DeleteBannerImage(string? relativeUrl) => DeleteFileInWebRoot("banners", relativeUrl);
     public void DeleteTemplateImage(string? relativeUrl) => DeleteFileInWebRoot("template-images", relativeUrl);
 
     public void DeletePreview(Guid templateId)

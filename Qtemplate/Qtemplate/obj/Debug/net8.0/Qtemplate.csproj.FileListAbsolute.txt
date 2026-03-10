@@ -300,8 +300,8 @@ D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\FluentValidation.dll
 D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
 D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\AspNetCoreRateLimit.dll
 D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\Newtonsoft.Json.dll
-D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\MassTransit.dll
 D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\MassTransit.Abstractions.dll
 D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\MassTransit.RabbitMqTransport.dll
 D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\RabbitMQ.Client.dll
+D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

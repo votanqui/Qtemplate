@@ -12,15 +12,17 @@ public class ChangeTicketStatusHandler : IRequestHandler<ChangeTicketStatusComma
     private readonly ITicketRepository _ticketRepo;
     private readonly IUserRepository _userRepo;
     private readonly IEmailSender _emailSender;
-
+    private readonly INotificationService _notifService;
     public ChangeTicketStatusHandler(
         ITicketRepository ticketRepo,
         IUserRepository userRepo,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        INotificationService notifService)
     {
         _ticketRepo = ticketRepo;
         _userRepo = userRepo;
         _emailSender = emailSender;
+        _notifService = notifService;
     }
 
     public async Task<ApiResponse<object>> Handle(
@@ -53,7 +55,12 @@ public class ChangeTicketStatusHandler : IRequestHandler<ChangeTicketStatusComma
                     "Open" => "đã mở lại",
                     _ => request.Status
                 };
-
+                await _notifService.SendToUserAsync(
+                        ticket.UserId,
+                        $"Ticket {statusLabel}",
+                        $"[{ticket.TicketCode}] {ticket.Subject} hiện đang {statusLabel}.",
+                        type: request.Status == "Closed" ? "Success" : "Info",
+                        redirectUrl: $"/dashboard/tickets/{ticket.Id}");
                 _ = _emailSender.SendAsync(new SendEmailMessage
                 {
                     To = user.Email,

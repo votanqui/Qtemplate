@@ -17,19 +17,24 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, ApiRespons
     private readonly ICouponRepository _couponRepo;
     private readonly IUserRepository _userRepo;
     private readonly IEmailSender _emailSender;
-
+    private readonly INotificationService _notifService;
+    private readonly IAffiliateRepository _affiliateRepo;
     public CreateOrderHandler(
         IOrderRepository orderRepo,
         ITemplateRepository templateRepo,
         ICouponRepository couponRepo,
         IUserRepository userRepo,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        INotificationService notifService,
+        IAffiliateRepository affiliateRepo)
     {
         _orderRepo = orderRepo;
         _templateRepo = templateRepo;
         _couponRepo = couponRepo;
         _userRepo = userRepo;
         _emailSender = emailSender;
+        _notifService = notifService;
+        _affiliateRepo = affiliateRepo;
     }
 
     public async Task<ApiResponse<OrderDto>> Handle(
@@ -80,6 +85,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, ApiRespons
             DiscountAmount = discountAmount,
             FinalAmount = finalAmount,
             CouponCode = request.CouponCode,
+            AffiliateCode = request.AffiliateCode,
             Status = finalAmount == 0 ? "Paid" : "Pending",
             Note = request.Note,
             CreatedAt = DateTime.UtcNow,
@@ -110,7 +116,14 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, ApiRespons
                 t.SalesCount++;
                 await _templateRepo.UpdateAsync(t);
             }
-
+            await _notifService.SendToUserAsync(
+                   request.UserId,
+                   "Nhận template thành công 🎁",
+                   $"Bạn đã nhận {templates.Count} template miễn phí.",
+                   "Success",
+                   "/dashboard/downloads"
+   );
+            await CreateAffiliateTransactionAsync(order, 0);
             var user = await _userRepo.GetByIdAsync(request.UserId);
             if (user is not null)
             {
@@ -158,5 +171,32 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, ApiRespons
             discount = Math.Min(discount, coupon.MaxDiscountAmount.Value);
 
         return Math.Min(discount, total);
+    }
+    private async Task CreateAffiliateTransactionAsync(Order order, decimal paidAmount)
+    {
+        if (string.IsNullOrEmpty(order.AffiliateCode)) return;
+
+        var affiliate = await _affiliateRepo.GetByCodeAsync(order.AffiliateCode);
+        if (affiliate is null || !affiliate.IsActive) return;
+
+        // Tránh duplicate
+        var existing = await _affiliateRepo.GetTransactionsByAffiliateIdAsync(affiliate.Id);
+        if (existing.Any(t => t.OrderId == order.Id)) return;
+
+        var commission = Math.Round(paidAmount * affiliate.CommissionRate / 100, 2);
+
+        await _affiliateRepo.AddTransactionAsync(new AffiliateTransaction
+        {
+            AffiliateId = affiliate.Id,
+            OrderId = order.Id,
+            OrderAmount = paidAmount,
+            Commission = commission,
+            Status = "Pending",
+            CreatedAt = DateTime.UtcNow
+        });
+
+        affiliate.TotalEarned += commission;
+        affiliate.PendingAmount += commission;
+        await _affiliateRepo.UpdateAsync(affiliate);
     }
 }

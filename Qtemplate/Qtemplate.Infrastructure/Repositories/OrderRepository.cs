@@ -26,24 +26,26 @@ public class OrderRepository : IOrderRepository
             .Include(o => o.Payment)
             .FirstOrDefaultAsync(o => o.OrderCode == orderCode);
 
-    public async Task<(List<Order> Items, int Total)> GetPagedByUserIdAsync(
-        Guid userId, int page, int pageSize)
+    public async Task<(List<Order> items, int total)> GetPagedByUserIdAsync(
+      Guid userId, int page, int pageSize, string? status = null)
     {
         var query = _context.Orders
             .Include(o => o.Items).ThenInclude(i => i.Template)
             .Include(o => o.Payment)
-            .Where(o => o.UserId == userId)
-            .OrderByDescending(o => o.CreatedAt);
+            .Where(o => o.UserId == userId);
+
+        if (!string.IsNullOrEmpty(status))
+            query = query.Where(o => o.Status.ToString() == status); // ← thêm dòng này
 
         var total = await query.CountAsync();
         var items = await query
+            .OrderByDescending(o => o.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
         return (items, total);
     }
-
     public async Task<(List<Order> Items, int Total)> GetAdminListAsync(
         string? status, Guid? userId, string? search, int page, int pageSize)
     {
@@ -113,4 +115,19 @@ public class OrderRepository : IOrderRepository
                 .ThenInclude(i => i.Template)
             .Where(o => o.CreatedAt >= from && o.CreatedAt <= to)
             .ToListAsync();
+    public async Task<(int TotalOrders, decimal TotalSpent)> GetUserStatsAsync(Guid userId)
+    {
+        var stats = await _context.Orders
+            .Where(o => o.UserId == userId
+                     && (o.Status == "Paid" || o.Status == "Completed"))
+            .GroupBy(_ => 1)
+            .Select(g => new
+            {
+                TotalOrders = g.Count(),
+                TotalSpent = g.Sum(o => o.FinalAmount)
+            })
+            .FirstOrDefaultAsync();
+
+        return stats is null ? (0, 0m) : (stats.TotalOrders, stats.TotalSpent);
+    }
 }

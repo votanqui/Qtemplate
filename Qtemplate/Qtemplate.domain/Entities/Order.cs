@@ -9,6 +9,7 @@ public class Order
     public decimal DiscountAmount { get; set; } = 0;
     public decimal FinalAmount { get; set; }                // TotalAmount - Discount
     public string? CouponCode { get; set; }
+    public string? AffiliateCode { get; set; }
     public string Status { get; set; } = "Pending";
     public string? Note { get; set; }
     public string? CancelReason { get; set; }

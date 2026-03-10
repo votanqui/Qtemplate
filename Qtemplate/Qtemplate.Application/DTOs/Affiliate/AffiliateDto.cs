@@ -31,5 +31,4 @@ public class AffiliateTransactionDto
 public class ApproveAffiliateDto
 {
     public bool IsActive { get; set; } = true;
-    public decimal CommissionRate { get; set; } = 10;
 }

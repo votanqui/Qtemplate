@@ -1,8 +1,32 @@
 {
   "Files": [
     {
+      "Id": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\avatarUser\\526a66e3937c4a69b614832d437431d6.png",
+      "PackagePath": "staticwebassets\\avatarUser\\526a66e3937c4a69b614832d437431d6.png"
+    },
+    {
       "Id": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\avatarUser\\e568a36054de4d48a8c743aa88e5aa55.png",
       "PackagePath": "staticwebassets\\avatarUser\\e568a36054de4d48a8c743aa88e5aa55.png"
+    },
+    {
+      "Id": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\banners\\7dc3d5b21f4b4f0dabdf96d3d03aee1e.png",
+      "PackagePath": "staticwebassets\\banners\\7dc3d5b21f4b4f0dabdf96d3d03aee1e.png"
+    },
+    {
+      "Id": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\template-images\\2ab99d80fe884328b30a14057ad29dd9.png",
+      "PackagePath": "staticwebassets\\template-images\\2ab99d80fe884328b30a14057ad29dd9.png"
+    },
+    {
+      "Id": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\template-images\\9a28e041dc174858bd6d9348f37b7f20.png",
+      "PackagePath": "staticwebassets\\template-images\\9a28e041dc174858bd6d9348f37b7f20.png"
+    },
+    {
+      "Id": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\thumbnails\\407166b3fbe74a579007739922ae2bfb.png",
+      "PackagePath": "staticwebassets\\thumbnails\\407166b3fbe74a579007739922ae2bfb.png"
+    },
+    {
+      "Id": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\thumbnails\\b8c1e30d18714f1890132562ddb249af.png",
+      "PackagePath": "staticwebassets\\thumbnails\\b8c1e30d18714f1890132562ddb249af.png"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Qtemplate.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

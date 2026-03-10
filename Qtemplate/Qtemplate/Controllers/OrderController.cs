@@ -8,6 +8,7 @@ using Qtemplate.Application.Features.Orders.Commands.CreateOrder;
 using Qtemplate.Application.Features.Orders.Queries.GetOrderDetail;
 using Qtemplate.Application.Features.Payments.Commands.CreatePayment;
 using Qtemplate.Application.Features.Payments.Queries.GetPaymentStatus;
+using Qtemplate.Application.Features.UserManagement.Queries.PurchaseHistory;
 using System.Security.Claims;
 
 namespace Qtemplate.Controllers;
@@ -35,6 +36,7 @@ public class OrderController : ControllerBase
             UserId = GetUserId(),
             TemplateIds = dto.TemplateIds,
             CouponCode = dto.CouponCode,
+            AffiliateCode = dto.AffiliateCode,
             Note = dto.Note
         });
         return result.Success ? Ok(result) : BadRequest(result);
@@ -51,7 +53,16 @@ public class OrderController : ControllerBase
         });
         return result.Success ? Ok(result) : NotFound(result);
     }
-
+    [HttpGet("code/{orderCode}")]
+    public async Task<IActionResult> GetDetailByCode(string orderCode)
+    {
+        var result = await _mediator.Send(new GetOrderDetailQuery
+        {
+            OrderCode = orderCode,
+            UserId = GetUserId()
+        });
+        return result.Success ? Ok(result) : NotFound(result);
+    }
     // POST /api/orders/apply-coupon
     [HttpPost("apply-coupon")]
     public async Task<IActionResult> ApplyCoupon([FromBody] ApplyCouponDto dto)

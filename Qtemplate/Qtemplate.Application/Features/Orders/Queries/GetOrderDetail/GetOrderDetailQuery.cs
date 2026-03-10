@@ -8,5 +8,6 @@ public class GetOrderDetailQuery : IRequest<ApiResponse<OrderDto>>
 {
     public Guid OrderId { get; set; }
     public Guid UserId { get; set; }
+    public string? OrderCode { get; set; }
     public bool IsAdmin { get; set; } = false;
 }

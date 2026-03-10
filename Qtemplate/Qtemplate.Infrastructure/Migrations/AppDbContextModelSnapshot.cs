@@ -596,6 +596,9 @@ namespace Qtemplate.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
+                    b.Property<string>("AffiliateCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CancelReason")
                         .HasColumnType("nvarchar(max)");
 

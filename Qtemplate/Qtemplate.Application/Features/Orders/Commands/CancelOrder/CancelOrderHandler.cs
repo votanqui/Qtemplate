@@ -13,17 +13,19 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, ApiRespons
     private readonly ICouponRepository _couponRepo;
     private readonly IUserRepository _userRepo;
     private readonly IEmailSender _emailSender;
-
+    private readonly INotificationService _notifService;
     public CancelOrderHandler(
         IOrderRepository orderRepo,
         ICouponRepository couponRepo,
         IUserRepository userRepo,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        INotificationService notifService)
     {
         _orderRepo = orderRepo;
         _couponRepo = couponRepo;
         _userRepo = userRepo;
         _emailSender = emailSender;
+        _notifService = notifService;
     }
 
     public async Task<ApiResponse<object>> Handle(
@@ -58,7 +60,12 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, ApiRespons
                 await _couponRepo.UpdateAsync(coupon);
             }
         }
-
+        await _notifService.SendToUserAsync(
+                order.UserId,
+                "Đơn hàng đã bị hủy",
+                $"Đơn hàng {order.OrderCode} đã bị hủy. Lý do: {request.CancelReason}",
+                type: "Warning",
+                redirectUrl: $"/dashboard/orders/{order.Id}");
         // Gửi email thông báo hủy đơn
         var user = await _userRepo.GetByIdAsync(order.UserId);
         if (user is not null)

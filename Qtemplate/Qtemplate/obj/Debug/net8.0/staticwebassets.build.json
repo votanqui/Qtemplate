@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Vb5T4owRGtOb0y719yAIMykiQXI47vy47c76qdoBe+4=",
+  "Hash": "1Ft40KfeUwRVm7y2CqOBpa1fftaKURm6RIb9maF6aYU=",
   "Source": "Qtemplate",
   "BasePath": "_content/Qtemplate",
   "Mode": "Default",
@@ -16,6 +16,27 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\avatarUser\\526a66e3937c4a69b614832d437431d6.png",
+      "SourceId": "Qtemplate",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\",
+      "BasePath": "_content/Qtemplate",
+      "RelativePath": "avatarUser/526a66e3937c4a69b614832d437431d6#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "jipzwtalmv",
+      "Integrity": "FQBq3D2cjpKWU6sgwLiR5tI9qKz7sR+oMIP8MHZznow=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\avatarUser\\526a66e3937c4a69b614832d437431d6.png"
+    },
     {
       "Identity": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\avatarUser\\e568a36054de4d48a8c743aa88e5aa55.png",
       "SourceId": "Qtemplate",
@@ -36,9 +57,196 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\avatarUser\\e568a36054de4d48a8c743aa88e5aa55.png"
+    },
+    {
+      "Identity": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\banners\\7dc3d5b21f4b4f0dabdf96d3d03aee1e.png",
+      "SourceId": "Qtemplate",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\",
+      "BasePath": "_content/Qtemplate",
+      "RelativePath": "banners/7dc3d5b21f4b4f0dabdf96d3d03aee1e#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "vn4bja8u8z",
+      "Integrity": "pbje8Eijs9zixfIcY+r8RHZaHKxwZtZ8A0/H2FRme/8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\banners\\7dc3d5b21f4b4f0dabdf96d3d03aee1e.png"
+    },
+    {
+      "Identity": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\template-images\\2ab99d80fe884328b30a14057ad29dd9.png",
+      "SourceId": "Qtemplate",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\",
+      "BasePath": "_content/Qtemplate",
+      "RelativePath": "template-images/2ab99d80fe884328b30a14057ad29dd9#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "vrqavcd1c8",
+      "Integrity": "C+VvJkR2yuQxTdf8xl+6bADNqSseLo85v+1xf4ynicc=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\template-images\\2ab99d80fe884328b30a14057ad29dd9.png"
+    },
+    {
+      "Identity": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\template-images\\9a28e041dc174858bd6d9348f37b7f20.png",
+      "SourceId": "Qtemplate",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\",
+      "BasePath": "_content/Qtemplate",
+      "RelativePath": "template-images/9a28e041dc174858bd6d9348f37b7f20#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "emqa9op5cj",
+      "Integrity": "Rn7VWL8Jzb8lGko+MSh6XM0cgzGEgsxLUvHpzyzbOHE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\template-images\\9a28e041dc174858bd6d9348f37b7f20.png"
+    },
+    {
+      "Identity": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\thumbnails\\407166b3fbe74a579007739922ae2bfb.png",
+      "SourceId": "Qtemplate",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\",
+      "BasePath": "_content/Qtemplate",
+      "RelativePath": "thumbnails/407166b3fbe74a579007739922ae2bfb#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "2cp1m8olrc",
+      "Integrity": "fhN2+fdT0LmTfwW+UNJbjs2uhaedNHk0gGEawjbPpog=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\thumbnails\\407166b3fbe74a579007739922ae2bfb.png"
+    },
+    {
+      "Identity": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\thumbnails\\b8c1e30d18714f1890132562ddb249af.png",
+      "SourceId": "Qtemplate",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\",
+      "BasePath": "_content/Qtemplate",
+      "RelativePath": "thumbnails/b8c1e30d18714f1890132562ddb249af#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "jipzwtalmv",
+      "Integrity": "FQBq3D2cjpKWU6sgwLiR5tI9qKz7sR+oMIP8MHZznow=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\thumbnails\\b8c1e30d18714f1890132562ddb249af.png"
     }
   ],
   "Endpoints": [
+    {
+      "Route": "avatarUser/526a66e3937c4a69b614832d437431d6.jipzwtalmv.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\avatarUser\\526a66e3937c4a69b614832d437431d6.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "22086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"FQBq3D2cjpKWU6sgwLiR5tI9qKz7sR+oMIP8MHZznow=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Mar 2026 10:57:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jipzwtalmv"
+        },
+        {
+          "Name": "label",
+          "Value": "avatarUser/526a66e3937c4a69b614832d437431d6.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-FQBq3D2cjpKWU6sgwLiR5tI9qKz7sR+oMIP8MHZznow="
+        }
+      ]
+    },
+    {
+      "Route": "avatarUser/526a66e3937c4a69b614832d437431d6.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\avatarUser\\526a66e3937c4a69b614832d437431d6.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "22086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"FQBq3D2cjpKWU6sgwLiR5tI9qKz7sR+oMIP8MHZznow=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Mar 2026 10:57:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-FQBq3D2cjpKWU6sgwLiR5tI9qKz7sR+oMIP8MHZznow="
+        }
+      ]
+    },
     {
       "Route": "avatarUser/e568a36054de4d48a8c743aa88e5aa55.png",
       "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\avatarUser\\e568a36054de4d48a8c743aa88e5aa55.png",
@@ -118,6 +326,416 @@
         {
           "Name": "integrity",
           "Value": "sha256-/52oOvvTCghhsvWK5x7TiJQA2ch+ExAPumjWI1dOV20="
+        }
+      ]
+    },
+    {
+      "Route": "banners/7dc3d5b21f4b4f0dabdf96d3d03aee1e.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\banners\\7dc3d5b21f4b4f0dabdf96d3d03aee1e.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2290804"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"pbje8Eijs9zixfIcY+r8RHZaHKxwZtZ8A0/H2FRme/8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Mar 2026 05:18:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-pbje8Eijs9zixfIcY+r8RHZaHKxwZtZ8A0/H2FRme/8="
+        }
+      ]
+    },
+    {
+      "Route": "banners/7dc3d5b21f4b4f0dabdf96d3d03aee1e.vn4bja8u8z.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\banners\\7dc3d5b21f4b4f0dabdf96d3d03aee1e.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2290804"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"pbje8Eijs9zixfIcY+r8RHZaHKxwZtZ8A0/H2FRme/8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Mar 2026 05:18:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vn4bja8u8z"
+        },
+        {
+          "Name": "label",
+          "Value": "banners/7dc3d5b21f4b4f0dabdf96d3d03aee1e.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-pbje8Eijs9zixfIcY+r8RHZaHKxwZtZ8A0/H2FRme/8="
+        }
+      ]
+    },
+    {
+      "Route": "template-images/2ab99d80fe884328b30a14057ad29dd9.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\template-images\\2ab99d80fe884328b30a14057ad29dd9.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1715935"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"C+VvJkR2yuQxTdf8xl+6bADNqSseLo85v+1xf4ynicc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 15:30:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-C+VvJkR2yuQxTdf8xl+6bADNqSseLo85v+1xf4ynicc="
+        }
+      ]
+    },
+    {
+      "Route": "template-images/2ab99d80fe884328b30a14057ad29dd9.vrqavcd1c8.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\template-images\\2ab99d80fe884328b30a14057ad29dd9.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1715935"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"C+VvJkR2yuQxTdf8xl+6bADNqSseLo85v+1xf4ynicc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 15:30:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vrqavcd1c8"
+        },
+        {
+          "Name": "label",
+          "Value": "template-images/2ab99d80fe884328b30a14057ad29dd9.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-C+VvJkR2yuQxTdf8xl+6bADNqSseLo85v+1xf4ynicc="
+        }
+      ]
+    },
+    {
+      "Route": "template-images/9a28e041dc174858bd6d9348f37b7f20.emqa9op5cj.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\template-images\\9a28e041dc174858bd6d9348f37b7f20.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1093412"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Rn7VWL8Jzb8lGko+MSh6XM0cgzGEgsxLUvHpzyzbOHE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 15:14:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "emqa9op5cj"
+        },
+        {
+          "Name": "label",
+          "Value": "template-images/9a28e041dc174858bd6d9348f37b7f20.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Rn7VWL8Jzb8lGko+MSh6XM0cgzGEgsxLUvHpzyzbOHE="
+        }
+      ]
+    },
+    {
+      "Route": "template-images/9a28e041dc174858bd6d9348f37b7f20.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\template-images\\9a28e041dc174858bd6d9348f37b7f20.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1093412"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Rn7VWL8Jzb8lGko+MSh6XM0cgzGEgsxLUvHpzyzbOHE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 15:14:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Rn7VWL8Jzb8lGko+MSh6XM0cgzGEgsxLUvHpzyzbOHE="
+        }
+      ]
+    },
+    {
+      "Route": "thumbnails/407166b3fbe74a579007739922ae2bfb.2cp1m8olrc.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\thumbnails\\407166b3fbe74a579007739922ae2bfb.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2322864"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fhN2+fdT0LmTfwW+UNJbjs2uhaedNHk0gGEawjbPpog=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 06 Mar 2026 15:59:13 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "2cp1m8olrc"
+        },
+        {
+          "Name": "label",
+          "Value": "thumbnails/407166b3fbe74a579007739922ae2bfb.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fhN2+fdT0LmTfwW+UNJbjs2uhaedNHk0gGEawjbPpog="
+        }
+      ]
+    },
+    {
+      "Route": "thumbnails/407166b3fbe74a579007739922ae2bfb.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\thumbnails\\407166b3fbe74a579007739922ae2bfb.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2322864"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fhN2+fdT0LmTfwW+UNJbjs2uhaedNHk0gGEawjbPpog=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 06 Mar 2026 15:59:13 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fhN2+fdT0LmTfwW+UNJbjs2uhaedNHk0gGEawjbPpog="
+        }
+      ]
+    },
+    {
+      "Route": "thumbnails/b8c1e30d18714f1890132562ddb249af.jipzwtalmv.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\thumbnails\\b8c1e30d18714f1890132562ddb249af.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "22086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"FQBq3D2cjpKWU6sgwLiR5tI9qKz7sR+oMIP8MHZznow=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Mar 2026 13:35:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jipzwtalmv"
+        },
+        {
+          "Name": "label",
+          "Value": "thumbnails/b8c1e30d18714f1890132562ddb249af.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-FQBq3D2cjpKWU6sgwLiR5tI9qKz7sR+oMIP8MHZznow="
+        }
+      ]
+    },
+    {
+      "Route": "thumbnails/b8c1e30d18714f1890132562ddb249af.png",
+      "AssetFile": "D:\\source\\repos\\Qtemplate\\Qtemplate\\wwwroot\\thumbnails\\b8c1e30d18714f1890132562ddb249af.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "22086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"FQBq3D2cjpKWU6sgwLiR5tI9qKz7sR+oMIP8MHZznow=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Mar 2026 13:35:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-FQBq3D2cjpKWU6sgwLiR5tI9qKz7sR+oMIP8MHZznow="
         }
       ]
     }

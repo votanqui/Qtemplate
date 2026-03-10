@@ -39,6 +39,7 @@ public class CreateOrderDto
 {
     public List<Guid> TemplateIds { get; set; } = new();
     public string? CouponCode { get; set; }
+    public string? AffiliateCode { get; set; }
     public string? Note { get; set; }
 }
 
