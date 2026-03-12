@@ -70,4 +70,9 @@ public class UserRepository : IUserRepository
 
         return (items, total);
     }
+    public async Task<List<Guid>> GetAllActiveUserIdsAsync()
+    => await _context.Users
+        .Where(u => u.IsActive)
+        .Select(u => u.Id)
+        .ToListAsync();
 }

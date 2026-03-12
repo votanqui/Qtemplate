@@ -35,7 +35,7 @@ public class OrderRepository : IOrderRepository
             .Where(o => o.UserId == userId);
 
         if (!string.IsNullOrEmpty(status))
-            query = query.Where(o => o.Status.ToString() == status); // ← thêm dòng này
+            query = query.Where(o => o.Status.ToString() == status);
 
         var total = await query.CountAsync();
         var items = await query
@@ -46,6 +46,7 @@ public class OrderRepository : IOrderRepository
 
         return (items, total);
     }
+
     public async Task<(List<Order> Items, int Total)> GetAdminListAsync(
         string? status, Guid? userId, string? search, int page, int pageSize)
     {
@@ -94,19 +95,21 @@ public class OrderRepository : IOrderRepository
                 oi.Order.UserId == userId &&
                 oi.TemplateId == templateId &&
                 (oi.Order.Status == "Paid" || oi.Order.Status == "Completed"));
+
     public async Task<Order?> GetPaidOrderByUserAndTemplateAsync(Guid userId, Guid templateId) =>
         await _context.Orders
-            .Include(o => o.Items)   // ← cần include để .Any() hoạt động đúng
+            .Include(o => o.Items)
             .Where(o => o.UserId == userId
                      && (o.Status == "Paid" || o.Status == "Completed")
                      && o.Items.Any(i => i.TemplateId == templateId))
             .OrderByDescending(o => o.CreatedAt)
             .FirstOrDefaultAsync();
+
     public async Task<List<Order>> GetByDateRangeAsync(DateTime from, DateTime to) =>
-    await _context.Orders
-        .Include(o => o.User)
-        .Where(o => o.CreatedAt >= from && o.CreatedAt <= to)
-        .ToListAsync();
+        await _context.Orders
+            .Include(o => o.User)
+            .Where(o => o.CreatedAt >= from && o.CreatedAt <= to)
+            .ToListAsync();
 
     public async Task<List<Order>> GetByDateRangeWithItemsAsync(DateTime from, DateTime to) =>
         await _context.Orders
@@ -115,6 +118,7 @@ public class OrderRepository : IOrderRepository
                 .ThenInclude(i => i.Template)
             .Where(o => o.CreatedAt >= from && o.CreatedAt <= to)
             .ToListAsync();
+
     public async Task<(int TotalOrders, decimal TotalSpent)> GetUserStatsAsync(Guid userId)
     {
         var stats = await _context.Orders
@@ -130,8 +134,9 @@ public class OrderRepository : IOrderRepository
 
         return stats is null ? (0, 0m) : (stats.TotalOrders, stats.TotalSpent);
     }
+
     public async Task<List<(Guid UserId, int Count)>> GetCancelSpamUsersAsync(
-    DateTime from, int threshold)
+        DateTime from, int threshold)
     {
         var rows = await _context.Orders
             .Where(o => o.CancelledAt >= from && o.Status == "Cancelled")
@@ -141,5 +146,38 @@ public class OrderRepository : IOrderRepository
             .ToListAsync();
 
         return rows.Select(x => (x.UserId, x.Count)).ToList();
+    }
+
+    // ── Payment reminder & auto-cancel ───────────────────────────────────────
+
+    public async Task<List<Order>> GetPendingForReminderAsync(
+        int reminderAfterMinutes, int cancelAfterMinutes)
+    {
+        var now = DateTime.UtcNow;
+        var reminderThreshold = now.AddMinutes(-reminderAfterMinutes);
+        var cancelThreshold = now.AddMinutes(-cancelAfterMinutes);
+
+        return await _context.Orders
+            .Include(o => o.User)
+            .Include(o => o.Items).ThenInclude(i => i.Template)
+            .Where(o =>
+                o.Status == "Pending" &&
+                o.ReminderSentAt == null &&
+                o.CreatedAt <= reminderThreshold &&
+                o.CreatedAt > cancelThreshold)
+            .ToListAsync();
+    }
+
+    public async Task<List<Order>> GetPendingForAutoCancelAsync(int cancelAfterMinutes)
+    {
+        var cancelThreshold = DateTime.UtcNow.AddMinutes(-cancelAfterMinutes);
+
+        return await _context.Orders
+            .Include(o => o.User)
+            .Include(o => o.Items).ThenInclude(i => i.Template)
+            .Where(o =>
+                o.Status == "Pending" &&
+                o.CreatedAt <= cancelThreshold)
+            .ToListAsync();
     }
 }

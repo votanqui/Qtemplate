@@ -15,4 +15,5 @@ public interface IUserRepository
     Task UpdateAsync(User user);
     Task<(List<User> Items, int Total)> GetPagedAsync(
        string? search, string? role, bool? isActive, int page, int pageSize);
+    Task<List<Guid>> GetAllActiveUserIdsAsync();
 }

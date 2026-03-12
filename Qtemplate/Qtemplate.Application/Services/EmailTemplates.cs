@@ -186,12 +186,13 @@ public static class EmailTemplates
                 <a href="{blockUrl}" class="btn">&#128274; Bảo vệ tài khoản ngay</a>
             </div>
             """);
+
     public static string OrderConfirm(
-    string fullName,
-    string orderCode,
-    decimal amount,
-    DateTime paidAt,
-    List<string> itemNames) => $"""
+        string fullName,
+        string orderCode,
+        decimal amount,
+        DateTime paidAt,
+        List<string> itemNames) => $"""
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto">
         <h2 style="color:#2563eb">Xác nhận thanh toán thành công 🎉</h2>
         <p>Xin chào <strong>{fullName}</strong>,</p>
@@ -233,13 +234,14 @@ public static class EmailTemplates
         <p>Đăng nhập để xem chi tiết và phản hồi tại Qtemplate.</p>
     </div>
     """;
+
     public static string TicketStatusChanged(
-    string fullName, string ticketCode,
-    string subject, string statusLabel) => $"""
+        string fullName, string ticketCode,
+        string subject, string statusLabel) => $"""
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto">
         <h2 style="color:#2563eb">Cập nhật ticket hỗ trợ</h2>
         <p>Xin chào <strong>{fullName}</strong>,</p>
-        <p>Ticket <strong>[{ticketCode}]</strong> - <em>{subject}</em> 
+        <p>Ticket <strong>[{ticketCode}]</strong> - <em>{subject}</em>
            hiện đang <strong>{statusLabel}</strong>.</p>
         <p>Đăng nhập để xem chi tiết tại Qtemplate.</p>
     </div>
@@ -287,11 +289,12 @@ public static class EmailTemplates
         <p>Nếu có thắc mắc vui lòng liên hệ hỗ trợ.</p>
     </div>
     """;
+
     public static string AccountSuspended(
-    string fullName,
-    string reason,
-    string blockNote) =>
-    BaseLayout("⚠ Tài khoản bị tạm khoá", "#DC2626", $"""
+        string fullName,
+        string reason,
+        string blockNote) =>
+        BaseLayout("⚠ Tài khoản bị tạm khoá", "#DC2626", $"""
             <p>Xin chào <strong>{fullName}</strong>,</p>
             <p>Hệ thống bảo mật của chúng tôi đã phát hiện hoạt động bất thường
                và thực hiện khoá tạm thời tài khoản của bạn.</p>
@@ -303,4 +306,51 @@ public static class EmailTemplates
                để được xem xét và mở khoá.</p>
             <p>Trân trọng,<br/><strong>Đội ngũ bảo mật Qtemplate</strong></p>
             """);
+
+    // ── Payment reminder ──────────────────────────────────────────────────────
+    public static string PaymentReminder(
+        string fullName,
+        string orderCode,
+        decimal amount,
+        int minutesLeft,
+        string paymentUrl) => $"""
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto">
+        <h2 style="color:#d97706">⏰ Nhắc nhở thanh toán đơn hàng</h2>
+        <p>Xin chào <strong>{fullName}</strong>,</p>
+        <p>Đơn hàng <strong>{orderCode}</strong> trị giá <strong>{amount:N0}đ</strong>
+           của bạn đang chờ thanh toán.</p>
+        <div style="background:#fef3c7;border-left:4px solid #d97706;padding:14px 18px;
+                    border-radius:4px;margin:16px 0">
+            ⚠ Đơn hàng sẽ bị <strong>tự động hủy</strong> sau khoảng
+            <strong>{minutesLeft} phút</strong> nếu chưa thanh toán.
+        </div>
+        <p style="text-align:center">
+            <a href="{paymentUrl}"
+               style="display:inline-block;padding:12px 28px;background:#d97706;
+                      color:#fff;text-decoration:none;border-radius:8px;font-weight:600">
+                Thanh toán ngay
+            </a>
+        </p>
+        <p style="color:#6b7280;font-size:13px">
+            Nếu bạn không thực hiện đơn hàng này, có thể bỏ qua email này.
+        </p>
+    </div>
+    """;
+
+    // ── Auto-cancel notification email ────────────────────────────────────────
+    public static string OrderAutoCancelled(
+        string fullName,
+        string orderCode,
+        decimal amount) => $"""
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto">
+        <h2 style="color:#dc2626">🚫 Đơn hàng đã bị hủy tự động</h2>
+        <p>Xin chào <strong>{fullName}</strong>,</p>
+        <p>Đơn hàng <strong>{orderCode}</strong> ({amount:N0}đ) đã bị hủy tự động
+           do quá thời gian thanh toán.</p>
+        <p>Nếu bạn vẫn muốn mua, vui lòng tạo đơn hàng mới trên website.</p>
+        <p style="color:#6b7280;font-size:13px">
+            Có thắc mắc? Liên hệ hỗ trợ qua mục Tickets.
+        </p>
+    </div>
+    """;
 }

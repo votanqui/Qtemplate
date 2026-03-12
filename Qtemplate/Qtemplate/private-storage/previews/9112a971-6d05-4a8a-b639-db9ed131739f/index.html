@@ -1,503 +1,540 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LUXE — Premium Store</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--
+    ╔══════════════════════════════════════════════════════╗
+    ║  LUXE STORE — Hướng dẫn dùng trong iframe           ║
+    ║                                                      ║
+    ║  Cách 1 — Mở file trực tiếp (đề xuất):              ║
+    ║    Giải nén zip → mở index.html bằng trình duyệt    ║
+    ║                                                      ║
+    ║  Cách 2 — Dùng iframe từ server cục bộ:             ║
+    ║    cd luxe-store && python -m http.server 8080       ║
+    ║    <iframe src="http://localhost:8080"></iframe>     ║
+    ║                                                      ║
+    ║  Cách 3 — Deploy lên Netlify / GitHub Pages:        ║
+    ║    Kéo thả thư mục vào netlify.com/drop             ║
+    ║    <iframe src="https://url-của-bạn.netlify.app">   ║
+    ╚══════════════════════════════════════════════════════╝
+  -->
+
+  <title>LUXE STORE — Thời Trang Cao Cấp</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets — đường dẫn tương đối, hoạt động khi mở file:// hoặc http:// -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
 
-  <!-- Custom cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-dot" id="cursorDot"></div>
+  <!-- ── Toast Notification ── -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
-  <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
-  <nav class="nav" id="nav">
-    <div class="nav-logo">LUXE</div>
-    <ul class="nav-links">
-      <li><a href="#products">Sản Phẩm</a></li>
-      <li><a href="#features">Ưu Điểm</a></li>
-      <li><a href="#testimonials">Đánh Giá</a></li>
-      <li><a href="#contact">Liên Hệ</a></li>
-    </ul>
-    <div class="nav-actions">
-      <button class="btn-ghost">Đăng Nhập</button>
-      <button class="btn-gold">Mua Ngay</button>
-    </div>
-    <button class="nav-hamburger" id="hamburger" aria-label="menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
+  <!-- ── Site Header (nav injected by components.js) ── -->
+  <header id="site-header"></header>
 
-  <!-- Mobile menu -->
-  <div class="mobile-menu" id="mobileMenu">
-    <ul>
-      <li><a href="#products">Sản Phẩm</a></li>
-      <li><a href="#features">Ưu Điểm</a></li>
-      <li><a href="#testimonials">Đánh Giá</a></li>
-      <li><a href="#contact">Liên Hệ</a></li>
-    </ul>
-    <button class="btn-gold" style="width:100%;margin-top:1.5rem">Mua Ngay</button>
-  </div>
+  <!-- ════════════════════════════════════════
+       PAGE CONTAINER
+       Each <div id="*" class="page"> is a
+       "virtual page". Router adds/removes
+       the .active class to switch views.
+  ════════════════════════════════════════ -->
+  <main id="app">
 
-  <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
-  <section class="hero" id="hero">
-    <!-- Noise overlay -->
-    <div class="hero-noise"></div>
-
-    <!-- Floating orbs -->
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-
-    <!-- Grid lines -->
-    <div class="hero-grid"></div>
-
-    <div class="hero-content">
-      <div class="hero-eyebrow reveal">
-        <span class="dot"></span>
-        Bộ Sưu Tập Mới 2025
-      </div>
-
-      <h1 class="hero-title reveal delay-1">
-        Phong Cách<br/>
-        <em>Vượt Thời</em><br/>
-        <span class="hero-title-outline">Gian</span>
-      </h1>
-
-      <p class="hero-desc reveal delay-2">
-        Khám phá những sản phẩm được chọn lọc kỹ càng từ các thương hiệu cao cấp.
-        Chất lượng không thỏa hiệp — phong cách không giới hạn.
-      </p>
-
-      <div class="hero-cta reveal delay-3">
-        <button class="btn-gold btn-lg" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
-          Khám Phá Ngay
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
-          Tìm Hiểu Thêm
-        </button>
-      </div>
-
-      <div class="hero-stats reveal delay-4">
-        <div class="stat">
-          <span class="stat-num" data-target="12000">0</span><span class="stat-suffix">+</span>
-          <span class="stat-label">Khách Hàng</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num" data-target="500">0</span><span class="stat-suffix">+</span>
-          <span class="stat-label">Sản Phẩm</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num" data-target="98">0</span><span class="stat-suffix">%</span>
-          <span class="stat-label">Hài Lòng</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Hero visual -->
-    <div class="hero-visual reveal delay-2">
-      <div class="hero-card-main">
-        <div class="hero-card-img">
-          <div class="placeholder-img">
-            <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><rect x="10" y="20" width="60" height="45" rx="4" stroke="#D4AF37" stroke-width="1.5"/><circle cx="30" cy="35" r="8" stroke="#D4AF37" stroke-width="1.5"/><path d="M10 55l18-15 14 12 10-8 18 11" stroke="#D4AF37" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    <!-- Page: Home -->
+    <!-- #include pages/home.html -->
+    <div id="home" class="page active">
+      <!-- ── Hero ── -->
+      <section class="hero">
+        <div class="hero-text">
+          <p class="overline">Bộ Sưu Tập Mới · Xuân Hè 2025</p>
+          <h1 class="display">Phong Cách<br><em>Vượt Thời</em><br>Gian</h1>
+          <p>Khám phá những thiết kế tinh tế, được chế tác từ nguyên liệu cao cấp dành cho những người có gu thẩm mỹ đặc biệt.</p>
+          <div class="hero-cta">
+            <a class="btn-primary" href="#" data-page="shop">Mua Ngay</a>
+            <a class="btn-outline" href="#" data-page="shop">Xem Bộ Sưu Tập</a>
           </div>
         </div>
-        <div class="hero-card-info">
-          <span class="badge-new">MỚI</span>
-          <p class="card-name">Premium Collection</p>
-          <p class="card-price">2.499.000 ₫</p>
-        </div>
-      </div>
-      <div class="hero-card-float">
-        <span>⭐ 4.9</span>
-        <span>· 2.3k đánh giá</span>
-      </div>
-      <div class="hero-card-tag">
-        🔥 Bán chạy nhất tuần
-      </div>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="scroll-indicator">
-      <div class="scroll-line"></div>
-      <span>Cuộn xuống</span>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════ MARQUEE ═══════════════════════════════ -->
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <span>CHẤT LƯỢNG CAO CẤP</span><span class="sep">✦</span>
-      <span>GIAO HÀNG NHANH</span><span class="sep">✦</span>
-      <span>ĐỔI TRẢ 30 NGÀY</span><span class="sep">✦</span>
-      <span>THANH TOÁN AN TOÀN</span><span class="sep">✦</span>
-      <span>HỖ TRỢ 24/7</span><span class="sep">✦</span>
-      <span>CHẤT LƯỢNG CAO CẤP</span><span class="sep">✦</span>
-      <span>GIAO HÀNG NHANH</span><span class="sep">✦</span>
-      <span>ĐỔI TRẢ 30 NGÀY</span><span class="sep">✦</span>
-      <span>THANH TOÁN AN TOÀN</span><span class="sep">✦</span>
-      <span>HỖ TRỢ 24/7</span><span class="sep">✦</span>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════ PRODUCTS ═══════════════════════════════ -->
-  <section class="section products-section" id="products">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-eyebrow reveal">Bộ Sưu Tập</div>
-        <h2 class="section-title reveal delay-1">Sản Phẩm<br/><em>Nổi Bật</em></h2>
-        <p class="section-desc reveal delay-2">Được tuyển chọn từ những thương hiệu hàng đầu thế giới</p>
-      </div>
-
-      <!-- Filter tabs -->
-      <div class="filter-tabs reveal delay-2">
-        <button class="filter-tab active" data-filter="all">Tất Cả</button>
-        <button class="filter-tab" data-filter="new">Mới Nhất</button>
-        <button class="filter-tab" data-filter="sale">Đang Sale</button>
-        <button class="filter-tab" data-filter="popular">Phổ Biến</button>
-      </div>
-
-      <div class="products-grid">
-        <!-- Product 1 -->
-        <div class="product-card reveal" data-tag="new popular">
-          <div class="product-img">
-            <div class="product-placeholder">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><path d="M10 45V20l20-10 20 10v25l-20 10-20-10z" stroke="#D4AF37" stroke-width="1.2" stroke-linejoin="round"/><path d="M10 20l20 10 20-10M30 30v25" stroke="#D4AF37" stroke-width="1.2"/></svg>
-            </div>
-            <div class="product-badges">
-              <span class="badge badge-new">MỚI</span>
-              <span class="badge badge-hot">🔥 HOT</span>
-            </div>
-            <div class="product-overlay">
-              <button class="btn-add-cart">Thêm Vào Giỏ</button>
-            </div>
-          </div>
-          <div class="product-info">
-            <div class="product-cat">Thời Trang</div>
-            <h3 class="product-name">Áo Khoác Premium Wool</h3>
-            <div class="product-rating">
-              <span class="stars">★★★★★</span>
-              <span class="rating-count">(128)</span>
-            </div>
-            <div class="product-price-row">
-              <span class="price-current">3.299.000 ₫</span>
-              <span class="price-old">4.200.000 ₫</span>
-              <span class="price-discount">-21%</span>
-            </div>
+        <div class="hero-image">
+          <div class="hero-image-placeholder">
+            👗<span>FEATURED PRODUCT</span>
           </div>
         </div>
+      </section>
 
-        <!-- Product 2 -->
-        <div class="product-card reveal delay-1" data-tag="sale popular">
-          <div class="product-img">
-            <div class="product-placeholder">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><ellipse cx="30" cy="30" rx="20" ry="20" stroke="#D4AF37" stroke-width="1.2"/><ellipse cx="30" cy="30" rx="12" ry="12" stroke="#D4AF37" stroke-width="1.2"/><circle cx="30" cy="30" r="4" fill="#D4AF37"/></svg>
-            </div>
-            <div class="product-badges">
-              <span class="badge badge-sale">SALE 30%</span>
-            </div>
-            <div class="product-overlay">
-              <button class="btn-add-cart">Thêm Vào Giỏ</button>
-            </div>
-          </div>
-          <div class="product-info">
-            <div class="product-cat">Phụ Kiện</div>
-            <h3 class="product-name">Đồng Hồ Sapphire Series</h3>
-            <div class="product-rating">
-              <span class="stars">★★★★★</span>
-              <span class="rating-count">(89)</span>
-            </div>
-            <div class="product-price-row">
-              <span class="price-current">8.750.000 ₫</span>
-              <span class="price-old">12.500.000 ₫</span>
-              <span class="price-discount">-30%</span>
-            </div>
+      <!-- Brand Strip -->
+      <div class="brand-strip">
+        <div class="brand-scroll">
+          <span class="brand-item">Chanel</span><span class="brand-item">•</span>
+          <span class="brand-item">Louis Vuitton</span><span class="brand-item">•</span>
+          <span class="brand-item">Hermès</span><span class="brand-item">•</span>
+          <span class="brand-item">Gucci</span><span class="brand-item">•</span>
+          <span class="brand-item">Prada</span><span class="brand-item">•</span>
+          <span class="brand-item">Dior</span><span class="brand-item">•</span>
+          <span class="brand-item">Versace</span><span class="brand-item">•</span>
+          <span class="brand-item">Chanel</span><span class="brand-item">•</span>
+          <span class="brand-item">Louis Vuitton</span><span class="brand-item">•</span>
+          <span class="brand-item">Hermès</span><span class="brand-item">•</span>
+          <span class="brand-item">Gucci</span><span class="brand-item">•</span>
+          <span class="brand-item">Prada</span><span class="brand-item">•</span>
+          <span class="brand-item">Dior</span><span class="brand-item">•</span>
+          <span class="brand-item">Versace</span><span class="brand-item">•</span>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div class="section">
+        <p class="overline">Danh Mục Sản Phẩm</p>
+        <h2 class="section-title display">Khám Phá Theo Danh Mục</h2>
+        <div class="divider-gold"></div>
+        <div class="categories-grid">
+          <div class="category-card cat-1" data-page="shop"><div class="category-bg">👗</div><div class="category-label"><h3>Thời Trang</h3><p>142 sản phẩm</p></div></div>
+          <div class="category-card cat-2" data-page="shop"><div class="category-bg">👜</div><div class="category-label"><h3>Túi Xách</h3><p>98 sản phẩm</p></div></div>
+          <div class="category-card cat-3" data-page="shop"><div class="category-bg">👟</div><div class="category-label"><h3>Giày Dép</h3><p>76 sản phẩm</p></div></div>
+          <div class="category-card cat-4" data-page="shop"><div class="category-bg">💍</div><div class="category-label"><h3>Trang Sức</h3><p>54 sản phẩm</p></div></div>
+        </div>
+      </div>
+
+      <!-- Best Sellers -->
+      <div class="section" style="padding-top:0;">
+        <p class="overline">Nổi Bật</p>
+        <h2 class="section-title display">Sản Phẩm Bán Chạy</h2>
+        <div class="divider-gold"></div>
+        <div class="products-grid">
+          <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p1"></div><span style="position:relative;z-index:1;font-size:52px;">👗</span><span class="product-badge">-20%</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Chanel</p><h4>Đầm Dạ Hội Tweed Classic</h4><div class="product-price"><span class="price-new">1.980.000₫</span><span class="price-old">2.480.000₫</span></div><div class="stars">★★★★★</div></div></div>
+          <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p2"></div><span style="position:relative;z-index:1;font-size:52px;">👜</span><span class="product-badge new">MỚI</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Louis Vuitton</p><h4>Túi Neverfull Monogram MM</h4><div class="product-price"><span class="price-new">3.650.000₫</span></div><div class="stars">★★★★☆</div></div></div>
+          <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p3"></div><span style="position:relative;z-index:1;font-size:52px;">👠</span><span class="product-badge">-15%</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Gucci</p><h4>Giày Cao Gót Slingback 85mm</h4><div class="product-price"><span class="price-new">2.150.000₫</span><span class="price-old">2.530.000₫</span></div><div class="stars">★★★★★</div></div></div>
+          <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p4"></div><span style="position:relative;z-index:1;font-size:52px;">💍</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Hermès</p><h4>Nhẫn Vàng 18K Kim Cương</h4><div class="product-price"><span class="price-new">8.900.000₫</span></div><div class="stars">★★★★★</div></div></div>
+        </div>
+      </div>
+
+      <!-- Promo Banner -->
+      <section class="banner-section">
+        <div class="banner-text">
+          <h2 class="display">Bộ Sưu Tập<br>Hè 2025<br><em style="color:var(--gold);">Đã Có Mặt</em></h2>
+          <p>Những thiết kế lấy cảm hứng từ vẻ đẹp Địa Trung Hải — thanh lịch, nhẹ nhàng và đầy sức sống.</p>
+          <a class="btn-primary" href="#" data-page="shop">Khám Phá Ngay</a>
+          <div class="banner-stats">
+            <div class="stat-item"><h3>500+</h3><p>Sản Phẩm</p></div>
+            <div class="stat-item"><h3>50+</h3><p>Thương Hiệu</p></div>
+            <div class="stat-item"><h3>10K+</h3><p>Khách Hàng</p></div>
           </div>
         </div>
+        <div class="banner-image">🌊</div>
+      </section>
 
-        <!-- Product 3 -->
-        <div class="product-card reveal delay-2" data-tag="new">
-          <div class="product-img">
-            <div class="product-placeholder">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="12" y="18" width="36" height="28" rx="3" stroke="#D4AF37" stroke-width="1.2"/><path d="M20 18v-4a10 10 0 0120 0v4" stroke="#D4AF37" stroke-width="1.2"/><circle cx="30" cy="32" r="5" stroke="#D4AF37" stroke-width="1.2"/></svg>
-            </div>
-            <div class="product-badges">
-              <span class="badge badge-new">MỚI</span>
-            </div>
-            <div class="product-overlay">
-              <button class="btn-add-cart">Thêm Vào Giỏ</button>
-            </div>
-          </div>
-          <div class="product-info">
-            <div class="product-cat">Túi Xách</div>
-            <h3 class="product-name">Handbag Leather Craft</h3>
-            <div class="product-rating">
-              <span class="stars">★★★★☆</span>
-              <span class="rating-count">(54)</span>
-            </div>
-            <div class="product-price-row">
-              <span class="price-current">5.990.000 ₫</span>
-            </div>
-          </div>
+      <!-- New Arrivals -->
+      <div class="section">
+        <p class="overline">Vừa Ra Mắt</p>
+        <h2 class="section-title display">Hàng Mới Về</h2>
+        <div class="divider-gold"></div>
+        <div class="products-grid">
+          <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p5"></div><span style="position:relative;z-index:1;font-size:52px;">🧥</span><span class="product-badge new">MỚI</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Prada</p><h4>Áo Khoác Trench Coat Beige</h4><div class="product-price"><span class="price-new">4.200.000₫</span></div><div class="stars">★★★★☆</div></div></div>
+          <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p6"></div><span style="position:relative;z-index:1;font-size:52px;">🕶</span><span class="product-badge new">MỚI</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Dior</p><h4>Kính Mắt Cat-Eye Oversized</h4><div class="product-price"><span class="price-new">1.580.000₫</span></div><div class="stars">★★★★★</div></div></div>
+          <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p7"></div><span style="position:relative;z-index:1;font-size:52px;">👒</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Versace</p><h4>Nón Rộng Vành Lụa Ý</h4><div class="product-price"><span class="price-new">890.000₫</span></div><div class="stars">★★★★☆</div></div></div>
+          <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p8"></div><span style="position:relative;z-index:1;font-size:52px;">💄</span><span class="product-badge">-10%</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">YSL Beauty</p><h4>Son Môi Rouge Pur Couture</h4><div class="product-price"><span class="price-new">720.000₫</span><span class="price-old">800.000₫</span></div><div class="stars">★★★★★</div></div></div>
         </div>
+      </div>
 
-        <!-- Product 4 -->
-        <div class="product-card reveal delay-3" data-tag="sale">
-          <div class="product-img">
-            <div class="product-placeholder">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><path d="M15 20h30v28H15z" stroke="#D4AF37" stroke-width="1.2" stroke-linejoin="round"/><path d="M22 20v-4a8 8 0 0116 0v4" stroke="#D4AF37" stroke-width="1.2"/><path d="M24 34a6 6 0 0012 0" stroke="#D4AF37" stroke-width="1.2"/></svg>
+      <!-- Testimonials -->
+      <div class="section" style="padding-top:0;">
+        <p class="overline">Đánh Giá</p>
+        <h2 class="section-title display">Khách Hàng Nói Gì</h2>
+        <div class="divider-gold"></div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card"><div class="quote-mark">"</div><p>Chất lượng sản phẩm vượt ngoài mong đợi. Dịch vụ khách hàng tuyệt vời, giao hàng nhanh và đóng gói rất chỉn chu. Tôi sẽ tiếp tục ủng hộ.</p><div class="testimonial-author"><div class="author-avatar">👩</div><div class="author-info"><h5>Nguyễn Lan Anh</h5><p>⭐⭐⭐⭐⭐ · TP. HCM</p></div></div></div>
+          <div class="testimonial-card"><div class="quote-mark">"</div><p>Mua chiếc túi LV tại đây và hoàn toàn hài lòng. Sản phẩm chính hãng 100%, có hóa đơn đầy đủ. Sẽ giới thiệu cho bạn bè.</p><div class="testimonial-author"><div class="author-avatar">👩‍💼</div><div class="author-info"><h5>Trần Minh Châu</h5><p>⭐⭐⭐⭐⭐ · Hà Nội</p></div></div></div>
+          <div class="testimonial-card"><div class="quote-mark">"</div><p>Website dễ sử dụng, nhiều lựa chọn thanh toán, đặc biệt chính sách đổi trả 30 ngày rất yên tâm. Mua sắm online chưa bao giờ dễ thế.</p><div class="testimonial-author"><div class="author-avatar">👨</div><div class="author-info"><h5>Phạm Đức Anh</h5><p>⭐⭐⭐⭐⭐ · Đà Nẵng</p></div></div></div>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div class="section" style="padding-top:0;">
+        <div class="features-grid">
+          <div class="feature-item"><span class="feature-icon">🚚</span><h4>Miễn Phí Vận Chuyển</h4><p>Cho đơn hàng từ 500.000₫ trở lên toàn quốc</p></div>
+          <div class="feature-item"><span class="feature-icon">🔄</span><h4>Đổi Trả Dễ Dàng</h4><p>Chính sách đổi trả miễn phí trong vòng 30 ngày</p></div>
+          <div class="feature-item"><span class="feature-icon">🔒</span><h4>Thanh Toán An Toàn</h4><p>Bảo mật SSL 256-bit, hỗ trợ mọi phương thức thanh toán</p></div>
+          <div class="feature-item"><span class="feature-icon">💬</span><h4>Hỗ Trợ 24/7</h4><p>Đội ngũ tư vấn chuyên nghiệp sẵn sàng hỗ trợ bạn</p></div>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <section class="newsletter-section">
+        <h2 class="display">Đăng Ký Nhận Ưu Đãi</h2>
+        <p>Nhận thông báo về bộ sưu tập mới và ưu đãi độc quyền dành riêng cho thành viên</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Nhập địa chỉ email của bạn...">
+          <button type="button">Đăng Ký</button>
+        </div>
+      </section>
+
+      <div class="footer-slot"></div>
+    </div><!-- /#home -->
+
+    <!-- ════════════════════ Page: Shop ════════════════════ -->
+    <div id="shop" class="page">
+      <div class="page-header">
+        <div>
+          <h1 class="display">Tất Cả Sản Phẩm</h1>
+          <p class="breadcrumb"><a href="#" data-page="home">Trang Chủ</a><span>/</span>Sản Phẩm</p>
+        </div>
+        <p style="font-size:13px;color:var(--muted);">370 sản phẩm</p>
+      </div>
+      <div class="section">
+        <div class="shop-layout">
+          <aside class="sidebar">
+            <div class="filter-group">
+              <h4>Danh Mục</h4>
+              <label class="filter-option"><input type="checkbox" checked> Tất Cả (370)</label>
+              <label class="filter-option"><input type="checkbox"> Thời Trang (142)</label>
+              <label class="filter-option"><input type="checkbox"> Túi Xách (98)</label>
+              <label class="filter-option"><input type="checkbox"> Giày Dép (76)</label>
+              <label class="filter-option"><input type="checkbox"> Trang Sức (54)</label>
             </div>
-            <div class="product-badges">
-              <span class="badge badge-sale">SALE 40%</span>
+            <div class="filter-group">
+              <h4>Thương Hiệu</h4>
+              <label class="filter-option"><input type="checkbox"> Chanel (38)</label>
+              <label class="filter-option"><input type="checkbox"> Louis Vuitton (45)</label>
+              <label class="filter-option"><input type="checkbox"> Gucci (29)</label>
+              <label class="filter-option"><input type="checkbox"> Hermès (22)</label>
+              <label class="filter-option"><input type="checkbox"> Prada (31)</label>
+              <label class="filter-option"><input type="checkbox"> Dior (28)</label>
             </div>
-            <div class="product-overlay">
-              <button class="btn-add-cart">Thêm Vào Giỏ</button>
+            <div class="filter-group">
+              <h4>Khoảng Giá</h4>
+              <div class="price-range">
+                <input type="text" placeholder="Từ" value="0">
+                <span>–</span>
+                <input type="text" placeholder="Đến" value="10.000.000">
+              </div>
+              <button class="btn-outline" style="margin-top:14px;padding:10px 20px;font-size:11px;">Áp Dụng</button>
             </div>
-          </div>
-          <div class="product-info">
-            <div class="product-cat">Thời Trang</div>
-            <h3 class="product-name">Bộ Suit Classic Edition</h3>
-            <div class="product-rating">
-              <span class="stars">★★★★★</span>
-              <span class="rating-count">(203)</span>
+            <div class="filter-group">
+              <h4>Màu Sắc</h4>
+              <div class="color-swatches">
+                <div class="color-dot active" style="background:#1C1C1C;"></div>
+                <div class="color-dot" style="background:#F5F0E8;border:1px solid var(--light);"></div>
+                <div class="color-dot" style="background:#C8A882;"></div>
+                <div class="color-dot" style="background:#8B7355;"></div>
+                <div class="color-dot" style="background:#C0392B;"></div>
+                <div class="color-dot" style="background:#1565C0;"></div>
+                <div class="color-dot" style="background:#2E7D32;"></div>
+              </div>
             </div>
-            <div class="product-price-row">
-              <span class="price-current">6.480.000 ₫</span>
-              <span class="price-old">10.800.000 ₫</span>
-              <span class="price-discount">-40%</span>
+            <div class="filter-group">
+              <h4>Đánh Giá</h4>
+              <label class="filter-option"><input type="checkbox"> ★★★★★ (156)</label>
+              <label class="filter-option"><input type="checkbox"> ★★★★☆ (120)</label>
+              <label class="filter-option"><input type="checkbox"> ★★★☆☆ (54)</label>
+            </div>
+          </aside>
+
+          <div>
+            <div class="shop-header">
+              <p>Hiển thị <strong>1–8</strong> trong <strong>370</strong> sản phẩm</p>
+              <div class="shop-controls">
+                <span style="font-size:12px;color:var(--muted);">Xem:</span>
+                <button class="view-btn active">▦</button>
+                <button class="view-btn">☰</button>
+                <select class="sort-select">
+                  <option>Phổ Biến Nhất</option>
+                  <option>Mới Nhất</option>
+                  <option>Giá: Thấp → Cao</option>
+                  <option>Giá: Cao → Thấp</option>
+                  <option>Đánh Giá Cao</option>
+                </select>
+              </div>
+            </div>
+            <div class="products-grid">
+              <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p1"></div><span style="position:relative;z-index:1;font-size:52px;">👗</span><span class="product-badge">-20%</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Chanel</p><h4>Đầm Dạ Hội Tweed Classic</h4><div class="product-price"><span class="price-new">1.980.000₫</span><span class="price-old">2.480.000₫</span></div><div class="stars">★★★★★</div></div></div>
+              <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p2"></div><span style="position:relative;z-index:1;font-size:52px;">👜</span><span class="product-badge new">MỚI</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Louis Vuitton</p><h4>Túi Neverfull Monogram MM</h4><div class="product-price"><span class="price-new">3.650.000₫</span></div><div class="stars">★★★★☆</div></div></div>
+              <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p3"></div><span style="position:relative;z-index:1;font-size:52px;">👠</span><span class="product-badge">-15%</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Gucci</p><h4>Giày Cao Gót Slingback 85mm</h4><div class="product-price"><span class="price-new">2.150.000₫</span><span class="price-old">2.530.000₫</span></div><div class="stars">★★★★★</div></div></div>
+              <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p4"></div><span style="position:relative;z-index:1;font-size:52px;">💍</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Hermès</p><h4>Nhẫn Vàng 18K Kim Cương</h4><div class="product-price"><span class="price-new">8.900.000₫</span></div><div class="stars">★★★★★</div></div></div>
+              <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p5"></div><span style="position:relative;z-index:1;font-size:52px;">🧥</span><span class="product-badge new">MỚI</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Prada</p><h4>Áo Khoác Trench Coat Beige</h4><div class="product-price"><span class="price-new">4.200.000₫</span></div><div class="stars">★★★★☆</div></div></div>
+              <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p6"></div><span style="position:relative;z-index:1;font-size:52px;">🕶</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Dior</p><h4>Kính Mắt Cat-Eye Oversized</h4><div class="product-price"><span class="price-new">1.580.000₫</span></div><div class="stars">★★★★★</div></div></div>
+              <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p7"></div><span style="position:relative;z-index:1;font-size:52px;">👒</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">Versace</p><h4>Nón Rộng Vành Lụa Ý</h4><div class="product-price"><span class="price-new">890.000₫</span></div><div class="stars">★★★★☆</div></div></div>
+              <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p8"></div><span style="position:relative;z-index:1;font-size:52px;">💄</span><span class="product-badge">-10%</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div><div class="product-info"><p class="brand">YSL Beauty</p><h4>Son Môi Rouge Pur Couture</h4><div class="product-price"><span class="price-new">720.000₫</span><span class="price-old">800.000₫</span></div><div class="stars">★★★★★</div></div></div>
+            </div>
+            <div class="pagination">
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <button class="page-btn">…</button>
+              <button class="page-btn">10</button>
+              <button class="page-btn">›</button>
             </div>
           </div>
         </div>
       </div>
+    </div><!-- /#shop -->
 
-      <div class="products-cta reveal">
-        <button class="btn-outline btn-lg">Xem Tất Cả Sản Phẩm →</button>
+    <!-- ════════════════════ Page: Product Detail ════════════════════ -->
+    <div id="product-detail" class="page">
+      <div class="page-header">
+        <p class="breadcrumb"><a href="#" data-page="home">Trang Chủ</a><span>/</span><a href="#" data-page="shop">Sản Phẩm</a><span>/</span>Đầm Dạ Hội Tweed</p>
       </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════ BANNER ═══════════════════════════════ -->
-  <section class="banner-section">
-    <div class="banner-content">
-      <div class="banner-text reveal">
-        <div class="banner-eyebrow">Flash Sale</div>
-        <h2 class="banner-title">Giảm Đến<br/><em>50%</em></h2>
-        <p>Chỉ trong 48 giờ — Đừng bỏ lỡ!</p>
-        <div class="countdown" id="countdown">
-          <div class="countdown-block"><span id="cd-h">23</span><label>Giờ</label></div>
-          <div class="countdown-sep">:</div>
-          <div class="countdown-block"><span id="cd-m">59</span><label>Phút</label></div>
-          <div class="countdown-sep">:</div>
-          <div class="countdown-block"><span id="cd-s">00</span><label>Giây</label></div>
-        </div>
-        <button class="btn-gold btn-lg">Săn Sale Ngay</button>
-      </div>
-      <div class="banner-visual reveal delay-2">
-        <div class="banner-circle">
-          <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
-            <circle cx="80" cy="80" r="70" stroke="#D4AF37" stroke-width="0.5" stroke-dasharray="4 8"/>
-            <circle cx="80" cy="80" r="50" stroke="#D4AF37" stroke-width="0.5"/>
-            <text x="80" y="72" text-anchor="middle" fill="#D4AF37" font-size="32" font-family="Playfair Display" font-weight="700">50</text>
-            <text x="80" y="100" text-anchor="middle" fill="#D4AF37" font-size="14" font-family="DM Sans">% OFF</text>
-          </svg>
-        </div>
-      </div>
-    </div>
-    <!-- Diagonal cut -->
-    <div class="banner-cut"></div>
-  </section>
-
-  <!-- ═══════════════════════════════ FEATURES ═══════════════════════════════ -->
-  <section class="section features-section" id="features">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-eyebrow reveal">Tại Sao Chọn LUXE</div>
-        <h2 class="section-title reveal delay-1">Cam Kết<br/><em>Của Chúng Tôi</em></h2>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card reveal">
-          <div class="feature-icon">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 3l3.5 7 7.5 1.1-5.4 5.3 1.3 7.6L16 20.9l-6.9 3.1 1.3-7.6L5 11.1l7.5-1.1z" stroke="#D4AF37" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      <div class="section">
+        <div class="product-detail-layout">
+          <div class="product-gallery">
+            <div class="main-img">👗</div>
+            <div class="thumb-row">
+              <div class="thumb active">👗</div>
+              <div class="thumb" style="background:linear-gradient(135deg,#D8D0E8,#A898C0);">👗</div>
+              <div class="thumb" style="background:linear-gradient(135deg,#E8D8D0,#C0A898);">👗</div>
+              <div class="thumb" style="background:linear-gradient(135deg,#D0E8D8,#98C0A8);">👗</div>
+            </div>
           </div>
-          <h3>Chất Lượng Đảm Bảo</h3>
-          <p>Mỗi sản phẩm đều được kiểm định nghiêm ngặt trước khi đến tay khách hàng.</p>
-        </div>
-        <div class="feature-card reveal delay-1">
-          <div class="feature-icon">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 16l6 6L28 8" stroke="#D4AF37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h3>Hoàn Tiền 30 Ngày</h3>
-          <p>Không hài lòng? Chúng tôi hoàn tiền 100% trong vòng 30 ngày — không hỏi thêm.</p>
-        </div>
-        <div class="feature-card reveal delay-2">
-          <div class="feature-icon">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4v8M16 20v8M4 16h8M20 16h8" stroke="#D4AF37" stroke-width="1.8" stroke-linecap="round"/><circle cx="16" cy="16" r="5" stroke="#D4AF37" stroke-width="1.4"/></svg>
-          </div>
-          <h3>Giao Hàng Siêu Tốc</h3>
-          <p>Nội thành 2-4 giờ. Toàn quốc 1-2 ngày. Miễn phí cho đơn hàng từ 500k.</p>
-        </div>
-        <div class="feature-card reveal delay-3">
-          <div class="feature-icon">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4C9.4 4 4 9.4 4 16s5.4 12 12 12 12-5.4 12-12S22.6 4 16 4z" stroke="#D4AF37" stroke-width="1.4"/><path d="M12 16s1.5 3 4 3 4-3 4-3" stroke="#D4AF37" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="13" r="1.5" fill="#D4AF37"/><circle cx="20" cy="13" r="1.5" fill="#D4AF37"/></svg>
-          </div>
-          <h3>Hỗ Trợ 24/7</h3>
-          <p>Đội ngũ chuyên viên sẵn sàng hỗ trợ bạn bất cứ lúc nào qua chat, call, email.</p>
-        </div>
-        <div class="feature-card reveal delay-1">
-          <div class="feature-icon">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#D4AF37" stroke-width="1.4"/><path d="M4 13h24" stroke="#D4AF37" stroke-width="1.4"/><path d="M9 19h5" stroke="#D4AF37" stroke-width="1.4" stroke-linecap="round"/></svg>
-          </div>
-          <h3>Thanh Toán Bảo Mật</h3>
-          <p>Hỗ trợ mọi hình thức thanh toán. Mã hóa SSL 256-bit bảo vệ thông tin của bạn.</p>
-        </div>
-        <div class="feature-card reveal delay-2">
-          <div class="feature-icon">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4l2 7h7l-6 4 2 7-5-4-5 4 2-7-6-4h7z" stroke="#D4AF37" stroke-width="1.4" stroke-linejoin="round"/></svg>
-          </div>
-          <h3>Điểm Thưởng VIP</h3>
-          <p>Tích điểm mỗi đơn hàng. Đổi ưu đãi, quà tặng và quyền lợi thành viên đặc biệt.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════ TESTIMONIALS ═══════════════════════════════ -->
-  <section class="section testimonials-section" id="testimonials">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-eyebrow reveal">Khách Hàng Nói Gì</div>
-        <h2 class="section-title reveal delay-1"><em>Đánh Giá</em><br/>Thực Tế</h2>
-      </div>
-
-      <div class="testimonials-grid">
-        <div class="testimonial-card reveal">
-          <div class="t-stars">★★★★★</div>
-          <p class="t-text">"Chất lượng vượt xa kỳ vọng của tôi. Giao hàng nhanh, đóng gói đẹp, sản phẩm y hình. Chắc chắn sẽ mua lại!"</p>
-          <div class="t-author">
-            <div class="t-avatar">N</div>
-            <div>
-              <div class="t-name">Nguyễn Minh Anh</div>
-              <div class="t-role">Khách Hàng VIP · Hà Nội</div>
+          <div class="product-detail-info">
+            <p class="detail-brand">Chanel — SS2025</p>
+            <h1 class="detail-title display">Đầm Dạ Hội<br>Tweed Classic</h1>
+            <div class="detail-rating">
+              <div class="stars">★★★★★</div>
+              <p>4.9 (128 đánh giá)</p>
+              <p style="color:var(--gold);">| Đã bán: 340</p>
+            </div>
+            <div class="detail-price">
+              <span class="price-main">1.980.000₫</span>
+              <span class="price-original">2.480.000₫</span>
+              <span class="discount-badge">-20%</span>
+            </div>
+            <p class="detail-description">Thiết kế đầm dạ hội sang trọng được làm từ vải tweed cao cấp của Chanel, phù hợp cho các dịp tiệc tùng và sự kiện đặc biệt.</p>
+            <div class="option-group">
+              <p class="option-label">Màu Sắc: <strong class="selected-color">Đen</strong></p>
+              <div class="color-options">
+                <div class="color-swatch active" style="background:#1C1C1C;" data-color="Đen"></div>
+                <div class="color-swatch" style="background:#F5F0E8;border:1px solid var(--light);" data-color="Kem"></div>
+                <div class="color-swatch" style="background:#C8A882;" data-color="Nâu"></div>
+                <div class="color-swatch" style="background:#C0392B;" data-color="Đỏ"></div>
+              </div>
+            </div>
+            <div class="option-group">
+              <p class="option-label">Kích Cỡ <a href="#">Hướng dẫn chọn size</a></p>
+              <div class="size-options">
+                <button class="size-btn">XS</button>
+                <button class="size-btn active">S</button>
+                <button class="size-btn">M</button>
+                <button class="size-btn">L</button>
+                <button class="size-btn">XL</button>
+              </div>
+            </div>
+            <div class="add-to-cart-row">
+              <div class="qty-control">
+                <button data-action="dec">−</button>
+                <span class="qty-value">1</span>
+                <button data-action="inc">+</button>
+              </div>
+              <button class="add-to-cart-btn" data-action="add-to-cart">Thêm Vào Giỏ</button>
+              <button class="wishlist-btn" data-action="wishlist">♡</button>
+            </div>
+            <div class="product-meta">
+              <span>✈ Miễn phí vận chuyển</span>
+              <span>🔄 Đổi trả 30 ngày</span>
+              <span>✅ Chính hãng 100%</span>
+            </div>
+            <div class="detail-tabs">
+              <div class="tab-headers">
+                <div class="tab-header active">Mô Tả</div>
+                <div class="tab-header">Chất Liệu</div>
+                <div class="tab-header">Hướng Dẫn</div>
+                <div class="tab-header">Đánh Giá (128)</div>
+              </div>
+              <div class="tab-panel active"><p>Đầm dạ hội lấy cảm hứng từ BST Haute Couture của Chanel, kết hợp kỹ thuật may đo truyền thống với chất liệu tweed huyền thoại. Form dáng A-line thanh lịch tôn vinh đường cong người mặc.</p><br><p>Đặc điểm: cổ thuyền cổ điển, tay ngắn đính viền vải, khóa kín sau lưng, lớp lót lụa mềm mại bên trong.</p></div>
+              <div class="tab-panel"><p>Ngoài: 80% Wool, 20% Silk tweed · Lót: 100% Lụa tự nhiên · Khóa: Mạ vàng 24K · Xuất xứ: Made in France</p></div>
+              <div class="tab-panel"><p>Giặt tay nhẹ hoặc giặt khô. Không sử dụng máy sấy. Ủi nhiệt độ thấp. Bảo quản nơi thoáng mát, tránh ánh nắng trực tiếp.</p></div>
+              <div class="tab-panel"><p style="margin-bottom:16px;"><strong>128 đánh giá</strong> — Trung bình 4.9/5 ⭐</p><p>★★★★★ "Sản phẩm đúng như mô tả, chất liệu rất cao cấp." — Lan Anh</p><br><p>★★★★★ "Form đẹp, màu sắc sang trọng. Sẽ quay lại mua tiếp." — Minh Châu</p></div>
             </div>
           </div>
         </div>
-        <div class="testimonial-card reveal delay-1 t-featured">
-          <div class="t-stars">★★★★★</div>
-          <p class="t-text">"LUXE là lựa chọn duy nhất khi tôi cần quà tặng cao cấp. Dịch vụ chăm sóc khách hàng xuất sắc, luôn sẵn sàng hỗ trợ."</p>
-          <div class="t-author">
-            <div class="t-avatar t-avatar-gold">T</div>
-            <div>
-              <div class="t-name">Trần Thu Hà</div>
-              <div class="t-role">Thành Viên 3 Năm · TP.HCM</div>
+        <div style="margin-top:72px;">
+          <h2 class="section-title display">Sản Phẩm Liên Quan</h2>
+          <div class="divider-gold"></div>
+          <div class="products-grid">
+            <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p2"></div><span style="position:relative;z-index:1;font-size:52px;">👜</span></div><div class="product-info"><p class="brand">Chanel</p><h4>Túi Classic Flap 2.55</h4><div class="product-price"><span class="price-new">5.800.000₫</span></div></div></div>
+            <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p3"></div><span style="position:relative;z-index:1;font-size:52px;">👠</span></div><div class="product-info"><p class="brand">Chanel</p><h4>Giày Mũi Nhọn Tweed</h4><div class="product-price"><span class="price-new">2.900.000₫</span></div></div></div>
+            <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p4"></div><span style="position:relative;z-index:1;font-size:52px;">💍</span></div><div class="product-info"><p class="brand">Chanel</p><h4>Dây Chuyền Chuỗi Vàng</h4><div class="product-price"><span class="price-new">1.200.000₫</span></div></div></div>
+            <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p5"></div><span style="position:relative;z-index:1;font-size:52px;">🧤</span></div><div class="product-info"><p class="brand">Chanel</p><h4>Găng Tay Da Lamb</h4><div class="product-price"><span class="price-new">780.000₫</span></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /#product-detail -->
+
+    <!-- ════════════════════ Page: Wishlist ════════════════════ -->
+    <div id="wishlist" class="page">
+      <div class="page-header"><div><h1 class="display">Sản Phẩm Yêu Thích</h1><p class="breadcrumb"><a href="#" data-page="home">Trang Chủ</a><span>/</span>Yêu Thích</p></div><p style="font-size:13px;color:var(--muted);">4 sản phẩm</p></div>
+      <div class="section">
+        <div class="wishlist-grid">
+          <div class="wishlist-card"><div class="product-img"><div class="product-img-bg p1"></div><span style="position:relative;z-index:1;font-size:52px;">👗</span></div><button class="wishlist-remove">✕</button><div class="product-info" style="margin-top:16px;"><p class="brand">Chanel</p><h4>Đầm Dạ Hội Tweed Classic</h4><div class="product-price" style="margin:8px 0;"><span class="price-new">1.980.000₫</span><span class="price-old">2.480.000₫</span></div><button class="btn-primary" style="width:100%;text-align:center;" data-action="add-to-cart">Thêm Vào Giỏ</button></div></div>
+          <div class="wishlist-card"><div class="product-img"><div class="product-img-bg p2"></div><span style="position:relative;z-index:1;font-size:52px;">👜</span></div><button class="wishlist-remove">✕</button><div class="product-info" style="margin-top:16px;"><p class="brand">Louis Vuitton</p><h4>Túi Neverfull Monogram MM</h4><div class="product-price" style="margin:8px 0;"><span class="price-new">3.650.000₫</span></div><button class="btn-primary" style="width:100%;text-align:center;" data-action="add-to-cart">Thêm Vào Giỏ</button></div></div>
+          <div class="wishlist-card"><div class="product-img"><div class="product-img-bg p3"></div><span style="position:relative;z-index:1;font-size:52px;">👠</span></div><button class="wishlist-remove">✕</button><div class="product-info" style="margin-top:16px;"><p class="brand">Gucci</p><h4>Giày Cao Gót Slingback 85mm</h4><div class="product-price" style="margin:8px 0;"><span class="price-new">2.150.000₫</span></div><button class="btn-primary" style="width:100%;text-align:center;" data-action="add-to-cart">Thêm Vào Giỏ</button></div></div>
+          <div class="wishlist-card"><div class="product-img"><div class="product-img-bg p4"></div><span style="position:relative;z-index:1;font-size:52px;">💍</span></div><button class="wishlist-remove">✕</button><div class="product-info" style="margin-top:16px;"><p class="brand">Hermès</p><h4>Nhẫn Vàng 18K Kim Cương</h4><div class="product-price" style="margin:8px 0;"><span class="price-new">8.900.000₫</span></div><button class="btn-primary" style="width:100%;text-align:center;" data-action="add-to-cart">Thêm Vào Giỏ</button></div></div>
+        </div>
+      </div>
+    </div><!-- /#wishlist -->
+
+    <!-- ════════════════════ Page: Cart ════════════════════ -->
+    <div id="cart" class="page">
+      <div class="page-header"><div><h1 class="display">Giỏ Hàng</h1><p class="breadcrumb"><a href="#" data-page="home">Trang Chủ</a><span>/</span>Giỏ Hàng</p></div><p style="font-size:13px;color:var(--muted);">3 sản phẩm</p></div>
+      <div class="section">
+        <div class="cart-layout">
+          <div>
+            <table class="cart-table">
+              <thead><tr><th>Sản Phẩm</th><th>Giá</th><th>Số Lượng</th><th>Tổng</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><div class="cart-item-info"><div class="cart-item-img ci1">👗</div><div><p class="cart-item-name">Đầm Dạ Hội Tweed Classic</p><p class="cart-item-variant">Màu: Đen | Size: S</p></div></div></td><td>1.980.000₫</td><td><div class="qty-control"><button data-action="dec">−</button><span class="qty-value">1</span><button data-action="inc">+</button></div></td><td><strong>1.980.000₫</strong></td><td><button class="remove-btn">✕</button></td></tr>
+                <tr><td><div class="cart-item-info"><div class="cart-item-img ci2">👜</div><div><p class="cart-item-name">Túi Neverfull Monogram MM</p><p class="cart-item-variant">Màu: Nâu</p></div></div></td><td>3.650.000₫</td><td><div class="qty-control"><button data-action="dec">−</button><span class="qty-value">1</span><button data-action="inc">+</button></div></td><td><strong>3.650.000₫</strong></td><td><button class="remove-btn">✕</button></td></tr>
+                <tr><td><div class="cart-item-info"><div class="cart-item-img ci3">👠</div><div><p class="cart-item-name">Giày Cao Gót Slingback 85mm</p><p class="cart-item-variant">Màu: Đen | Size: 37</p></div></div></td><td>2.150.000₫</td><td><div class="qty-control"><button data-action="dec">−</button><span class="qty-value">2</span><button data-action="inc">+</button></div></td><td><strong>4.300.000₫</strong></td><td><button class="remove-btn">✕</button></td></tr>
+              </tbody>
+            </table>
+            <div class="cart-footer">
+              <a class="btn-outline" href="#" data-page="shop">← Tiếp Tục Mua Sắm</a>
+              <button class="btn-outline">🔄 Cập Nhật Giỏ</button>
+            </div>
+          </div>
+          <div class="order-summary">
+            <h3>Tóm Tắt Đơn Hàng</h3>
+            <div class="summary-row"><span>Tạm tính</span><span>9.930.000₫</span></div>
+            <div class="summary-row"><span>Giảm giá</span><span style="color:var(--red);">-500.000₫</span></div>
+            <div class="summary-row"><span>Vận chuyển</span><span style="color:var(--gold);">Miễn phí</span></div>
+            <div class="summary-row total"><span>Tổng Cộng</span><span>9.430.000₫</span></div>
+            <div class="coupon-input"><input type="text" placeholder="Mã giảm giá..."><button type="button">Áp Dụng</button></div>
+            <a class="btn-primary" href="#" data-page="checkout" style="display:block;text-align:center;padding:18px;">Thanh Toán →</a>
+            <div style="display:flex;justify-content:center;gap:12px;margin-top:16px;font-size:20px;">💳 🏦 📱</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /#cart -->
+
+    <!-- ════════════════════ Page: Checkout ════════════════════ -->
+    <div id="checkout" class="page">
+      <div class="page-header"><div><h1 class="display">Thanh Toán</h1><p class="breadcrumb"><a href="#" data-page="home">Trang Chủ</a><span>/</span><a href="#" data-page="cart">Giỏ Hàng</a><span>/</span>Thanh Toán</p></div></div>
+      <div class="checkout-steps">
+        <div class="steps-inner">
+          <div class="step"><div class="step-number done">1</div><span class="step-label done">Địa Chỉ</span></div>
+          <div class="step-connector done"></div>
+          <div class="step"><div class="step-number done">2</div><span class="step-label done">Thanh Toán</span></div>
+          <div class="step-connector pending"></div>
+          <div class="step"><div class="step-number pending">3</div><span class="step-label">Xác Nhận</span></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="checkout-layout">
+          <div>
+            <div class="form-section">
+              <h3>Thông Tin Liên Hệ</h3>
+              <div class="form-grid">
+                <div class="form-group"><label>Họ</label><input type="text" placeholder="Nguyễn"></div>
+                <div class="form-group"><label>Tên</label><input type="text" placeholder="Lan Anh"></div>
+                <div class="form-group"><label>Email</label><input type="email" placeholder="email@example.com"></div>
+                <div class="form-group"><label>Số Điện Thoại</label><input type="tel" placeholder="0912 345 678"></div>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Địa Chỉ Giao Hàng</h3>
+              <div class="form-grid">
+                <div class="form-group full"><label>Địa Chỉ</label><input type="text" placeholder="Số nhà, tên đường..."></div>
+                <div class="form-group"><label>Phường / Xã</label><input type="text" placeholder="Phường Bến Nghé"></div>
+                <div class="form-group"><label>Quận / Huyện</label><input type="text" placeholder="Quận 1"></div>
+                <div class="form-group"><label>Tỉnh / Thành Phố</label><select><option>TP. Hồ Chí Minh</option><option>Hà Nội</option><option>Đà Nẵng</option></select></div>
+                <div class="form-group"><label>Ghi Chú</label><input type="text" placeholder="Ghi chú thêm..."></div>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Phương Thức Vận Chuyển</h3>
+              <div class="payment-options">
+                <label class="payment-option selected"><input type="radio" name="shipping" checked><span class="pay-icon">🚚</span><div><p>Giao Hàng Tiêu Chuẩn</p><span>3–5 ngày · Miễn phí</span></div></label>
+                <label class="payment-option"><input type="radio" name="shipping"><span class="pay-icon">⚡</span><div><p>Giao Hàng Nhanh</p><span>1–2 ngày · 30.000₫</span></div></label>
+                <label class="payment-option"><input type="radio" name="shipping"><span class="pay-icon">🏃</span><div><p>Giao Hàng Hỏa Tốc</p><span>Trong ngày · 60.000₫</span></div></label>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Phương Thức Thanh Toán</h3>
+              <div class="payment-options">
+                <label class="payment-option selected"><input type="radio" name="payment" checked><span class="pay-icon">💳</span><div><p>Thẻ Tín Dụng / Ghi Nợ</p><span>VISA, Mastercard, JCB</span></div></label>
+                <label class="payment-option"><input type="radio" name="payment"><span class="pay-icon">📱</span><div><p>Ví Điện Tử</p><span>Momo, ZaloPay, VNPay</span></div></label>
+                <label class="payment-option"><input type="radio" name="payment"><span class="pay-icon">🏦</span><div><p>Chuyển Khoản Ngân Hàng</p><span>Thanh toán sau khi đặt hàng</span></div></label>
+                <label class="payment-option"><input type="radio" name="payment"><span class="pay-icon">💵</span><div><p>COD — Thanh Toán Khi Nhận Hàng</p><span>Áp dụng cho đơn dưới 5.000.000₫</span></div></label>
+              </div>
+            </div>
+            <button class="btn-primary checkout-submit" style="padding:18px 60px;font-size:12px;">Đặt Hàng →</button>
+          </div>
+          <div class="order-review">
+            <h3>Đơn Hàng Của Bạn</h3>
+            <div class="review-items">
+              <div class="review-item"><div class="review-item-img ri1">👗<span class="item-qty-badge">1</span></div><div class="review-item-info"><p>Đầm Dạ Hội Tweed Classic</p><span>Đen / S</span></div><strong>1.980.000₫</strong></div>
+              <div class="review-item"><div class="review-item-img ri2">👜<span class="item-qty-badge">1</span></div><div class="review-item-info"><p>Túi Neverfull Monogram</p><span>Nâu</span></div><strong>3.650.000₫</strong></div>
+              <div class="review-item"><div class="review-item-img ri3">👠<span class="item-qty-badge">2</span></div><div class="review-item-info"><p>Giày Cao Gót Slingback</p><span>Đen / 37</span></div><strong>4.300.000₫</strong></div>
+            </div>
+            <div class="summary-row"><span>Tạm tính</span><span>9.930.000₫</span></div>
+            <div class="summary-row"><span>Giảm giá</span><span style="color:var(--red);">-500.000₫</span></div>
+            <div class="summary-row"><span>Vận chuyển</span><span style="color:var(--gold);">Miễn phí</span></div>
+            <div class="summary-row total"><span>Tổng Cộng</span><span>9.430.000₫</span></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /#checkout -->
+
+    <!-- ════════════════════ Page: Account ════════════════════ -->
+    <div id="account" class="page">
+      <div class="page-header"><div><h1 class="display">Tài Khoản Của Tôi</h1><p class="breadcrumb"><a href="#" data-page="home">Trang Chủ</a><span>/</span>Tài Khoản</p></div></div>
+      <div class="section">
+        <div class="account-layout">
+          <aside class="account-sidebar">
+            <div class="user-info">
+              <div class="user-avatar">👩</div>
+              <h4>Nguyễn Lan Anh</h4>
+              <p class="user-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8be7eae5a5eae5e3cbeee6eae2e7a5e8e4e6">[email&#160;protected]</a></p>
+              <p class="user-tier">⭐ THÀNH VIÊN VIP</p>
+            </div>
+            <ul class="account-menu">
+              <li><a href="#" class="active">📦 Đơn Hàng Của Tôi</a></li>
+              <li><a href="#" data-page="wishlist">♡ Sản Phẩm Yêu Thích</a></li>
+              <li><a href="#">📍 Địa Chỉ Giao Hàng</a></li>
+              <li><a href="#">💳 Phương Thức Thanh Toán</a></li>
+              <li><a href="#">👤 Thông Tin Cá Nhân</a></li>
+              <li><a href="#">🔔 Cài Đặt Thông Báo</a></li>
+              <li><a href="#">🔒 Đổi Mật Khẩu</a></li>
+              <li><a href="#" class="logout">🚪 Đăng Xuất</a></li>
+            </ul>
+          </aside>
+          <div>
+            <div class="account-stats">
+              <div class="stat-card"><h3>12</h3><p>Đơn Hàng</p></div>
+              <div class="stat-card"><h3>4</h3><p>Yêu Thích</p></div>
+              <div class="stat-card"><h3>2.4M</h3><p>Đã Chi Tiêu</p></div>
+              <div class="stat-card"><h3>480</h3><p>Điểm VIP</p></div>
+            </div>
+            <h2 class="orders-title display">Lịch Sử Đơn Hàng</h2>
+            <div class="order-card">
+              <div class="order-header"><div class="order-header-info"><p>#ORD-2025-0342</p><span>Đặt ngày 15/03/2025</span></div><span class="order-status status-delivered">✓ Đã Giao</span></div>
+              <div class="order-items"><div class="order-item-img" style="background:linear-gradient(135deg,#E8DDD0,#C8B89A);">👗</div><div class="order-item-info"><p>Đầm Dạ Hội Tweed Classic</p><span>1 sản phẩm</span></div><div class="order-item-actions"><strong>1.980.000₫</strong><button class="btn-outline" style="padding:8px 16px;font-size:11px;" data-action="add-to-cart">Mua Lại</button></div></div>
+            </div>
+            <div class="order-card">
+              <div class="order-header"><div class="order-header-info"><p>#ORD-2025-0289</p><span>Đặt ngày 02/03/2025</span></div><span class="order-status status-shipped">🚚 Đang Giao</span></div>
+              <div class="order-items"><div class="order-item-img" style="background:linear-gradient(135deg,#D0D8E0,#98AABB);">👜</div><div class="order-item-info"><p>Túi Neverfull Monogram MM</p><span>1 sản phẩm · Dự kiến 10/04</span></div><div class="order-item-actions"><strong>3.650.000₫</strong><button class="btn-outline" style="padding:8px 16px;font-size:11px;">Theo Dõi</button></div></div>
+            </div>
+            <div class="order-card">
+              <div class="order-header"><div class="order-header-info"><p>#ORD-2025-0201</p><span>Đặt ngày 18/02/2025</span></div><span class="order-status status-processing">⏳ Đang Xử Lý</span></div>
+              <div class="order-items"><div class="order-item-img" style="background:linear-gradient(135deg,#E0D0D8,#BB98A8);">👠</div><div class="order-item-info"><p>Giày Cao Gót Slingback × 2</p><span>2 sản phẩm</span></div><div class="order-item-actions"><strong>4.300.000₫</strong><button class="btn-cancel">Hủy Đơn</button></div></div>
             </div>
           </div>
         </div>
-        <div class="testimonial-card reveal delay-2">
-          <div class="t-stars">★★★★★</div>
-          <p class="t-text">"Đặt hàng lúc 9 giờ tối, 6 giờ sáng hôm sau đã có hàng. Siêu nhanh! Sản phẩm đẹp y chang mô tả."</p>
-          <div class="t-author">
-            <div class="t-avatar">L</div>
-            <div>
-              <div class="t-name">Lê Quốc Bảo</div>
-              <div class="t-role">Khách Hàng Mới · Đà Nẵng</div>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
-  </section>
+    </div><!-- /#account -->
 
-  <!-- ═══════════════════════════════ CTA FINAL ═══════════════════════════════ -->
-  <section class="cta-section">
-    <div class="cta-bg-text">LUXE</div>
-    <div class="container">
-      <div class="cta-content reveal">
-        <div class="section-eyebrow" style="color:#D4AF37">Bắt Đầu Ngay Hôm Nay</div>
-        <h2 class="cta-title">Tìm Kiếm Phong Cách<br/><em>Của Riêng Bạn</em></h2>
-        <p class="cta-desc">Đăng ký thành viên miễn phí và nhận ngay voucher 200.000₫ cho đơn hàng đầu tiên.</p>
-        <div class="cta-form">
-          <input type="email" placeholder="Nhập email của bạn..." class="cta-input" />
-          <button class="btn-gold btn-lg">Nhận Ưu Đãi</button>
-        </div>
-        <p class="cta-note">Không spam. Hủy đăng ký bất cứ lúc nào.</p>
-      </div>
-    </div>
-  </section>
+  </main><!-- /#app -->
 
-  <!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
-  <footer class="footer" id="contact">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="footer-logo">LUXE</div>
-          <p>Nơi phong cách gặp chất lượng. Chúng tôi mang đến những sản phẩm cao cấp nhất cho cuộc sống của bạn.</p>
-          <div class="social-links">
-            <a href="#" aria-label="Facebook">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-            </a>
-            <a href="#" aria-label="Instagram">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-            </a>
-            <a href="#" aria-label="TikTok">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
-            </a>
-          </div>
-        </div>
-        <div class="footer-col">
-          <h4>Cửa Hàng</h4>
-          <ul>
-            <li><a href="#">Tất Cả Sản Phẩm</a></li>
-            <li><a href="#">Thời Trang</a></li>
-            <li><a href="#">Phụ Kiện</a></li>
-            <li><a href="#">Sale</a></li>
-            <li><a href="#">Mới Nhất</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Hỗ Trợ</h4>
-          <ul>
-            <li><a href="#">Trung Tâm Hỗ Trợ</a></li>
-            <li><a href="#">Chính Sách Đổi Trả</a></li>
-            <li><a href="#">Theo Dõi Đơn Hàng</a></li>
-            <li><a href="#">Vận Chuyển</a></li>
-            <li><a href="#">Liên Hệ</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Liên Hệ</h4>
-          <ul class="footer-contact">
-            <li>📍 123 Nguyễn Huệ, Q.1, TP.HCM</li>
-            <li>📞 1800 1234 (Miễn phí)</li>
-            <li>✉️ hello@luxe.vn</li>
-            <li>🕐 8:00 - 22:00 mỗi ngày</li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2025 LUXE Store. Bảo lưu mọi quyền.</p>
-        <div class="footer-legal">
-          <a href="#">Điều Khoản</a>
-          <a href="#">Bảo Mật</a>
-          <a href="#">Cookie</a>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <!-- Scripts (order matters: components before app) -->
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
 
-  <!-- Cart toast -->
-  <div class="cart-toast" id="cartToast">
-    ✓ Đã thêm vào giỏ hàng!
-  </div>
-
-  <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,150 @@
+<!-- ============================================================
+     LUXE STORE — Shop Page
+     pages/shop.html
+     ============================================================ -->
+
+<div id="shop" class="page">
+
+  <div class="page-header">
+    <div>
+      <h1 class="display">Tất Cả Sản Phẩm</h1>
+      <p class="breadcrumb"><a href="#" data-page="home">Trang Chủ</a><span>/</span>Sản Phẩm</p>
+    </div>
+    <p style="font-size:13px;color:var(--muted);">370 sản phẩm</p>
+  </div>
+
+  <div class="section">
+    <div class="shop-layout">
+
+      <!-- Sidebar Filters -->
+      <aside class="sidebar">
+
+        <div class="filter-group">
+          <h4>Danh Mục</h4>
+          <label class="filter-option"><input type="checkbox" checked> Tất Cả (370)</label>
+          <label class="filter-option"><input type="checkbox"> Thời Trang (142)</label>
+          <label class="filter-option"><input type="checkbox"> Túi Xách (98)</label>
+          <label class="filter-option"><input type="checkbox"> Giày Dép (76)</label>
+          <label class="filter-option"><input type="checkbox"> Trang Sức (54)</label>
+        </div>
+
+        <div class="filter-group">
+          <h4>Thương Hiệu</h4>
+          <label class="filter-option"><input type="checkbox"> Chanel (38)</label>
+          <label class="filter-option"><input type="checkbox"> Louis Vuitton (45)</label>
+          <label class="filter-option"><input type="checkbox"> Gucci (29)</label>
+          <label class="filter-option"><input type="checkbox"> Hermès (22)</label>
+          <label class="filter-option"><input type="checkbox"> Prada (31)</label>
+          <label class="filter-option"><input type="checkbox"> Dior (28)</label>
+        </div>
+
+        <div class="filter-group">
+          <h4>Khoảng Giá</h4>
+          <div class="price-range">
+            <input type="text" placeholder="Từ" value="0">
+            <span>–</span>
+            <input type="text" placeholder="Đến" value="10.000.000">
+          </div>
+          <button class="btn-outline" style="margin-top:14px;padding:10px 20px;font-size:11px;">Áp Dụng</button>
+        </div>
+
+        <div class="filter-group">
+          <h4>Màu Sắc</h4>
+          <div class="color-swatches">
+            <div class="color-dot active" style="background:#1C1C1C;" data-color="Đen"></div>
+            <div class="color-dot" style="background:#F5F0E8;border:1px solid var(--light);" data-color="Kem"></div>
+            <div class="color-dot" style="background:#C8A882;" data-color="Nâu"></div>
+            <div class="color-dot" style="background:#8B7355;" data-color="Nâu Đậm"></div>
+            <div class="color-dot" style="background:#C0392B;" data-color="Đỏ"></div>
+            <div class="color-dot" style="background:#1565C0;" data-color="Xanh"></div>
+            <div class="color-dot" style="background:#2E7D32;" data-color="Xanh Lá"></div>
+            <div class="color-dot" style="background:#D4A017;" data-color="Vàng"></div>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Đánh Giá</h4>
+          <label class="filter-option"><input type="checkbox"> ★★★★★ (156)</label>
+          <label class="filter-option"><input type="checkbox"> ★★★★☆ (120)</label>
+          <label class="filter-option"><input type="checkbox"> ★★★☆☆ (54)</label>
+        </div>
+
+      </aside>
+
+      <!-- Product Grid -->
+      <div>
+        <div class="shop-header">
+          <p>Hiển thị <strong>1–8</strong> trong <strong>370</strong> sản phẩm</p>
+          <div class="shop-controls">
+            <span style="font-size:12px;color:var(--muted);">Xem:</span>
+            <button class="view-btn active">▦</button>
+            <button class="view-btn">☰</button>
+            <select class="sort-select">
+              <option>Phổ Biến Nhất</option>
+              <option>Mới Nhất</option>
+              <option>Giá: Thấp → Cao</option>
+              <option>Giá: Cao → Thấp</option>
+              <option>Đánh Giá Cao</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="products-grid">
+
+          <div class="product-card" data-page="product-detail">
+            <div class="product-img"><div class="product-img-bg p1"></div><span style="position:relative;z-index:1;font-size:52px;">👗</span><span class="product-badge">-20%</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div>
+            <div class="product-info"><p class="brand">Chanel</p><h4>Đầm Dạ Hội Tweed Classic</h4><div class="product-price"><span class="price-new">1.980.000₫</span><span class="price-old">2.480.000₫</span></div><div class="stars">★★★★★</div></div>
+          </div>
+
+          <div class="product-card" data-page="product-detail">
+            <div class="product-img"><div class="product-img-bg p2"></div><span style="position:relative;z-index:1;font-size:52px;">👜</span><span class="product-badge new">MỚI</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div>
+            <div class="product-info"><p class="brand">Louis Vuitton</p><h4>Túi Neverfull Monogram MM</h4><div class="product-price"><span class="price-new">3.650.000₫</span></div><div class="stars">★★★★☆</div></div>
+          </div>
+
+          <div class="product-card" data-page="product-detail">
+            <div class="product-img"><div class="product-img-bg p3"></div><span style="position:relative;z-index:1;font-size:52px;">👠</span><span class="product-badge">-15%</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div>
+            <div class="product-info"><p class="brand">Gucci</p><h4>Giày Cao Gót Slingback 85mm</h4><div class="product-price"><span class="price-new">2.150.000₫</span><span class="price-old">2.530.000₫</span></div><div class="stars">★★★★★</div></div>
+          </div>
+
+          <div class="product-card" data-page="product-detail">
+            <div class="product-img"><div class="product-img-bg p4"></div><span style="position:relative;z-index:1;font-size:52px;">💍</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div>
+            <div class="product-info"><p class="brand">Hermès</p><h4>Nhẫn Vàng 18K Kim Cương</h4><div class="product-price"><span class="price-new">8.900.000₫</span></div><div class="stars">★★★★★</div></div>
+          </div>
+
+          <div class="product-card" data-page="product-detail">
+            <div class="product-img"><div class="product-img-bg p5"></div><span style="position:relative;z-index:1;font-size:52px;">🧥</span><span class="product-badge new">MỚI</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div>
+            <div class="product-info"><p class="brand">Prada</p><h4>Áo Khoác Trench Coat Beige</h4><div class="product-price"><span class="price-new">4.200.000₫</span></div><div class="stars">★★★★☆</div></div>
+          </div>
+
+          <div class="product-card" data-page="product-detail">
+            <div class="product-img"><div class="product-img-bg p6"></div><span style="position:relative;z-index:1;font-size:52px;">🕶</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div>
+            <div class="product-info"><p class="brand">Dior</p><h4>Kính Mắt Cat-Eye Oversized</h4><div class="product-price"><span class="price-new">1.580.000₫</span></div><div class="stars">★★★★★</div></div>
+          </div>
+
+          <div class="product-card" data-page="product-detail">
+            <div class="product-img"><div class="product-img-bg p7"></div><span style="position:relative;z-index:1;font-size:52px;">👒</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div>
+            <div class="product-info"><p class="brand">Versace</p><h4>Nón Rộng Vành Lụa Ý</h4><div class="product-price"><span class="price-new">890.000₫</span></div><div class="stars">★★★★☆</div></div>
+          </div>
+
+          <div class="product-card" data-page="product-detail">
+            <div class="product-img"><div class="product-img-bg p8"></div><span style="position:relative;z-index:1;font-size:52px;">💄</span><span class="product-badge">-10%</span><div class="product-actions"><button data-action="wishlist">♡</button><button>👁</button><button data-action="add-to-cart">+</button></div></div>
+            <div class="product-info"><p class="brand">YSL Beauty</p><h4>Son Môi Rouge Pur Couture</h4><div class="product-price"><span class="price-new">720.000₫</span><span class="price-old">800.000₫</span></div><div class="stars">★★★★★</div></div>
+          </div>
+
+        </div><!-- /.products-grid -->
+
+        <div class="pagination">
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">…</button>
+          <button class="page-btn">10</button>
+          <button class="page-btn">›</button>
+        </div>
+
+      </div><!-- /product grid wrapper -->
+
+    </div><!-- /.shop-layout -->
+  </div><!-- /.section -->
+
+</div><!-- /#shop -->

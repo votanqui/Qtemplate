@@ -28,4 +28,11 @@ public static class SettingKeys
     public const string SecurityMaxReviewSpam = "security_max_review_spam";
     public const string SecurityMaxOrderCancels = "security_max_order_cancels";
     public const string SecurityBlockDurationHours = "security_block_duration_hours";
+   
+    public const string OrderReminderEnabled = "order.reminder_enabled";
+    /// Số phút sau khi tạo đơn thì gửi nhắc nhở (default: 30)
+    public const string OrderPaymentReminderMinutes = "order.payment_reminder_minutes";
+    /// Số phút sau khi tạo đơn thì auto-cancel (default: 60)
+    public const string OrderAutoCancelMinutes = "order.auto_cancel_minutes";
+
 }

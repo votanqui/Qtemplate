@@ -16,22 +16,22 @@ public class SendNotificationHandler : IRequestHandler<SendNotificationCommand, 
     {
         if (request.UserId.HasValue)
         {
-            // Gửi 1 user
+            // Gửi 1 user — lưu DB + socket
             await _notifService.SendToUserAsync(
                 request.UserId.Value, request.Title, request.Message,
                 request.Type, request.RedirectUrl);
         }
         else if (request.UserIds is { Count: > 0 })
         {
-            // Gửi nhiều user
+            // Gửi nhiều user — lưu DB + socket
             await _notifService.SendToUsersAsync(
                 request.UserIds, request.Title, request.Message,
                 request.Type, request.RedirectUrl);
         }
         else
         {
-            // Broadcast tất cả
-            await _notifService.BroadcastAsync(
+            // Broadcast toàn bộ user — lưu DB cho từng user + socket
+            await _notifService.BroadcastToAllAsync(
                 request.Title, request.Message,
                 request.Type, request.RedirectUrl);
         }

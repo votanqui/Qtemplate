@@ -1,0 +1,511 @@
+<!-- ============================================================
+     LUXE STORE — Wishlist Page
+     pages/wishlist.html
+     ============================================================ -->
+
+<div id="wishlist" class="page">
+
+  <div class="page-header">
+    <div>
+      <h1 class="display">Sản Phẩm Yêu Thích</h1>
+      <p class="breadcrumb"><a href="#" data-page="home">Trang Chủ</a><span>/</span>Yêu Thích</p>
+    </div>
+    <p style="font-size:13px;color:var(--muted);">4 sản phẩm</p>
+  </div>
+
+  <div class="section">
+    <div class="wishlist-grid">
+
+      <div class="wishlist-card">
+        <div class="product-img"><div class="product-img-bg p1"></div><span style="position:relative;z-index:1;font-size:52px;">👗</span></div>
+        <button class="wishlist-remove" aria-label="Xóa">✕</button>
+        <div class="product-info" style="margin-top:16px;">
+          <p class="brand">Chanel</p>
+          <h4>Đầm Dạ Hội Tweed Classic</h4>
+          <div class="product-price" style="margin:8px 0;">
+            <span class="price-new">1.980.000₫</span>
+            <span class="price-old">2.480.000₫</span>
+          </div>
+          <button class="btn-primary" style="width:100%;text-align:center;" data-action="add-to-cart">Thêm Vào Giỏ</button>
+        </div>
+      </div>
+
+      <div class="wishlist-card">
+        <div class="product-img"><div class="product-img-bg p2"></div><span style="position:relative;z-index:1;font-size:52px;">👜</span></div>
+        <button class="wishlist-remove" aria-label="Xóa">✕</button>
+        <div class="product-info" style="margin-top:16px;">
+          <p class="brand">Louis Vuitton</p>
+          <h4>Túi Neverfull Monogram MM</h4>
+          <div class="product-price" style="margin:8px 0;"><span class="price-new">3.650.000₫</span></div>
+          <button class="btn-primary" style="width:100%;text-align:center;" data-action="add-to-cart">Thêm Vào Giỏ</button>
+        </div>
+      </div>
+
+      <div class="wishlist-card">
+        <div class="product-img"><div class="product-img-bg p3"></div><span style="position:relative;z-index:1;font-size:52px;">👠</span></div>
+        <button class="wishlist-remove" aria-label="Xóa">✕</button>
+        <div class="product-info" style="margin-top:16px;">
+          <p class="brand">Gucci</p>
+          <h4>Giày Cao Gót Slingback 85mm</h4>
+          <div class="product-price" style="margin:8px 0;"><span class="price-new">2.150.000₫</span></div>
+          <button class="btn-primary" style="width:100%;text-align:center;" data-action="add-to-cart">Thêm Vào Giỏ</button>
+        </div>
+      </div>
+
+      <div class="wishlist-card">
+        <div class="product-img"><div class="product-img-bg p4"></div><span style="position:relative;z-index:1;font-size:52px;">💍</span></div>
+        <button class="wishlist-remove" aria-label="Xóa">✕</button>
+        <div class="product-info" style="margin-top:16px;">
+          <p class="brand">Hermès</p>
+          <h4>Nhẫn Vàng 18K Kim Cương</h4>
+          <div class="product-price" style="margin:8px 0;"><span class="price-new">8.900.000₫</span></div>
+          <button class="btn-primary" style="width:100%;text-align:center;" data-action="add-to-cart">Thêm Vào Giỏ</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /#wishlist -->
+
+
+<!-- ============================================================
+     LUXE STORE — Cart Page
+     pages/cart.html
+     ============================================================ -->
+
+<div id="cart" class="page">
+
+  <div class="page-header">
+    <div>
+      <h1 class="display">Giỏ Hàng</h1>
+      <p class="breadcrumb"><a href="#" data-page="home">Trang Chủ</a><span>/</span>Giỏ Hàng</p>
+    </div>
+    <p style="font-size:13px;color:var(--muted);">3 sản phẩm</p>
+  </div>
+
+  <div class="section">
+    <div class="cart-layout">
+
+      <!-- Cart Table -->
+      <div>
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Sản Phẩm</th>
+              <th>Giá</th>
+              <th>Số Lượng</th>
+              <th>Tổng</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td>
+                <div class="cart-item-info">
+                  <div class="cart-item-img ci1">👗</div>
+                  <div>
+                    <p class="cart-item-name">Đầm Dạ Hội Tweed Classic</p>
+                    <p class="cart-item-variant">Màu: Đen | Size: S</p>
+                  </div>
+                </div>
+              </td>
+              <td>1.980.000₫</td>
+              <td>
+                <div class="qty-control">
+                  <button data-action="dec">−</button>
+                  <span class="qty-value">1</span>
+                  <button data-action="inc">+</button>
+                </div>
+              </td>
+              <td><strong>1.980.000₫</strong></td>
+              <td><button class="remove-btn" aria-label="Xóa">✕</button></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="cart-item-info">
+                  <div class="cart-item-img ci2">👜</div>
+                  <div>
+                    <p class="cart-item-name">Túi Neverfull Monogram MM</p>
+                    <p class="cart-item-variant">Màu: Nâu</p>
+                  </div>
+                </div>
+              </td>
+              <td>3.650.000₫</td>
+              <td>
+                <div class="qty-control">
+                  <button data-action="dec">−</button>
+                  <span class="qty-value">1</span>
+                  <button data-action="inc">+</button>
+                </div>
+              </td>
+              <td><strong>3.650.000₫</strong></td>
+              <td><button class="remove-btn" aria-label="Xóa">✕</button></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="cart-item-info">
+                  <div class="cart-item-img ci3">👠</div>
+                  <div>
+                    <p class="cart-item-name">Giày Cao Gót Slingback 85mm</p>
+                    <p class="cart-item-variant">Màu: Đen | Size: 37</p>
+                  </div>
+                </div>
+              </td>
+              <td>2.150.000₫</td>
+              <td>
+                <div class="qty-control">
+                  <button data-action="dec">−</button>
+                  <span class="qty-value">2</span>
+                  <button data-action="inc">+</button>
+                </div>
+              </td>
+              <td><strong>4.300.000₫</strong></td>
+              <td><button class="remove-btn" aria-label="Xóa">✕</button></td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <div class="cart-footer">
+          <a class="btn-outline" href="#" data-page="shop">← Tiếp Tục Mua Sắm</a>
+          <button class="btn-outline">🔄 Cập Nhật Giỏ</button>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <h3>Tóm Tắt Đơn Hàng</h3>
+        <div class="summary-row"><span>Tạm tính</span><span>9.930.000₫</span></div>
+        <div class="summary-row"><span>Giảm giá</span><span style="color:var(--red);">-500.000₫</span></div>
+        <div class="summary-row"><span>Phí vận chuyển</span><span style="color:var(--gold);">Miễn phí</span></div>
+        <div class="summary-row total"><span>Tổng Cộng</span><span>9.430.000₫</span></div>
+
+        <div class="coupon-input">
+          <input type="text" placeholder="Nhập mã giảm giá...">
+          <button type="button">Áp Dụng</button>
+        </div>
+
+        <a class="btn-primary" href="#" data-page="checkout" style="display:block;text-align:center;padding:18px;">
+          Thanh Toán →
+        </a>
+
+        <div style="display:flex;justify-content:center;gap:12px;margin-top:16px;">
+          <span style="font-size:20px;" title="Thẻ tín dụng">💳</span>
+          <span style="font-size:20px;" title="Ngân hàng">🏦</span>
+          <span style="font-size:20px;" title="Ví điện tử">📱</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /#cart -->
+
+
+<!-- ============================================================
+     LUXE STORE — Checkout Page
+     pages/checkout.html
+     ============================================================ -->
+
+<div id="checkout" class="page">
+
+  <div class="page-header">
+    <div>
+      <h1 class="display">Thanh Toán</h1>
+      <p class="breadcrumb">
+        <a href="#" data-page="home">Trang Chủ</a><span>/</span>
+        <a href="#" data-page="cart">Giỏ Hàng</a><span>/</span>
+        Thanh Toán
+      </p>
+    </div>
+  </div>
+
+  <!-- Progress Steps -->
+  <div class="checkout-steps">
+    <div class="steps-inner">
+      <div class="step">
+        <div class="step-number done">1</div>
+        <span class="step-label done">Địa Chỉ</span>
+      </div>
+      <div class="step-connector done"></div>
+      <div class="step">
+        <div class="step-number done">2</div>
+        <span class="step-label done">Thanh Toán</span>
+      </div>
+      <div class="step-connector pending"></div>
+      <div class="step">
+        <div class="step-number pending">3</div>
+        <span class="step-label">Xác Nhận</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="checkout-layout">
+
+      <!-- Form -->
+      <div>
+
+        <!-- Contact -->
+        <div class="form-section">
+          <h3>Thông Tin Liên Hệ</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Họ</label><input type="text" placeholder="Nguyễn"></div>
+            <div class="form-group"><label>Tên</label><input type="text" placeholder="Lan Anh"></div>
+            <div class="form-group"><label>Email</label><input type="email" placeholder="email@example.com"></div>
+            <div class="form-group"><label>Số Điện Thoại</label><input type="tel" placeholder="0912 345 678"></div>
+          </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="form-section">
+          <h3>Địa Chỉ Giao Hàng</h3>
+          <div class="form-grid">
+            <div class="form-group full"><label>Địa Chỉ</label><input type="text" placeholder="Số nhà, tên đường..."></div>
+            <div class="form-group"><label>Phường / Xã</label><input type="text" placeholder="Phường Bến Nghé"></div>
+            <div class="form-group"><label>Quận / Huyện</label><input type="text" placeholder="Quận 1"></div>
+            <div class="form-group">
+              <label>Tỉnh / Thành Phố</label>
+              <select>
+                <option>TP. Hồ Chí Minh</option>
+                <option>Hà Nội</option>
+                <option>Đà Nẵng</option>
+                <option>Cần Thơ</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Ghi Chú</label><input type="text" placeholder="Ghi chú thêm cho người giao hàng..."></div>
+          </div>
+        </div>
+
+        <!-- Shipping Method -->
+        <div class="form-section">
+          <h3>Phương Thức Vận Chuyển</h3>
+          <div class="payment-options">
+            <label class="payment-option selected">
+              <input type="radio" name="shipping" checked>
+              <span class="pay-icon">🚚</span>
+              <div>
+                <p>Giao Hàng Tiêu Chuẩn</p>
+                <span>3–5 ngày làm việc · Miễn phí</span>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="shipping">
+              <span class="pay-icon">⚡</span>
+              <div>
+                <p>Giao Hàng Nhanh</p>
+                <span>1–2 ngày làm việc · 30.000₫</span>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="shipping">
+              <span class="pay-icon">🏃</span>
+              <div>
+                <p>Giao Hàng Hỏa Tốc</p>
+                <span>Trong ngày · 60.000₫</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="form-section">
+          <h3>Phương Thức Thanh Toán</h3>
+          <div class="payment-options">
+            <label class="payment-option selected">
+              <input type="radio" name="payment" checked>
+              <span class="pay-icon">💳</span>
+              <div>
+                <p>Thẻ Tín Dụng / Ghi Nợ</p>
+                <span>VISA, Mastercard, JCB</span>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment">
+              <span class="pay-icon">📱</span>
+              <div>
+                <p>Ví Điện Tử</p>
+                <span>Momo, ZaloPay, VNPay</span>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment">
+              <span class="pay-icon">🏦</span>
+              <div>
+                <p>Chuyển Khoản Ngân Hàng</p>
+                <span>Thanh toán sau khi đặt hàng</span>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment">
+              <span class="pay-icon">💵</span>
+              <div>
+                <p>Thanh Toán Khi Nhận Hàng (COD)</p>
+                <span>Áp dụng cho đơn dưới 5.000.000₫</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn-primary checkout-submit" style="padding:18px 60px;font-size:12px;">
+          Đặt Hàng →
+        </button>
+
+      </div><!-- /form -->
+
+      <!-- Order Review -->
+      <div class="order-review">
+        <h3>Đơn Hàng Của Bạn</h3>
+
+        <div class="review-items">
+          <div class="review-item">
+            <div class="review-item-img ri1">👗<span class="item-qty-badge">1</span></div>
+            <div class="review-item-info"><p>Đầm Dạ Hội Tweed Classic</p><span>Đen / S</span></div>
+            <strong>1.980.000₫</strong>
+          </div>
+          <div class="review-item">
+            <div class="review-item-img ri2">👜<span class="item-qty-badge">1</span></div>
+            <div class="review-item-info"><p>Túi Neverfull Monogram</p><span>Nâu</span></div>
+            <strong>3.650.000₫</strong>
+          </div>
+          <div class="review-item">
+            <div class="review-item-img ri3">👠<span class="item-qty-badge">2</span></div>
+            <div class="review-item-info"><p>Giày Cao Gót Slingback</p><span>Đen / 37</span></div>
+            <strong>4.300.000₫</strong>
+          </div>
+        </div>
+
+        <div class="summary-row"><span>Tạm tính</span><span>9.930.000₫</span></div>
+        <div class="summary-row"><span>Giảm giá</span><span style="color:var(--red);">-500.000₫</span></div>
+        <div class="summary-row"><span>Vận chuyển</span><span style="color:var(--gold);">Miễn phí</span></div>
+        <div class="summary-row total"><span>Tổng Cộng</span><span>9.430.000₫</span></div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /#checkout -->
+
+
+<!-- ============================================================
+     LUXE STORE — Account Page
+     pages/account.html
+     ============================================================ -->
+
+<div id="account" class="page">
+
+  <div class="page-header">
+    <div>
+      <h1 class="display">Tài Khoản Của Tôi</h1>
+      <p class="breadcrumb"><a href="#" data-page="home">Trang Chủ</a><span>/</span>Tài Khoản</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="account-layout">
+
+      <!-- Sidebar -->
+      <aside class="account-sidebar">
+        <div class="user-info">
+          <div class="user-avatar">👩</div>
+          <h4>Nguyễn Lan Anh</h4>
+          <p class="user-email">lan.anh@email.com</p>
+          <p class="user-tier">⭐ THÀNH VIÊN VIP</p>
+        </div>
+        <ul class="account-menu">
+          <li><a href="#" class="active">📦 Đơn Hàng Của Tôi</a></li>
+          <li><a href="#" data-page="wishlist">♡ Sản Phẩm Yêu Thích</a></li>
+          <li><a href="#">📍 Địa Chỉ Giao Hàng</a></li>
+          <li><a href="#">💳 Phương Thức Thanh Toán</a></li>
+          <li><a href="#">👤 Thông Tin Cá Nhân</a></li>
+          <li><a href="#">🔔 Cài Đặt Thông Báo</a></li>
+          <li><a href="#">🔒 Đổi Mật Khẩu</a></li>
+          <li><a href="#" class="logout">🚪 Đăng Xuất</a></li>
+        </ul>
+      </aside>
+
+      <!-- Content -->
+      <div>
+
+        <!-- Stats -->
+        <div class="account-stats">
+          <div class="stat-card"><h3>12</h3><p>Đơn Hàng</p></div>
+          <div class="stat-card"><h3>4</h3><p>Yêu Thích</p></div>
+          <div class="stat-card"><h3>2.4M</h3><p>Đã Chi Tiêu</p></div>
+          <div class="stat-card"><h3>480</h3><p>Điểm VIP</p></div>
+        </div>
+
+        <h2 class="orders-title display">Lịch Sử Đơn Hàng</h2>
+
+        <!-- Order 1 -->
+        <div class="order-card">
+          <div class="order-header">
+            <div class="order-header-info">
+              <p>#ORD-2025-0342</p>
+              <span>Đặt ngày 15/03/2025</span>
+            </div>
+            <span class="order-status status-delivered">✓ Đã Giao</span>
+          </div>
+          <div class="order-items">
+            <div class="order-item-img" style="background:linear-gradient(135deg,#E8DDD0,#C8B89A);">👗</div>
+            <div class="order-item-info">
+              <p>Đầm Dạ Hội Tweed Classic</p>
+              <span>1 sản phẩm</span>
+            </div>
+            <div class="order-item-actions">
+              <strong>1.980.000₫</strong>
+              <button class="btn-outline" style="padding:8px 16px;font-size:11px;" data-action="add-to-cart">Mua Lại</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order 2 -->
+        <div class="order-card">
+          <div class="order-header">
+            <div class="order-header-info">
+              <p>#ORD-2025-0289</p>
+              <span>Đặt ngày 02/03/2025</span>
+            </div>
+            <span class="order-status status-shipped">🚚 Đang Giao</span>
+          </div>
+          <div class="order-items">
+            <div class="order-item-img" style="background:linear-gradient(135deg,#D0D8E0,#98AABB);">👜</div>
+            <div class="order-item-info">
+              <p>Túi Neverfull Monogram MM</p>
+              <span>1 sản phẩm · Dự kiến 10/04</span>
+            </div>
+            <div class="order-item-actions">
+              <strong>3.650.000₫</strong>
+              <button class="btn-outline" style="padding:8px 16px;font-size:11px;">Theo Dõi</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order 3 -->
+        <div class="order-card">
+          <div class="order-header">
+            <div class="order-header-info">
+              <p>#ORD-2025-0201</p>
+              <span>Đặt ngày 18/02/2025</span>
+            </div>
+            <span class="order-status status-processing">⏳ Đang Xử Lý</span>
+          </div>
+          <div class="order-items">
+            <div class="order-item-img" style="background:linear-gradient(135deg,#E0D0D8,#BB98A8);">👠</div>
+            <div class="order-item-info">
+              <p>Giày Cao Gót Slingback × 2</p>
+              <span>2 sản phẩm</span>
+            </div>
+            <div class="order-item-actions">
+              <strong>4.300.000₫</strong>
+              <button class="btn-cancel">Hủy Đơn</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /content -->
+    </div><!-- /.account-layout -->
+  </div><!-- /.section -->
+
+</div><!-- /#account -->

@@ -14,6 +14,7 @@ using MassTransit;
 using Qtemplate.Infrastructure.Services.Email;
 using Qtemplate.Infrastructure.Services.Notification;
 using Qtemplate.Infrastructure.Services.Security;
+using Qtemplate.Infrastructure.Services.OrderPayment;
 namespace Qtemplate.Infrastructure;
 
 public static class DependencyInjection
@@ -88,6 +89,8 @@ public static class DependencyInjection
         services.AddScoped<IEmailSender, EmailSender>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddHostedService<EmailRetryBackgroundService>();
+
+        services.AddHostedService<OrderPaymentReminderService>();
 
         services.AddMassTransit(x =>
         {

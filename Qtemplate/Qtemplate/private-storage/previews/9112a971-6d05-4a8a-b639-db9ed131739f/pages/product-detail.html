@@ -1,0 +1,146 @@
+<!-- ============================================================
+     LUXE STORE — Product Detail Page
+     pages/product-detail.html
+     ============================================================ -->
+
+<div id="product-detail" class="page">
+
+  <div class="page-header">
+    <p class="breadcrumb">
+      <a href="#" data-page="home">Trang Chủ</a><span>/</span>
+      <a href="#" data-page="shop">Sản Phẩm</a><span>/</span>
+      Đầm Dạ Hội Tweed
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="product-detail-layout">
+
+      <!-- ── Gallery ── -->
+      <div class="product-gallery">
+        <div class="main-img">👗</div>
+        <div class="thumb-row">
+          <div class="thumb active">👗</div>
+          <div class="thumb" style="background:linear-gradient(135deg,#D8D0E8,#A898C0);">👗</div>
+          <div class="thumb" style="background:linear-gradient(135deg,#E8D8D0,#C0A898);">👗</div>
+          <div class="thumb" style="background:linear-gradient(135deg,#D0E8D8,#98C0A8);">👗</div>
+        </div>
+      </div>
+
+      <!-- ── Product Info ── -->
+      <div class="product-detail-info">
+        <p class="detail-brand">Chanel — SS2025</p>
+
+        <h1 class="detail-title display">Đầm Dạ Hội<br>Tweed Classic</h1>
+
+        <div class="detail-rating">
+          <div class="stars">★★★★★</div>
+          <p>4.9 (128 đánh giá)</p>
+          <p style="color:var(--gold);">| Đã bán: 340</p>
+        </div>
+
+        <div class="detail-price">
+          <span class="price-main">1.980.000₫</span>
+          <span class="price-original">2.480.000₫</span>
+          <span class="discount-badge">-20%</span>
+        </div>
+
+        <p class="detail-description">
+          Thiết kế đầm dạ hội sang trọng được làm từ vải tweed cao cấp của Chanel,
+          phù hợp cho các dịp tiệc tùng và sự kiện đặc biệt.
+        </p>
+
+        <!-- Color -->
+        <div class="option-group">
+          <p class="option-label">
+            Màu Sắc: <strong class="selected-color">Đen</strong>
+          </p>
+          <div class="color-options">
+            <div class="color-swatch active" style="background:#1C1C1C;" data-color="Đen"></div>
+            <div class="color-swatch" style="background:#F5F0E8;border:1px solid var(--light);" data-color="Kem"></div>
+            <div class="color-swatch" style="background:#C8A882;" data-color="Nâu"></div>
+            <div class="color-swatch" style="background:#C0392B;" data-color="Đỏ"></div>
+          </div>
+        </div>
+
+        <!-- Size -->
+        <div class="option-group">
+          <p class="option-label">
+            Kích Cỡ
+            <a href="#">Hướng dẫn chọn size</a>
+          </p>
+          <div class="size-options">
+            <button class="size-btn">XS</button>
+            <button class="size-btn active">S</button>
+            <button class="size-btn">M</button>
+            <button class="size-btn">L</button>
+            <button class="size-btn">XL</button>
+          </div>
+        </div>
+
+        <!-- Add to cart -->
+        <div class="add-to-cart-row">
+          <div class="qty-control">
+            <button data-action="dec">−</button>
+            <span class="qty-value">1</span>
+            <button data-action="inc">+</button>
+          </div>
+          <button class="add-to-cart-btn" data-action="add-to-cart">Thêm Vào Giỏ</button>
+          <button class="wishlist-btn" data-action="wishlist">♡</button>
+        </div>
+
+        <div class="product-meta">
+          <span>✈ Miễn phí vận chuyển</span>
+          <span>🔄 Đổi trả 30 ngày</span>
+          <span>✅ Chính hãng 100%</span>
+        </div>
+
+        <!-- Tabs -->
+        <div class="detail-tabs">
+          <div class="tab-headers">
+            <div class="tab-header active">Mô Tả</div>
+            <div class="tab-header">Chất Liệu</div>
+            <div class="tab-header">Hướng Dẫn</div>
+            <div class="tab-header">Đánh Giá (128)</div>
+          </div>
+
+          <div class="tab-panel active">
+            <p>Đầm dạ hội được lấy cảm hứng từ BST Haute Couture của Chanel, kết hợp kỹ thuật may đo truyền thống với chất liệu tweed huyền thoại. Thiết kế tôn vinh đường cong người mặc với form dáng A-line thanh lịch.</p>
+            <br>
+            <p>Đặc điểm: cổ thuyền cổ điển, tay ngắn đính viền vải, khóa kín sau lưng, lớp lót lụa mềm mại bên trong.</p>
+          </div>
+
+          <div class="tab-panel">
+            <p>Ngoài: 80% Wool, 20% Silk tweed cao cấp · Lót: 100% Lụa tự nhiên · Khóa: Mạ vàng 24K · Xuất xứ: Made in France</p>
+          </div>
+
+          <div class="tab-panel">
+            <p>Giặt tay nhẹ hoặc giặt khô. Không sử dụng máy sấy. Ủi ở nhiệt độ thấp với vải lót. Bảo quản nơi thoáng mát, tránh ánh nắng trực tiếp.</p>
+          </div>
+
+          <div class="tab-panel">
+            <p style="margin-bottom:16px;"><strong>128 đánh giá</strong> — Trung bình 4.9/5 ⭐</p>
+            <p>★★★★★ "Sản phẩm đúng như mô tả, chất liệu rất cao cấp. Giao hàng nhanh, đóng gói đẹp." — Lan Anh</p>
+            <br>
+            <p>★★★★★ "Mặc thử rất vừa, form đẹp, màu sắc sang trọng. Sẽ quay lại mua tiếp." — Minh Châu</p>
+          </div>
+
+        </div><!-- /.detail-tabs -->
+      </div><!-- /.product-detail-info -->
+
+    </div><!-- /.product-detail-layout -->
+
+    <!-- Related Products -->
+    <div style="margin-top:72px;">
+      <h2 class="section-title display">Sản Phẩm Liên Quan</h2>
+      <div class="divider-gold"></div>
+      <div class="products-grid">
+        <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p2"></div><span style="position:relative;z-index:1;font-size:52px;">👜</span></div><div class="product-info"><p class="brand">Chanel</p><h4>Túi Classic Flap 2.55</h4><div class="product-price"><span class="price-new">5.800.000₫</span></div></div></div>
+        <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p3"></div><span style="position:relative;z-index:1;font-size:52px;">👠</span></div><div class="product-info"><p class="brand">Chanel</p><h4>Giày Mũi Nhọn Tweed</h4><div class="product-price"><span class="price-new">2.900.000₫</span></div></div></div>
+        <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p4"></div><span style="position:relative;z-index:1;font-size:52px;">💍</span></div><div class="product-info"><p class="brand">Chanel</p><h4>Dây Chuyền Chuỗi Vàng</h4><div class="product-price"><span class="price-new">1.200.000₫</span></div></div></div>
+        <div class="product-card" data-page="product-detail"><div class="product-img"><div class="product-img-bg p5"></div><span style="position:relative;z-index:1;font-size:52px;">🧤</span></div><div class="product-info"><p class="brand">Chanel</p><h4>Găng Tay Da Lamb</h4><div class="product-price"><span class="price-new">780.000₫</span></div></div></div>
+      </div>
+    </div>
+
+  </div><!-- /.section -->
+</div><!-- /#product-detail -->
