@@ -130,4 +130,16 @@ public class OrderRepository : IOrderRepository
 
         return stats is null ? (0, 0m) : (stats.TotalOrders, stats.TotalSpent);
     }
+    public async Task<List<(Guid UserId, int Count)>> GetCancelSpamUsersAsync(
+    DateTime from, int threshold)
+    {
+        var rows = await _context.Orders
+            .Where(o => o.CancelledAt >= from && o.Status == "Cancelled")
+            .GroupBy(o => o.UserId)
+            .Where(g => g.Count() >= threshold)
+            .Select(g => new { UserId = g.Key, Count = g.Count() })
+            .ToListAsync();
+
+        return rows.Select(x => (x.UserId, x.Count)).ToList();
+    }
 }

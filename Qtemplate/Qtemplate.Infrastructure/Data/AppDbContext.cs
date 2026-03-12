@@ -52,7 +52,7 @@ public class AppDbContext : DbContext
     public DbSet<RequestLog> RequestLogs => Set<RequestLog>();
     public DbSet<Analytics> Analytics => Set<Analytics>();
     public DbSet<DailyStat> DailyStats => Set<DailyStat>();
-
+    public DbSet<SecurityScanLog> SecurityScanLogs => Set<SecurityScanLog>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // ======================================================
@@ -236,6 +236,13 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<IpBlacklist>(e =>
         {
             e.Property(x => x.IpAddress).HasMaxLength(50).IsRequired();
+        });
+        modelBuilder.Entity<SecurityScanLog>(e =>
+        {
+            e.HasIndex(x => new { x.Violation, x.IpAddress, x.UserId, x.ScannedAt });
+            e.Property(x => x.Violation).HasMaxLength(50).IsRequired();
+            e.Property(x => x.Action).HasMaxLength(50).IsRequired();
+            e.Property(x => x.IpAddress).HasMaxLength(50);
         });
     }
 }

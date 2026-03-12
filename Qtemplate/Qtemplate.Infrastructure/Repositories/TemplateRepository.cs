@@ -281,4 +281,71 @@ public class TemplateRepository : ITemplateRepository
             .Where(m => m.TemplateId == templateId)
             .ExecuteDeleteAsync();
     }
+    public async Task ReplaceTagsAndFeaturesAsync(
+        Guid templateId,
+        List<int> tagIds,
+        List<(string Feature, int SortOrder)> features)
+    {
+        // ExecuteDelete đi thẳng xuống DB nhưng EF context vẫn còn track
+        // các entity cũ từ GetByIdWithDetailsAsync → phải Clear trước khi add mới
+        // để tránh "another instance with same key is already being tracked"
+        await _context.TemplateTags
+            .Where(t => t.TemplateId == templateId)
+            .ExecuteDeleteAsync();
+
+        await _context.TemplateFeatures
+            .Where(f => f.TemplateId == templateId)
+            .ExecuteDeleteAsync();
+
+        // Clear toàn bộ change tracker — safe vì UpdateAsync đã SaveChanges xong rồi
+        _context.ChangeTracker.Clear();
+
+        if (tagIds.Count > 0)
+        {
+            var newTags = tagIds.Select(tagId => new TemplateTag
+            {
+                TemplateId = templateId,
+                TagId = tagId,
+            }).ToList();
+            await _context.TemplateTags.AddRangeAsync(newTags);
+        }
+
+        if (features.Count > 0)
+        {
+            var newFeatures = features.Select(f => new TemplateFeature
+            {
+                TemplateId = templateId,
+                Feature = f.Feature,
+                SortOrder = f.SortOrder,
+            }).ToList();
+            await _context.TemplateFeatures.AddRangeAsync(newFeatures);
+        }
+
+        await _context.SaveChangesAsync();
+    }
+    public async Task<int> BulkSetSaleAsync(
+       List<Guid> templateIds, decimal? salePrice, DateTime? saleStartAt, DateTime? saleEndAt)
+    {
+        var templates = await _context.Templates
+            .Where(t => templateIds.Contains(t.Id) && !t.IsFree)
+            .ToListAsync();
+
+        if (salePrice.HasValue)
+            // Chỉ update những template có giá gốc > salePrice
+            templates = templates.Where(t => salePrice < t.Price).ToList();
+
+        if (templates.Count == 0) return 0;
+
+        var now = DateTime.UtcNow;
+        foreach (var t in templates)
+        {
+            t.SalePrice = salePrice;
+            t.SaleStartAt = salePrice.HasValue ? saleStartAt : null;
+            t.SaleEndAt = salePrice.HasValue ? saleEndAt : null;
+            t.UpdatedAt = now;
+        }
+
+        await _context.SaveChangesAsync();
+        return templates.Count;
+    }
 }

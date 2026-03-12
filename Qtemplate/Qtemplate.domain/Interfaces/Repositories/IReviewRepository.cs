@@ -16,4 +16,7 @@ public interface IReviewRepository
     Task DeleteAsync(Review review);
     Task UpdateTemplateRatingAsync(Guid templateId);
     Task<List<Review>> GetPendingAiAsync(int limit = 10);
+    // ── Security scanner ─────────────────────────────────────────────────────
+    /// <summary>UserId gửi nhiều review trong khoảng thời gian (spam).</summary>
+    Task<List<(Guid UserId, int Count)>> GetSpamUsersAsync(DateTime from, int threshold);
 }

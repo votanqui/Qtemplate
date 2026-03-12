@@ -16,20 +16,31 @@ public class MediaFileRepository : IMediaFileRepository
     public async Task<(List<MediaFile> Items, int Total)> GetListAsync(
         Guid? templateId, int page, int pageSize)
     {
-        var query = _db.MediaFiles
-            .Include(m => m.Template)
-            .Where(m => !m.IsDeleted)
-            .AsQueryable();
+        var query = from m in _db.MediaFiles
+                    where !m.IsDeleted
+                    join t in _db.Templates on m.TemplateId equals t.Id into tg
+                    from t in tg.DefaultIfEmpty()   // LEFT JOIN
+                    select new { m, TemplateName = t != null ? t.Name : null };
 
         if (templateId.HasValue)
-            query = query.Where(m => m.TemplateId == templateId);
+            query = query.Where(x => x.m.TemplateId == templateId);
 
         var total = await query.CountAsync();
-        var items = await query
-            .OrderByDescending(m => m.CreatedAt)
+
+        var rows = await query
+            .OrderByDescending(x => x.m.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+
+        // Gán TemplateName vào navigation stub để ToDto dùng m.Template?.Name
+        var items = rows.Select(x =>
+        {
+            x.m.Template = x.TemplateName != null
+                ? new Template { Name = x.TemplateName }
+                : null;
+            return x.m;
+        }).ToList();
 
         return (items, total);
     }

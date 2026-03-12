@@ -887,6 +887,59 @@ namespace Qtemplate.Infrastructure.Migrations
                     b.ToTable("Reviews");
                 });
 
+            modelBuilder.Entity("Qtemplate.Domain.Entities.SecurityScanLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsAdminOverride")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("OverrideAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OverrideByEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OverrideNote")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ScannedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Violation")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("Violation", "IpAddress", "UserId", "ScannedAt");
+
+                    b.ToTable("SecurityScanLogs");
+                });
+
             modelBuilder.Entity("Qtemplate.Domain.Entities.Setting", b =>
                 {
                     b.Property<int>("Id")
@@ -1548,6 +1601,16 @@ namespace Qtemplate.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Template");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Qtemplate.Domain.Entities.SecurityScanLog", b =>
+                {
+                    b.HasOne("Qtemplate.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("User");
                 });

@@ -1,13 +1,9 @@
 ﻿using MediatR;
 using Qtemplate.Application.DTOs.Affiliate;
 using Qtemplate.Application.DTOs;
+using Qtemplate.Application.Services.Interfaces;
 using Qtemplate.Domain.Entities;
 using Qtemplate.Domain.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Qtemplate.Application.Features.Affiliates.Commands.RegisterAffiliate
 {
@@ -16,13 +12,16 @@ namespace Qtemplate.Application.Features.Affiliates.Commands.RegisterAffiliate
     {
         private readonly IAffiliateRepository _affiliateRepo;
         private readonly IUserRepository _userRepo;
+        private readonly INotificationService _notifService;
 
         public RegisterAffiliateHandler(
             IAffiliateRepository affiliateRepo,
-            IUserRepository userRepo)
+            IUserRepository userRepo,
+            INotificationService notifService)
         {
             _affiliateRepo = affiliateRepo;
             _userRepo = userRepo;
+            _notifService = notifService;
         }
 
         public async Task<ApiResponse<AffiliateDto>> Handle(
@@ -36,19 +35,26 @@ namespace Qtemplate.Application.Features.Affiliates.Commands.RegisterAffiliate
             if (existing is not null)
                 return ApiResponse<AffiliateDto>.Fail("Bạn đã đăng ký affiliate rồi");
 
-            // Sinh code duy nhất từ username
             var code = GenerateCode(user.FullName ?? user.Email);
 
             var affiliate = new Affiliate
             {
                 UserId = request.UserId,
                 AffiliateCode = code,
-                CommissionRate = 10,    // mặc định 10%, admin điều chỉnh sau
+                CommissionRate = 10,
                 IsActive = false, // chờ admin approve
                 CreatedAt = DateTime.UtcNow
             };
 
             await _affiliateRepo.AddAsync(affiliate);
+
+            // 🔔 Noti xác nhận đăng ký thành công, chờ duyệt
+            await _notifService.SendToUserAsync(
+                request.UserId,
+                "Đăng ký Affiliate thành công",
+                "Yêu cầu affiliate của bạn đã được gửi, vui lòng chờ admin xét duyệt.",
+                type: "Info",
+                redirectUrl: "/dashboard/affiliate");
 
             return ApiResponse<AffiliateDto>.Ok(
                 ToDto(affiliate, user),

@@ -16,4 +16,16 @@ public static class SettingKeys
     public const string GeminiApiKey = "gemini_api_key";
     public const string GeminiModel = "gemini_model";
     public const string AffiliateCommissionRate = "Affiliate.CommissionRate";
+
+    // ── Security Scanner ─────────────────────────────────────────────────────
+
+    public const string SecurityScanIntervalMinutes = "security_scan_interval_minutes";
+    public const string SecurityTimeWindowMinutes = "security_time_window_minutes";
+    public const string SecurityMaxRequestsPerWindow = "security_max_requests_per_window";
+    public const string SecurityMaxFailedLogins = "security_max_failed_logins";
+    public const string SecurityMaxErrorRatePercent = "security_max_error_rate_percent";
+    public const string SecurityMaxScanRequests = "security_max_scan_requests";
+    public const string SecurityMaxReviewSpam = "security_max_review_spam";
+    public const string SecurityMaxOrderCancels = "security_max_order_cancels";
+    public const string SecurityBlockDurationHours = "security_block_duration_hours";
 }

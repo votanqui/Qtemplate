@@ -1,15 +1,11 @@
 ﻿using MediatR;
 using Qtemplate.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Qtemplate.Application.Features.Admin.IpBlacklist.Commands.ToggleIpBlacklist
+namespace Qtemplate.Application.Features.Admin.IpBlacklist.Commands.ToggleIpBlacklist;
+
+public class ToggleIpBlacklistCommand : IRequest<ApiResponse<object>>
 {
-    public class ToggleIpBlacklistCommand : IRequest<ApiResponse<object>>
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
+    public string? AdminEmail { get; set; }  // ← thêm để ghi vào OverrideByEmail
+    public string? Note { get; set; }  // ← ghi chú lý do mở khoá
 }

@@ -38,4 +38,8 @@ public interface ITemplateRepository
     Task<bool> CategoryExistsAsync(int categoryId);
     Task<bool> AllTagsExistAsync(List<int> tagIds);
     Task DeleteChildrenAsync(Guid templateId);
+
+    // Xóa TemplateTags + TemplateFeatures cũ, thêm lại danh sách mới trong cùng transaction
+    Task ReplaceTagsAndFeaturesAsync(Guid templateId, List<int> tagIds, List<(string Feature, int SortOrder)> features);
+    Task<int> BulkSetSaleAsync(List<Guid> templateIds, decimal? salePrice, DateTime? saleStartAt, DateTime? saleEndAt);
 }

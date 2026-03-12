@@ -8,4 +8,5 @@ public interface ISettingRepository
     Task<Dictionary<string, string>> GetGroupAsync(string? group = null);
     Task<List<Setting>> GetDetailAsync(string? group = null);  // trả Entity
     Task SetValueAsync(string key, string value, string group = "General", string? description = null);
+    Task<int> GetIntAsync(string key, int defaultValue = 0);
 }

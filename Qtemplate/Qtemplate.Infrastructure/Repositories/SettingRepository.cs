@@ -43,4 +43,9 @@ public class SettingRepository : ISettingRepository
         }
         await _db.SaveChangesAsync();
     }
+    public async Task<int> GetIntAsync(string key, int defaultValue = 0)
+    {
+        var value = await GetValueAsync(key);
+        return int.TryParse(value, out var result) ? result : defaultValue;
+    }
 }

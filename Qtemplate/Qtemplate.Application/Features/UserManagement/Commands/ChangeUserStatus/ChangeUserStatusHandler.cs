@@ -14,18 +14,22 @@ public class ChangeUserStatusHandler : IRequestHandler<ChangeUserStatusCommand, 
     private readonly IAuditLogService _auditLogService;
     private readonly IEmailSender _emailSender;
     private readonly INotificationService _notifService;
+    private readonly ISecurityScanLogRepository _scanLogRepo;
+
     public ChangeUserStatusHandler(
         IUserRepository userRepo,
         IRefreshTokenRepository tokenRepo,
         IAuditLogService auditLogService,
         IEmailSender emailSender,
-        INotificationService notifService)
+        INotificationService notifService,
+        ISecurityScanLogRepository scanLogRepo)
     {
         _userRepo = userRepo;
         _tokenRepo = tokenRepo;
         _auditLogService = auditLogService;
         _emailSender = emailSender;
         _notifService = notifService;
+        _scanLogRepo = scanLogRepo;
     }
 
     public async Task<ApiResponse<object>> Handle(
@@ -46,6 +50,11 @@ public class ChangeUserStatusHandler : IRequestHandler<ChangeUserStatusCommand, 
         if (!request.IsActive)
             await _tokenRepo.RevokeAllByUserIdAsync(user.Id, request.Reason ?? "AdminLocked");
 
+        // Khi admin chủ động MỞ KHOÁ → đánh dấu ScanLog của user này
+        // là IsAdminOverride = true để scanner không khoá lại trong cửa sổ hiện tại
+        if (request.IsActive)
+            await MarkScanLogsOverriddenAsync(request.TargetUserId, request.AdminEmail, request.Reason);
+
         await _auditLogService.LogAsync(
             userId: request.AdminId,
             userEmail: request.AdminEmail,
@@ -55,20 +64,19 @@ public class ChangeUserStatusHandler : IRequestHandler<ChangeUserStatusCommand, 
             oldValues: new { IsActive = oldStatus },
             newValues: new { IsActive = request.IsActive, request.Reason },
             ipAddress: request.IpAddress);
+
         await _notifService.SendToUserAsync(
-                user.Id,
-                request.IsActive ? "Tài khoản đã được mở khoá" : "Tài khoản đã bị khoá",
-                request.IsActive
-                    ? "Tài khoản của bạn đã được khôi phục, bạn có thể đăng nhập bình thường."
-                    : $"Tài khoản của bạn đã bị khoá. Lý do: {request.Reason}",
-    type: request.IsActive ? "Success" : "Warning");
-        // Gửi email thông báo khoá / mở khoá tài khoản
+            user.Id,
+            title: request.IsActive ? "Tài khoản đã được mở khoá" : "Tài khoản đã bị khoá",
+            message: request.IsActive
+                ? "Tài khoản của bạn đã được khôi phục, bạn có thể đăng nhập bình thường."
+                : $"Tài khoản của bạn đã bị khoá. Lý do: {request.Reason}",
+            type: request.IsActive ? "Success" : "Warning");
+
         _ = _emailSender.SendAsync(new SendEmailMessage
         {
             To = user.Email,
-            Subject = request.IsActive
-                ? "Tài khoản của bạn đã được mở khoá"
-                : "Tài khoản của bạn đã bị khoá",
+            Subject = request.IsActive ? "Tài khoản của bạn đã được mở khoá" : "Tài khoản của bạn đã bị khoá",
             Body = request.IsActive
                 ? EmailTemplates.AccountUnlocked(user.FullName)
                 : EmailTemplates.AccountLocked(user.FullName, request.Reason),
@@ -77,5 +85,22 @@ public class ChangeUserStatusHandler : IRequestHandler<ChangeUserStatusCommand, 
 
         return ApiResponse<object>.Ok(null!,
             request.IsActive ? "Đã mở khoá tài khoản" : "Đã khoá tài khoản");
+    }
+
+    private async Task MarkScanLogsOverriddenAsync(Guid userId, string? adminEmail, string? note)
+    {
+        var windowFrom = DateTime.UtcNow.AddHours(-24); // bao phủ cửa sổ tối đa
+        var (logs, _) = await _scanLogRepo.GetPagedAsync(
+            violation: null, userId: userId, ipAddress: null,
+            isOverride: false, page: 1, pageSize: 100);
+
+        foreach (var log in logs.Where(l => l.ScannedAt >= windowFrom))
+        {
+            log.IsAdminOverride = true;
+            log.OverrideByEmail = adminEmail;
+            log.OverrideNote = note ?? "Admin mở khoá tài khoản thủ công";
+            log.OverrideAt = DateTime.UtcNow;
+            await _scanLogRepo.UpdateAsync(log);
+        }
     }
 }

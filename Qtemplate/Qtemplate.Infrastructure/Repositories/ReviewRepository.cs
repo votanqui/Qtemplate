@@ -110,4 +110,16 @@ public class ReviewRepository : IReviewRepository
         .OrderBy(r => r.CreatedAt)
         .Take(limit)
         .ToListAsync();
+    public async Task<List<(Guid UserId, int Count)>> GetSpamUsersAsync(
+        DateTime from, int threshold)
+    {
+        var rows = await _db.Reviews
+            .Where(r => r.CreatedAt >= from)
+            .GroupBy(r => r.UserId)
+            .Where(g => g.Count() >= threshold)
+            .Select(g => new { UserId = g.Key, Count = g.Count() })
+            .ToListAsync();
+
+        return rows.Select(x => (x.UserId, x.Count)).ToList();
+    }
 }

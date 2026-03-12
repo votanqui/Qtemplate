@@ -16,6 +16,7 @@ public class ReplyTicketHandler : IRequestHandler<ReplyTicketCommand, ApiRespons
     private readonly IUserRepository _userRepo;
     private readonly IEmailSender _emailSender;
     private readonly INotificationService _notifService;
+
     public ReplyTicketHandler(
         ITicketRepository ticketRepo,
         IUserRepository userRepo,
@@ -67,16 +68,17 @@ public class ReplyTicketHandler : IRequestHandler<ReplyTicketCommand, ApiRespons
             ticket.UpdatedAt = DateTime.UtcNow;
             await _ticketRepo.UpdateAsync(ticket);
         }
-        await _notifService.SendToUserAsync(
+
+        // 🔔 Chỉ gửi noti khi ADMIN reply → notify user
+        if (request.IsFromAdmin)
+        {
+            await _notifService.SendToUserAsync(
                 ticket.UserId,
                 "Ticket của bạn có phản hồi mới",
                 $"[{ticket.TicketCode}] {ticket.Subject} vừa được admin phản hồi.",
                 type: "Info",
                 redirectUrl: $"/dashboard/tickets/{ticket.Id}");
-        // ── Gửi email thông báo reply ─────────────────────────────────────────
-        if (request.IsFromAdmin)
-        {
-            // Admin reply → notify user
+
             var user = await _userRepo.GetByIdAsync(ticket.UserId);
             if (user is not null)
             {

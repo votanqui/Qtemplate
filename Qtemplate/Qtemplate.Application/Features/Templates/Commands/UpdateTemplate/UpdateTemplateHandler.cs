@@ -46,8 +46,11 @@ namespace Qtemplate.Application.Features.Templates.Commands.UpdateTemplate
             template.SalePrice = dto.SalePrice;
             template.SaleStartAt = dto.SaleStartAt;
             template.SaleEndAt = dto.SaleEndAt;
-            template.ThumbnailUrl = dto.ThumbnailUrl;
-            template.PreviewUrl = dto.PreviewUrl;
+            // Chỉ ghi đè nếu DTO có giá trị — tránh frontend không gửi → ghi null mất ảnh
+            if (!string.IsNullOrEmpty(dto.ThumbnailUrl))
+                template.ThumbnailUrl = dto.ThumbnailUrl;
+            if (!string.IsNullOrEmpty(dto.PreviewUrl))
+                template.PreviewUrl = dto.PreviewUrl;
             template.TechStack = dto.TechStack;
             template.CompatibleWith = dto.CompatibleWith;
             template.FileFormat = dto.FileFormat;
@@ -56,17 +59,14 @@ namespace Qtemplate.Application.Features.Templates.Commands.UpdateTemplate
             template.IsFree = dto.IsFree;
             template.UpdatedAt = DateTime.UtcNow;
 
-            // Cập nhật Tags — xóa cũ thêm mới
-            template.TemplateTags = dto.TagIds
-                .Select(tagId => new TemplateTag { TemplateId = template.Id, TagId = tagId })
-                .ToList();
-
-            // Cập nhật Features — xóa cũ thêm mới
-            template.Features = dto.Features
-                .Select((f, i) => new TemplateFeature { TemplateId = template.Id, Feature = f, SortOrder = i })
-                .ToList();
-
+            // Lưu các field cơ bản (không đụng Features/Tags trong EF context)
             await _templateRepo.UpdateAsync(template);
+
+            // Xóa Tags + Features cũ qua ExecuteDelete, thêm lại mới — tránh EF FK severed error
+            var featureTuples = dto.Features
+                .Select((f, i) => (Feature: f, SortOrder: i))
+                .ToList();
+            await _templateRepo.ReplaceTagsAndFeaturesAsync(template.Id, dto.TagIds, featureTuples);
 
             await _auditLogService.LogAsync(
                 userId: request.AdminId,

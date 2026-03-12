@@ -9,6 +9,9 @@ public static class OrderMapper
     {
         Id = o.Id,
         OrderCode = o.OrderCode,
+        UserId = o.UserId,
+        UserName = o.User?.FullName,
+        UserEmail = o.User?.Email,
         TotalAmount = o.TotalAmount,
         DiscountAmount = o.DiscountAmount,
         FinalAmount = o.FinalAmount,

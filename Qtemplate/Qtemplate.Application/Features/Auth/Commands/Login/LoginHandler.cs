@@ -1,5 +1,4 @@
 ﻿// Qtemplate.Application/Features/Auth/Commands/Login/LoginHandler.cs
-// Bổ sung: gửi email cảnh báo đăng nhập từ địa chỉ IP/thiết bị mới
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Qtemplate.Application.DTOs;
@@ -46,12 +45,24 @@ public class LoginHandler : IRequestHandler<LoginCommand, ApiResponse<AuthRespon
         if (!user.IsActive)
             return ApiResponse<AuthResponseDto>.Fail("Tài khoản đã bị khóa, vui lòng liên hệ hỗ trợ");
 
+        // ── Sai mật khẩu → ghi AuditLog để SecurityScanner phát hiện brute-force
         if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+        {
+            await _auditLogService.LogAsync(
+                userId: user.Id.ToString(),
+                userEmail: user.Email,
+                action: "LoginFailed",
+                entityName: "User",
+                entityId: user.Id.ToString(),
+                ipAddress: request.IpAddress);
+
             return ApiResponse<AuthResponseDto>.Fail("Email hoặc mật khẩu không chính xác");
+        }
+
         if (!user.IsEmailVerified)
             return ApiResponse<AuthResponseDto>.Fail(
-                "Email chưa được xác minh. Vui lòng kiểm tra hộp thư hoặc yêu cầu gửi lại email xác minh"
-               );
+                "Email chưa được xác minh. Vui lòng kiểm tra hộp thư hoặc yêu cầu gửi lại email xác minh");
+
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshTokenValue = _jwtService.GenerateRefreshToken();
 
@@ -60,7 +71,6 @@ public class LoginHandler : IRequestHandler<LoginCommand, ApiResponse<AuthRespon
         if (isNewIp && user.IsEmailVerified)
         {
             var supportUrl = $"{_config["App:BaseUrl"]}/support";
-            // Fire-and-forget: không block login nếu gửi mail lỗi
             _ = _emailSender.SendAsync(new SendEmailMessage
             {
                 To = user.Email,
@@ -89,8 +99,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, ApiResponse<AuthRespon
             action: "Login",
             entityName: "User",
             entityId: user.Id.ToString(),
-            ipAddress: request.IpAddress
-        );
+            ipAddress: request.IpAddress);
 
         return ApiResponse<AuthResponseDto>.Ok(new AuthResponseDto
         {

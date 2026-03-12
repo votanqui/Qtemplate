@@ -5,6 +5,7 @@ using Qtemplate.Application.DTOs;
 using Qtemplate.Application.DTOs.Template.Admin;
 using Qtemplate.Application.Features.Templates.Commands.AddTemplateImage;
 using Qtemplate.Application.Features.Templates.Commands.AddTemplateVersion;
+using Qtemplate.Application.Features.Templates.Commands.BulkSetSale;
 using Qtemplate.Application.Features.Templates.Commands.ChangeTemplatePricing;
 using Qtemplate.Application.Features.Templates.Commands.ChangeTemplateStatus;
 using Qtemplate.Application.Features.Templates.Commands.CreateTemplate;
@@ -351,6 +352,21 @@ public class AdminTemplateController : ControllerBase
         {
             TemplateId = id,        // ← thêm
             Version = version,   // ← truyền "1.0.1"
+            AdminId = GetUserId().ToString(),
+            AdminEmail = GetUserEmail(),
+            IpAddress = GetIpAddress()
+        });
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+    [HttpPost("bulk-sale")]
+    public async Task<IActionResult> BulkSetSale([FromBody] BulkSetSaleDto dto)
+    {
+        var result = await _mediator.Send(new BulkSetSaleCommand
+        {
+            TemplateIds = dto.TemplateIds,
+            SalePrice = dto.SalePrice,
+            SaleStartAt = dto.SaleStartAt,
+            SaleEndAt = dto.SaleEndAt,
             AdminId = GetUserId().ToString(),
             AdminEmail = GetUserEmail(),
             IpAddress = GetIpAddress()

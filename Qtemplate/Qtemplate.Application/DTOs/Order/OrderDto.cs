@@ -4,6 +4,10 @@ public class OrderDto
 {
     public Guid Id { get; set; }
     public string OrderCode { get; set; } = string.Empty;
+    // User info
+    public Guid UserId { get; set; }
+    public string? UserName { get; set; }
+    public string? UserEmail { get; set; }
     public decimal TotalAmount { get; set; }
     public decimal DiscountAmount { get; set; }
     public decimal FinalAmount { get; set; }

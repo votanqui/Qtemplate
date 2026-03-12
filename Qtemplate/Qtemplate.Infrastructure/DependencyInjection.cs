@@ -13,6 +13,7 @@ using Qtemplate.Infrastructure.Services.FileUpload;
 using MassTransit;
 using Qtemplate.Infrastructure.Services.Email;
 using Qtemplate.Infrastructure.Services.Notification;
+using Qtemplate.Infrastructure.Services.Security;
 namespace Qtemplate.Infrastructure;
 
 public static class DependencyInjection
@@ -65,6 +66,7 @@ public static class DependencyInjection
         services.AddScoped<IStatsRepository, StatsRepository>();
 
         // ── Security / Logs ───────────────────────────────────────────────────
+        services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IIpBlacklistRepository, IpBlacklistRepository>();
         // IRequestLogRepository, IEmailLogRepository đã gộp vào IStatsRepository
         // Giữ lại nếu vẫn dùng trực tiếp ở middleware/service khác
@@ -75,6 +77,10 @@ public static class DependencyInjection
         services.AddScoped<IAuditLogService, AuditLogService>();
         services.AddScoped<IFileUploadService, FileUploadService>();
         services.AddScoped<INotificationService, NotificationService>();
+        // security
+        services.AddScoped<SuspiciousBehaviorScanner>();
+        services.AddHostedService<SuspiciousBehaviorBackgroundService>();
+        services.AddScoped<ISecurityScanLogRepository, SecurityScanLogRepository>();
         // ── AI Moderation ─────────────────────────────────────────────────────
         services.AddHttpClient<IAiModerationService, AiModerationService>();
         services.AddHostedService<AiModerationBackgroundService>();

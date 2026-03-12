@@ -17,4 +17,7 @@ public interface IOrderRepository
     Task<List<Order>> GetByDateRangeAsync(DateTime from, DateTime to);
     Task<List<Order>> GetByDateRangeWithItemsAsync(DateTime from, DateTime to);
     Task<(int TotalOrders, decimal TotalSpent)> GetUserStatsAsync(Guid userId);
+    // ── Security scanner ─────────────────────────────────────────────────────
+    /// <summary>UserId huỷ đơn nhiều lần trong khoảng thời gian.</summary>
+    Task<List<(Guid UserId, int Count)>> GetCancelSpamUsersAsync(DateTime from, int threshold);
 }

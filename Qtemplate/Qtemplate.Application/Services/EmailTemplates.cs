@@ -287,4 +287,20 @@ public static class EmailTemplates
         <p>Nếu có thắc mắc vui lòng liên hệ hỗ trợ.</p>
     </div>
     """;
+    public static string AccountSuspended(
+    string fullName,
+    string reason,
+    string blockNote) =>
+    BaseLayout("⚠ Tài khoản bị tạm khoá", "#DC2626", $"""
+            <p>Xin chào <strong>{fullName}</strong>,</p>
+            <p>Hệ thống bảo mật của chúng tôi đã phát hiện hoạt động bất thường
+               và thực hiện khoá tạm thời tài khoản của bạn.</p>
+            <div class="info-box">
+                ⚠ <strong>Lý do:</strong> {reason}<br/>
+                🕐 <strong>Trạng thái:</strong> {blockNote}
+            </div>
+            <p>Nếu bạn cho rằng đây là nhầm lẫn, vui lòng liên hệ đội ngũ hỗ trợ
+               để được xem xét và mở khoá.</p>
+            <p>Trân trọng,<br/><strong>Đội ngũ bảo mật Qtemplate</strong></p>
+            """);
 }

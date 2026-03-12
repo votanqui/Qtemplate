@@ -37,6 +37,7 @@ public class AdminApproveReviewHandler : IRequestHandler<AdminApproveReviewComma
         await _reviewRepo.UpdateTemplateRatingAsync(review.TemplateId);
 
         // 🔔 gửi notification cho user
+        var templateSlug = review.Template?.Slug;
         await _notifService.SendToUserAsync(
             review.UserId,
             request.IsApproved ? "Review đã được duyệt" : "Review bị từ chối",
@@ -44,7 +45,7 @@ public class AdminApproveReviewHandler : IRequestHandler<AdminApproveReviewComma
                 ? "Review của bạn đã được hiển thị công khai."
                 : "Review của bạn không đáp ứng tiêu chuẩn cộng đồng.",
             request.IsApproved ? "Success" : "Warning",
-            $"/templates/{review.TemplateId}"
+            templateSlug is not null ? $"/templates/{templateSlug}" : null
         );
 
         return ApiResponse<object>.Ok(

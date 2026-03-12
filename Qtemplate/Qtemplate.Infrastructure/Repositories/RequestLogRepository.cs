@@ -44,4 +44,54 @@ public class RequestLogRepository : IRequestLogRepository
 
         return (items, total);
     }
+
+    // ── Security scanner ─────────────────────────────────────────────────────
+
+    public async Task<List<(string IpAddress, string? UserId, int Count)>> GetHighVolumeAsync(
+        DateTime from, int threshold)
+    {
+        var rows = await _db.RequestLogs
+            .Where(r => r.CreatedAt >= from)
+            .GroupBy(r => new { r.IpAddress, r.UserId })
+            .Where(g => g.Count() >= threshold)
+            .Select(g => new { g.Key.IpAddress, g.Key.UserId, Count = g.Count() })
+            .ToListAsync();
+
+        return rows.Select(x => (x.IpAddress, x.UserId, x.Count)).ToList();
+    }
+
+    public async Task<List<(string IpAddress, string? UserId, int ErrorPercent)>> GetHighErrorRateAsync(
+        DateTime from, int minTotal, int errorPctThreshold)
+    {
+        var rows = await _db.RequestLogs
+            .Where(r => r.CreatedAt >= from)
+            .GroupBy(r => new { r.IpAddress, r.UserId })
+            .Select(g => new
+            {
+                g.Key.IpAddress,
+                g.Key.UserId,
+                Total = g.Count(),
+                Errors = g.Count(r => r.StatusCode >= 400)
+            })
+            .Where(x => x.Total >= minTotal)
+            .ToListAsync();
+
+        return rows
+            .Where(x => x.Errors * 100 / x.Total >= errorPctThreshold)
+            .Select(x => (x.IpAddress, x.UserId, x.Errors * 100 / x.Total))
+            .ToList();
+    }
+
+    public async Task<List<(string IpAddress, string? UserId, int Count)>> GetEndpointScanAsync(
+        DateTime from, int threshold)
+    {
+        var rows = await _db.RequestLogs
+            .Where(r => r.CreatedAt >= from && r.StatusCode == 404)
+            .GroupBy(r => new { r.IpAddress, r.UserId })
+            .Where(g => g.Count() >= threshold)
+            .Select(g => new { g.Key.IpAddress, g.Key.UserId, Count = g.Count() })
+            .ToListAsync();
+
+        return rows.Select(x => (x.IpAddress, x.UserId, x.Count)).ToList();
+    }
 }
