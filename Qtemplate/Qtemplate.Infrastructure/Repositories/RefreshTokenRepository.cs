@@ -73,4 +73,10 @@ public class RefreshTokenRepository : IRefreshTokenRepository
 
         return (items, total);
     }
+    public async Task RevokeAndAddAsync(RefreshToken oldToken, RefreshToken newToken)
+    {
+        _context.RefreshTokens.Update(oldToken);
+        await _context.RefreshTokens.AddAsync(newToken);
+        await _context.SaveChangesAsync(); // 1 round-trip duy nhất
+    }
 }

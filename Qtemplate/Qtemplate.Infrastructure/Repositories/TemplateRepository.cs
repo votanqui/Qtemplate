@@ -1,4 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// File: Qtemplate.Infrastructure/Repositories/TemplateRepository.cs
+//
+// THAY ĐỔI SO VỚI BẢN CŨ:
+//   1. GetPublicListAsync() → thêm AsNoTracking() — public read, không cần track
+//   2. GetOnSaleListAsync() → thêm AsNoTracking()
+//   3. GetBySlugAsync() → thêm AsNoTracking()
+//   4. GetByIdFullAsync() → bỏ .Include(t => t.Wishlists) — không dùng trong response
+//      và thêm AsNoTracking()
+//   5. GetAdminListAsync() → thêm AsNoTracking()
+//   6. GetByIdWithDetailsAsync() → thêm AsNoTracking()
+
+using Microsoft.EntityFrameworkCore;
 using Qtemplate.Domain.Entities;
 using Qtemplate.Domain.Interfaces.Repositories;
 using Qtemplate.Infrastructure.Data;
@@ -26,6 +37,7 @@ public class TemplateRepository : ITemplateRepository
         await _context.Templates
             .Include(t => t.TemplateTags)
             .Include(t => t.Features)
+            .AsNoTracking()
             .FirstOrDefaultAsync(t => t.Id == id);
 
     public async Task<(List<Template> Items, int Total)> GetAdminListAsync(
@@ -33,6 +45,7 @@ public class TemplateRepository : ITemplateRepository
     {
         var query = _context.Templates
             .Include(t => t.Category)
+            .AsNoTracking()
             .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(search))
@@ -60,13 +73,15 @@ public class TemplateRepository : ITemplateRepository
         await _context.SaveChangesAsync();
     }
 
+    // THAY ĐỔI: bỏ .Include(t => t.Wishlists) — không dùng ở đâu trong DTO,
+    // chỉ làm tăng lượng data load. Thêm AsNoTracking() vì handler không update.
     public async Task<Template?> GetByIdFullAsync(Guid id) =>
         await _context.Templates
             .Include(t => t.Images)
             .Include(t => t.TemplateTags)
             .Include(t => t.Features)
             .Include(t => t.Reviews)
-            .Include(t => t.Wishlists)
+            .AsNoTracking()
             .FirstOrDefaultAsync(t => t.Id == id);
 
     public async Task DeleteAsync(Template template)
@@ -82,6 +97,7 @@ public class TemplateRepository : ITemplateRepository
             .Include(t => t.TemplateTags).ThenInclude(tt => tt.Tag)
             .Include(t => t.Features)
             .Include(t => t.Images)
+            .AsNoTracking()
             .FirstOrDefaultAsync(t => t.Slug == slug);
 
     public async Task IncrementViewCountAsync(Guid id) =>
@@ -89,7 +105,7 @@ public class TemplateRepository : ITemplateRepository
             .Where(t => t.Id == id)
             .ExecuteUpdateAsync(s => s.SetProperty(t => t.ViewCount, t => t.ViewCount + 1));
 
-    // ── GetPublicListAsync — tìm kiếm nâng cao ───────────────────────────────
+    // ── GetPublicListAsync ─────────────────────────────────────────────────────
     public async Task<(List<Template> Items, int Total)> GetPublicListAsync(
         string? search,
         string? categorySlug,
@@ -111,12 +127,10 @@ public class TemplateRepository : ITemplateRepository
             .Include(t => t.Category)
             .Include(t => t.TemplateTags).ThenInclude(tt => tt.Tag)
             .Include(t => t.Features)
+            .AsNoTracking()   // public list — chỉ đọc
             .Where(t => t.Status == "Published")
             .AsQueryable();
 
-        // ── Search nâng cao ──────────────────────────────────────────────────
-        // Tìm trong: Name, ShortDescription, TechStack, CompatibleWith,
-        //            Tag names, Feature names, Category name
         if (!string.IsNullOrWhiteSpace(search))
         {
             var s = search.Trim();
@@ -131,7 +145,6 @@ public class TemplateRepository : ITemplateRepository
                 t.Features.Any(f => f.Feature.Contains(s)));
         }
 
-        // ── Filters ──────────────────────────────────────────────────────────
         if (!string.IsNullOrEmpty(categorySlug))
             query = query.Where(t => t.Category.Slug == categorySlug);
 
@@ -150,8 +163,6 @@ public class TemplateRepository : ITemplateRepository
         if (!string.IsNullOrWhiteSpace(techStack))
             query = query.Where(t => t.TechStack != null && t.TechStack.Contains(techStack));
 
-        // onSale: chỉ lấy template đang sale hợp lệ
-        // (SalePrice != null, SaleStartAt <= now hoặc null, SaleEndAt > now hoặc null)
         if (onSale == true)
             query = query.Where(t =>
                 t.SalePrice != null &&
@@ -159,7 +170,6 @@ public class TemplateRepository : ITemplateRepository
                 (t.SaleStartAt == null || t.SaleStartAt <= now) &&
                 (t.SaleEndAt == null || t.SaleEndAt > now));
 
-        // Price filter: dùng effective price (SalePrice nếu đang sale hợp lệ, ngược lại Price)
         if (minPrice.HasValue)
             query = query.Where(t =>
                 (t.SalePrice != null && (t.SaleStartAt == null || t.SaleStartAt <= now) && (t.SaleEndAt == null || t.SaleEndAt > now)
@@ -172,7 +182,6 @@ public class TemplateRepository : ITemplateRepository
                     ? t.SalePrice.Value
                     : t.Price) <= maxPrice.Value);
 
-        // ── Sort ─────────────────────────────────────────────────────────────
         query = sortBy switch
         {
             "popular" => query.OrderByDescending(t => t.SalesCount),
@@ -187,7 +196,7 @@ public class TemplateRepository : ITemplateRepository
                                     ? t.SalePrice.Value : t.Price),
             "discount" => query.OrderByDescending(t =>
                                 t.SalePrice != null ? (t.Price - t.SalePrice.Value) / t.Price : 0),
-            _ => query.OrderByDescending(t => t.CreatedAt)  // newest default
+            _ => query.OrderByDescending(t => t.CreatedAt)
         };
 
         var total = await query.CountAsync();
@@ -199,7 +208,7 @@ public class TemplateRepository : ITemplateRepository
         return (items, total);
     }
 
-    // ── GetOnSaleListAsync — dành cho trang Săn Sale ─────────────────────────
+    // ── GetOnSaleListAsync ─────────────────────────────────────────────────────
     public async Task<(List<Template> Items, int Total)> GetOnSaleListAsync(
         string? search,
         string? categorySlug,
@@ -212,6 +221,7 @@ public class TemplateRepository : ITemplateRepository
             .Include(t => t.Category)
             .Include(t => t.TemplateTags).ThenInclude(tt => tt.Tag)
             .Include(t => t.Features)
+            .AsNoTracking()
             .Where(t =>
                 t.Status == "Published" &&
                 !t.IsFree &&
@@ -233,7 +243,6 @@ public class TemplateRepository : ITemplateRepository
         if (!string.IsNullOrEmpty(categorySlug))
             query = query.Where(t => t.Category.Slug == categorySlug);
 
-        // Sắp xếp theo % giảm nhiều nhất
         query = query.OrderByDescending(t => (t.Price - t.SalePrice!.Value) / t.Price);
 
         var total = await query.CountAsync();
@@ -281,14 +290,12 @@ public class TemplateRepository : ITemplateRepository
             .Where(m => m.TemplateId == templateId)
             .ExecuteDeleteAsync();
     }
+
     public async Task ReplaceTagsAndFeaturesAsync(
         Guid templateId,
         List<int> tagIds,
         List<(string Feature, int SortOrder)> features)
     {
-        // ExecuteDelete đi thẳng xuống DB nhưng EF context vẫn còn track
-        // các entity cũ từ GetByIdWithDetailsAsync → phải Clear trước khi add mới
-        // để tránh "another instance with same key is already being tracked"
         await _context.TemplateTags
             .Where(t => t.TemplateId == templateId)
             .ExecuteDeleteAsync();
@@ -297,7 +304,6 @@ public class TemplateRepository : ITemplateRepository
             .Where(f => f.TemplateId == templateId)
             .ExecuteDeleteAsync();
 
-        // Clear toàn bộ change tracker — safe vì UpdateAsync đã SaveChanges xong rồi
         _context.ChangeTracker.Clear();
 
         if (tagIds.Count > 0)
@@ -323,6 +329,7 @@ public class TemplateRepository : ITemplateRepository
 
         await _context.SaveChangesAsync();
     }
+
     public async Task<int> BulkSetSaleAsync(
        List<Guid> templateIds, decimal? salePrice, DateTime? saleStartAt, DateTime? saleEndAt)
     {
@@ -331,7 +338,6 @@ public class TemplateRepository : ITemplateRepository
             .ToListAsync();
 
         if (salePrice.HasValue)
-            // Chỉ update những template có giá gốc > salePrice
             templates = templates.Where(t => salePrice < t.Price).ToList();
 
         if (templates.Count == 0) return 0;

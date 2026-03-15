@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Qtemplate.Application.Features.Admin.Notifications.Commands.SendNotification;
+using Qtemplate.Application.Features.Admin.Notifications.Queries.GetAdminNotifications;
 
 namespace Qtemplate.Controllers.Admin;
 
@@ -19,5 +20,23 @@ public class AdminNotificationController : ControllerBase
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
+    }
+    [HttpGet]
+    public async Task<IActionResult> GetHistory(
+        [FromQuery] Guid? userId,
+        [FromQuery] string? type,
+        [FromQuery] string? search,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
+    {
+        var result = await _mediator.Send(new GetAdminNotificationsQuery
+        {
+            UserId = userId,
+            Type = type,
+            Search = search,
+            Page = page,
+            PageSize = pageSize,
+        });
+        return Ok(result);
     }
 }

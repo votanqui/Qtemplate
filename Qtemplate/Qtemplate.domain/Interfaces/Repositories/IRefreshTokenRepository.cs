@@ -11,4 +11,5 @@ public interface IRefreshTokenRepository
     Task<bool> HasLoginFromIpAsync(Guid userId, string ipAddress);
     Task<(List<RefreshToken> Items, int Total)> GetPagedAsync(
     Guid? userId, bool? isActive, int page, int pageSize);
+    Task RevokeAndAddAsync(RefreshToken oldToken, RefreshToken newToken);
 }

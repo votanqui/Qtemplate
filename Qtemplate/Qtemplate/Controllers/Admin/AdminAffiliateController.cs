@@ -5,6 +5,7 @@ using Qtemplate.Application.DTOs.Affiliate;
 using Qtemplate.Application.Features.Affiliates.Commands.ApproveAffiliate;
 using Qtemplate.Application.Features.Affiliates.Commands.PayoutTransaction;
 using Qtemplate.Application.Features.Affiliates.Queries.GetAdminAffiliates;
+using Qtemplate.Application.Features.Affiliates.Queries.GetAdminAffiliateTransactions;
 
 namespace Qtemplate.Controllers.Admin;
 
@@ -51,5 +52,21 @@ public class AdminAffiliateController : ControllerBase
     {
         var result = await _mediator.Send(new PayoutTransactionCommand { TransactionId = id });
         return result.Success ? Ok(result) : BadRequest(result);
+    }
+    [HttpGet("{id:int}/transactions")]
+    public async Task<IActionResult> GetTransactions(
+    int id,
+    [FromQuery] string? status,
+    [FromQuery] int page = 1,
+    [FromQuery] int pageSize = 20)
+    {
+        var result = await _mediator.Send(new GetAdminAffiliateTransactionsQuery
+        {
+            AffiliateId = id,
+            Status = status,
+            Page = page,
+            PageSize = pageSize,
+        });
+        return result.Success ? Ok(result) : NotFound(result);
     }
 }

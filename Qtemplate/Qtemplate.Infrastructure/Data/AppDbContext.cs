@@ -1,4 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// File: Qtemplate.Infrastructure/Data/AppDbContext.cs
+//
+// THAY ĐỔI SO VỚI BẢN CŨ:
+//   Thêm các index còn thiếu vào section "INDEX — Performance":
+//   - Analytics.CreatedAt, Analytics.PageUrl, Analytics.IpAddress   (range query + groupby)
+//   - RequestLog.StatusCode                                          (filter theo status)
+//   - Template.Status, Template.CategoryId                          (public list filter)
+//   - Template.IsFeatured, Template.IsNew, Template.SalesCount      (sort/filter hot nhất)
+//   - Payment.CreatedAt, Payment.Status, Payment.OrderId            (stats queries)
+//   - Order.CouponCode (partial index, chỉ khi NOT NULL)            (coupon usage query)
+//   - IpBlacklist.IsActive                                          (middleware filter)
+//   - EmailLog.CreatedAt, EmailLog.Status                           (paged query)
+
+using Microsoft.EntityFrameworkCore;
 using Qtemplate.Domain.Entities;
 
 namespace Qtemplate.Infrastructure.Data;
@@ -53,11 +66,11 @@ public class AppDbContext : DbContext
     public DbSet<Analytics> Analytics => Set<Analytics>();
     public DbSet<DailyStat> DailyStats => Set<DailyStat>();
     public DbSet<SecurityScanLog> SecurityScanLogs => Set<SecurityScanLog>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // ======================================================
         // GLOBAL: Tắt cascade delete toàn bộ để tránh lỗi SQL Server
-        // Chỉ bật lại cascade cho những chỗ thực sự cần bên dưới
         // ======================================================
         foreach (var relationship in modelBuilder.Model.GetEntityTypes()
             .SelectMany(e => e.GetForeignKeys()))
@@ -72,7 +85,7 @@ public class AppDbContext : DbContext
             .HasKey(tt => new { tt.TemplateId, tt.TagId });
 
         // ======================================================
-        // INDEX
+        // INDEX — Unique constraints
         // ======================================================
         modelBuilder.Entity<Wishlist>()
             .HasIndex(w => new { w.UserId, w.TemplateId }).IsUnique();
@@ -103,6 +116,98 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<IpBlacklist>()
             .HasIndex(x => x.IpAddress).IsUnique();
+
+        // ======================================================
+        // INDEX — Performance (các cột query thường xuyên)
+        // ======================================================
+
+        // RefreshToken — login, renew, revoke, cleanup
+        modelBuilder.Entity<RefreshToken>()
+            .HasIndex(x => x.UserId);
+        modelBuilder.Entity<RefreshToken>()
+            .HasIndex(x => new { x.IsRevoked, x.ExpiresAt });
+
+        // AuditLog — admin filter theo thời gian / email / action
+        modelBuilder.Entity<AuditLog>()
+            .HasIndex(x => x.CreatedAt);
+        modelBuilder.Entity<AuditLog>()
+            .HasIndex(x => x.UserEmail);
+        modelBuilder.Entity<AuditLog>()
+            .HasIndex(x => x.Action);
+
+        // RequestLog — stats, security scanner, paged admin view
+        modelBuilder.Entity<RequestLog>()
+            .HasIndex(x => x.CreatedAt);
+        modelBuilder.Entity<RequestLog>()
+            .HasIndex(x => x.IpAddress);
+
+        // Notification — user inbox, unread count
+        modelBuilder.Entity<Notification>()
+            .HasIndex(x => new { x.UserId, x.IsRead });
+        modelBuilder.Entity<Notification>()
+            .HasIndex(x => x.CreatedAt);
+
+        // Order — stats, reminder service, admin list
+        modelBuilder.Entity<Order>()
+            .HasIndex(x => new { x.Status, x.CreatedAt });
+        modelBuilder.Entity<Order>()
+            .HasIndex(x => x.UserId);
+        // THÊM MỚI: coupon usage query — partial index (chỉ các row có CouponCode)
+        modelBuilder.Entity<Order>()
+            .HasIndex(x => x.CouponCode)
+            .HasFilter("[CouponCode] IS NOT NULL");
+
+        // AffiliateTransaction — auto-approve service, paged query
+        modelBuilder.Entity<AffiliateTransaction>()
+            .HasIndex(x => new { x.Status, x.CreatedAt });
+        modelBuilder.Entity<AffiliateTransaction>()
+            .HasIndex(x => x.AffiliateId);
+
+        // THÊM MỚI: Analytics — range query là query chính của GetAnalyticsStatsHandler
+        modelBuilder.Entity<Analytics>()
+            .HasIndex(x => x.CreatedAt);
+        // composite cho filter theo IP + thời gian (security + analytics)
+        modelBuilder.Entity<Analytics>()
+            .HasIndex(x => new { x.CreatedAt, x.IpAddress });
+        // groupby theo PageUrl
+        modelBuilder.Entity<Analytics>()
+            .HasIndex(x => x.PageUrl);
+
+        // THÊM MỚI: Template — public list filter/sort hottest
+        modelBuilder.Entity<Template>()
+            .HasIndex(x => x.Status);                          // WHERE Status = 'Published'
+        modelBuilder.Entity<Template>()
+            .HasIndex(x => x.CategoryId);                     // WHERE CategoryId = ?
+        modelBuilder.Entity<Template>()
+            .HasIndex(x => new { x.Status, x.CategoryId });   // composite (published + category)
+        modelBuilder.Entity<Template>()
+            .HasIndex(x => x.IsFeatured);                     // isFeatured filter
+        modelBuilder.Entity<Template>()
+            .HasIndex(x => x.IsNew);                          // isNew filter
+        modelBuilder.Entity<Template>()
+            .HasIndex(x => x.SalesCount);                     // ORDER BY popular
+        modelBuilder.Entity<Template>()
+            .HasIndex(x => x.CreatedAt);                      // ORDER BY newest (default)
+
+        // THÊM MỚI: Payment — stats queries filter theo thời gian và status
+        modelBuilder.Entity<Payment>()
+            .HasIndex(x => x.CreatedAt);
+        modelBuilder.Entity<Payment>()
+            .HasIndex(x => x.Status);
+        modelBuilder.Entity<Payment>()
+            .HasIndex(x => new { x.Status, x.CreatedAt });    // composite cho stats range query
+
+        // THÊM MỚI: IpBlacklist — middleware filter IsActive (rất nhiều lần gọi)
+        modelBuilder.Entity<IpBlacklist>()
+            .HasIndex(x => x.IsActive);
+        modelBuilder.Entity<IpBlacklist>()
+            .HasIndex(x => new { x.IsActive, x.ExpiredAt });  // composite cho cache refresh query
+
+        // THÊM MỚI: EmailLog — paged admin query + filter
+        modelBuilder.Entity<EmailLog>()
+            .HasIndex(x => x.CreatedAt);
+        modelBuilder.Entity<EmailLog>()
+            .HasIndex(x => x.Status);
 
         // ======================================================
         // USER
@@ -237,6 +342,10 @@ public class AppDbContext : DbContext
         {
             e.Property(x => x.IpAddress).HasMaxLength(50).IsRequired();
         });
+
+        // ======================================================
+        // SECURITY SCAN LOG
+        // ======================================================
         modelBuilder.Entity<SecurityScanLog>(e =>
         {
             e.HasIndex(x => new { x.Violation, x.IpAddress, x.UserId, x.ScannedAt });

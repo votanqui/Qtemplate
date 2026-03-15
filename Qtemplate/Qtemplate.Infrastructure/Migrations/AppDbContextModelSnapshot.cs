@@ -95,13 +95,15 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AffiliateId");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("Status", "CreatedAt");
 
                     b.ToTable("AffiliateTransactions");
                 });
@@ -134,14 +136,14 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.Property<string>("IpAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("OS")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PageUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Referer")
                         .HasColumnType("nvarchar(max)");
@@ -166,6 +168,12 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("PageUrl");
+
+                    b.HasIndex("CreatedAt", "IpAddress");
+
                     b.ToTable("Analytics");
                 });
 
@@ -179,7 +187,7 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.Property<string>("Action")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -204,12 +212,18 @@ namespace Qtemplate.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Action");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("UserEmail");
 
                     b.ToTable("AuditLogs");
                 });
@@ -436,7 +450,7 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Subject")
                         .IsRequired()
@@ -451,6 +465,10 @@ namespace Qtemplate.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("Status");
 
                     b.ToTable("EmailLogs");
                 });
@@ -491,6 +509,10 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.HasIndex("IpAddress")
                         .IsUnique();
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("IsActive", "ExpiredAt");
 
                     b.ToTable("IpBlacklists");
                 });
@@ -584,7 +606,9 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("UserId", "IsRead");
 
                     b.ToTable("Notifications");
                 });
@@ -606,7 +630,7 @@ namespace Qtemplate.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CouponCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -647,7 +671,12 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CouponCode")
+                        .HasFilter("[CouponCode] IS NOT NULL");
+
                     b.HasIndex("UserId");
+
+                    b.HasIndex("Status", "CreatedAt");
 
                     b.ToTable("Orders");
                 });
@@ -734,8 +763,14 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("OrderId")
                         .IsUnique();
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("Status", "CreatedAt");
 
                     b.ToTable("Payments");
                 });
@@ -787,6 +822,8 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("IsRevoked", "ExpiresAt");
+
                     b.ToTable("RefreshTokens");
                 });
 
@@ -807,7 +844,7 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.Property<string>("IpAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Method")
                         .IsRequired()
@@ -829,6 +866,10 @@ namespace Qtemplate.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("IpAddress");
 
                     b.ToTable("RequestLogs");
                 });
@@ -1181,8 +1222,20 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("IsFeatured");
+
+                    b.HasIndex("IsNew");
+
+                    b.HasIndex("SalesCount");
+
                     b.HasIndex("Slug")
                         .IsUnique();
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("Status", "CategoryId");
 
                     b.ToTable("Templates");
                 });
@@ -1341,6 +1394,9 @@ namespace Qtemplate.Infrastructure.Migrations
 
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("BlockedUntil")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()

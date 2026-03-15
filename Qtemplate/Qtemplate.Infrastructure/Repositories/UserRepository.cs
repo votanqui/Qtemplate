@@ -75,4 +75,10 @@ public class UserRepository : IUserRepository
         .Where(u => u.IsActive)
         .Select(u => u.Id)
         .ToListAsync();
+    public async Task AddRefreshTokenAndUpdateUserAsync(User user, RefreshToken token)
+    {
+        _context.Users.Update(user);
+        await _context.RefreshTokens.AddAsync(token);
+        await _context.SaveChangesAsync(); // 1 round-trip duy nhất
+    }
 }

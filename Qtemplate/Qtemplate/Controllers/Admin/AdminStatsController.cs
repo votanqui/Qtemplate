@@ -13,6 +13,7 @@ using Qtemplate.Application.Features.Stats.Queries.GetIpBlacklist;
 using Qtemplate.Application.Features.Stats.Queries.GetEmailLogs;
 using Qtemplate.Application.Features.Stats.Queries.GetRequestLogs;
 using Qtemplate.Application.Features.Stats.Queries.GetSecurityStats;
+using Qtemplate.Application.Features.Stats.Queries.GetDailyStats;
 namespace Qtemplate.Controllers.Admin;
 
 [ApiController]
@@ -113,6 +114,20 @@ public class AdminStatsController : ControllerBase
     [FromQuery] DateTime? to)
     {
         var result = await _mediator.Send(new GetSecurityStatsQuery { From = from, To = to });
+        return Ok(result);
+    }
+    [HttpGet("daily")]
+    public async Task<IActionResult> GetDailyStats(
+    [FromQuery] string? period,
+    [FromQuery] DateTime? from,
+    [FromQuery] DateTime? to)
+    {
+        var result = await _mediator.Send(new GetDailyStatsQuery
+        {
+            Period = period ?? "daily",
+            From = from,
+            To = to,
+        });
         return Ok(result);
     }
 }

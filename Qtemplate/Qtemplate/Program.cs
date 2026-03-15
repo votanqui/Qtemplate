@@ -1,18 +1,22 @@
-﻿using System.Security.Claims;
+﻿using System.IO.Compression;
+using System.Security.Claims;
 using System.Text;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
 using Qtemplate.Application;
-using Qtemplate.Application.Services.Interfaces;
 using Qtemplate.Infrastructure;
-using Qtemplate.Infrastructure.Hubs;          // ← THÊM
-using Qtemplate.Infrastructure.Services.FileUpload;
+using Qtemplate.Infrastructure.Hubs;
+using Qtemplate.Infrastructure.Services.AuditLog;
 using Qtemplate.Middleware;
+using Qtemplate.Middleware.Analyticc;
+using Qtemplate.Middleware.RequestLogs;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+ThreadPool.SetMinThreads(200, 200);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -20,21 +24,61 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+
+
 builder.Services.AddMemoryCache();
-builder.Services.AddSignalR();                 // ← THÊM
+
+
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.EnableForHttps = true;
+    opts.Providers.Add<BrotliCompressionProvider>();
+    opts.Providers.Add<GzipCompressionProvider>();
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+    {
+        "application/json",
+        "application/problem+json",
+    });
+});
+builder.Services.Configure<BrotliCompressionProviderOptions>(o =>
+    o.Level = CompressionLevel.Fastest); 
+builder.Services.Configure<GzipCompressionProviderOptions>(o =>
+    o.Level = CompressionLevel.Fastest);
+
+builder.Services.AddOutputCache(opts =>
+{
+    opts.AddPolicy("templates", b => b
+        .Expire(TimeSpan.FromSeconds(30))
+        .SetVaryByQuery("page", "pageSize", "search", "categorySlug", "tagSlug",
+                        "isFree", "minPrice", "maxPrice", "sortBy",
+                        "onSale", "isFeatured", "isNew", "techStack")
+        .Tag("templates")); 
+
+    opts.AddPolicy("template-detail", b => b
+        .Expire(TimeSpan.FromSeconds(60))
+        .SetVaryByRouteValue("slug")
+        .Tag("templates"));
+
+    opts.AddPolicy("categories", b => b
+        .Expire(TimeSpan.FromSeconds(300))
+        .Tag("categories"));
+});
+
+builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<RequestLogQueue>();
+builder.Services.AddHostedService<RequestLogDrainService>();
+
+builder.Services.AddSingleton<AnalyticsQueue>();
+builder.Services.AddHostedService<AnalyticsDrainService>();
+
+builder.Services.AddSingleton<AuditLogQueue>();
+builder.Services.AddHostedService<AuditLogDrainService>();
 
 builder.Services.Configure<IpRateLimitOptions>(
     builder.Configuration.GetSection("IpRateLimiting"));
 builder.Services.AddInMemoryRateLimiting();
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-
-var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]
-    ?? throw new InvalidOperationException("Jwt:SecretKey chưa được cấu hình");
-var jwtIssuer = builder.Configuration["Jwt:Issuer"]
-    ?? throw new InvalidOperationException("Jwt:Issuer chưa được cấu hình");
-var jwtAudience = builder.Configuration["Jwt:Audience"]
-    ?? throw new InvalidOperationException("Jwt:Audience chưa được cấu hình");
-
 builder.Services.Configure<IpRateLimitOptions>(options =>
 {
     options.QuotaExceededResponse = new QuotaExceededResponse
@@ -45,6 +89,14 @@ builder.Services.Configure<IpRateLimitOptions>(options =>
     };
 });
 
+
+var jwtSecretKey = builder.Configuration["Jwt:SecretKey"]
+    ?? throw new InvalidOperationException("Jwt:SecretKey chưa được cấu hình");
+var jwtIssuer = builder.Configuration["Jwt:Issuer"]
+    ?? throw new InvalidOperationException("Jwt:Issuer chưa được cấu hình");
+var jwtAudience = builder.Configuration["Jwt:Audience"]
+    ?? throw new InvalidOperationException("Jwt:Audience chưa được cấu hình");
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -54,22 +106,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(jwtSecretKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
             ValidIssuer = jwtIssuer,
             ValidAudience = jwtAudience,
-            RoleClaimType = ClaimTypes.Role
+            RoleClaimType = ClaimTypes.Role,
+            ClockSkew = TimeSpan.Zero
         };
 
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = context =>
             {
-                // Cookie (giữ nguyên)
                 if (context.Request.Cookies.ContainsKey("accessToken"))
                     context.Token = context.Request.Cookies["accessToken"];
 
-                // Query string cho SignalR WebSocket   ← THÊM
                 var accessToken = context.Request.Query["access_token"];
                 var path = context.HttpContext.Request.Path;
                 if (!string.IsNullOrEmpty(accessToken)
@@ -83,13 +133,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 context.HandleResponse();
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.ContentType = "application/json";
-                return context.Response.WriteAsync("{\"message\": \"Bạn chưa đăng nhập hoặc token không hợp lệ.\"}");
+                return context.Response.WriteAsync(
+                    "{\"success\":false,\"message\":\"Bạn chưa đăng nhập hoặc token không hợp lệ.\"}");
             },
             OnForbidden = context =>
             {
                 context.Response.StatusCode = StatusCodes.Status403Forbidden;
                 context.Response.ContentType = "application/json";
-                return context.Response.WriteAsync("{\"message\": \"Bạn không có quyền truy cập tài nguyên này.\"}");
+                return context.Response.WriteAsync(
+                    "{\"success\":false,\"message\":\"Bạn không có quyền truy cập tài nguyên này.\"}");
             }
         };
     });
@@ -98,24 +150,19 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("RequireCustomer", policy => policy.RequireRole("Customer"));
-    options.AddPolicy("RequireHost", policy => policy.RequireRole("host"));
 });
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy =>
-        {
-            policy.WithOrigins(
-                    "http://localhost:5173",
-                    "http://localhost:5174"
-                )
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-        });
+    options.AddPolicy("AllowFrontend", policy =>
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:5174")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials());
 });
-builder.Services.AddAuthorization();
+
 
 var app = builder.Build();
 
@@ -125,15 +172,23 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseResponseCompression();
+
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
+app.UseStaticFiles();
+
 app.UseAnalyticsTracking();
 app.UseIpBlacklist();
 app.UseRequestLogging();
 app.UseIpRateLimiting();
 app.UseAuthentication();
 app.UseAuthorization();
+
+
+app.UseOutputCache();
+
 app.MapControllers();
-app.MapHub<NotificationHub>("/hubs/notifications");  // ← THÊM
-app.UseStaticFiles();
+app.MapHub<NotificationHub>("/hubs/notifications");
+
 app.Run();

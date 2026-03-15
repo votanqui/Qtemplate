@@ -6,6 +6,7 @@ using Qtemplate.Application.Features.Affiliates.Commands;
 using Qtemplate.Application.Features.Affiliates.Commands.RegisterAffiliate;
 using Qtemplate.Application.Features.Affiliates.Queries;
 using Qtemplate.Application.Features.Affiliates.Queries.GetAffiliateStats;
+using Qtemplate.Application.Features.Affiliates.Queries.GetMyTransactions;
 
 namespace Qtemplate.Controllers;
 
@@ -42,6 +43,24 @@ public class AffiliateController : ControllerBase
         if (userId == Guid.Empty) return Unauthorized();
 
         var result = await _mediator.Send(new GetAffiliateStatsQuery { UserId = userId });
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+    [HttpGet("transactions")]
+    public async Task<IActionResult> GetMyTransactions(
+    [FromQuery] string? status,
+    [FromQuery] int page = 1,
+    [FromQuery] int pageSize = 20)
+    {
+        var userId = GetUserId();
+        if (userId == Guid.Empty) return Unauthorized();
+
+        var result = await _mediator.Send(new GetMyAffiliateTransactionsQuery
+        {
+            UserId = userId,
+            Status = status,
+            Page = page,
+            PageSize = pageSize,
+        });
         return result.Success ? Ok(result) : BadRequest(result);
     }
 }

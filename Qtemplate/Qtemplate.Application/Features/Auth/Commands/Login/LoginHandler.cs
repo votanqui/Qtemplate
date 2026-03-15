@@ -1,4 +1,5 @@
-﻿// Qtemplate.Application/Features/Auth/Commands/Login/LoginHandler.cs
+﻿// File: Qtemplate.Application/Features/Auth/Commands/Login/LoginHandler.cs
+
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Qtemplate.Application.DTOs;
@@ -13,6 +14,9 @@ namespace Qtemplate.Application.Features.Auth.Commands.Login;
 
 public class LoginHandler : IRequestHandler<LoginCommand, ApiResponse<AuthResponseDto>>
 {
+    // Giới hạn concurrent BCrypt để tránh CPU saturation khi nhiều login đồng thời
+    private static readonly SemaphoreSlim _bcryptSemaphore = new(Environment.ProcessorCount * 2);
+
     private readonly IUserRepository _userRepo;
     private readonly IRefreshTokenRepository _refreshTokenRepo;
     private readonly IJwtTokenService _jwtService;
@@ -36,7 +40,8 @@ public class LoginHandler : IRequestHandler<LoginCommand, ApiResponse<AuthRespon
         _config = config;
     }
 
-    public async Task<ApiResponse<AuthResponseDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<AuthResponseDto>> Handle(
+        LoginCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepo.GetByEmailAsync(request.Email);
         if (user is null)
@@ -45,10 +50,22 @@ public class LoginHandler : IRequestHandler<LoginCommand, ApiResponse<AuthRespon
         if (!user.IsActive)
             return ApiResponse<AuthResponseDto>.Fail("Tài khoản đã bị khóa, vui lòng liên hệ hỗ trợ");
 
-        // ── Sai mật khẩu → ghi AuditLog để SecurityScanner phát hiện brute-force
-        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+        // ── BCrypt verify — giới hạn concurrency tránh CPU saturate ──────────
+        await _bcryptSemaphore.WaitAsync(cancellationToken);
+        bool passwordOk;
+        try
         {
-            await _auditLogService.LogAsync(
+            passwordOk = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+        }
+        finally
+        {
+            _bcryptSemaphore.Release();
+        }
+
+        if (!passwordOk)
+        {
+            // Fire-and-forget audit log — không block response
+            _ = _auditLogService.LogAsync(
                 userId: user.Id.ToString(),
                 userEmail: user.Email,
                 action: "LoginFailed",
@@ -59,28 +76,33 @@ public class LoginHandler : IRequestHandler<LoginCommand, ApiResponse<AuthRespon
             return ApiResponse<AuthResponseDto>.Fail("Email hoặc mật khẩu không chính xác");
         }
 
+        // ── Check email verify SAU BCrypt (tránh leak thông tin thứ tự) ──────
         if (!user.IsEmailVerified)
             return ApiResponse<AuthResponseDto>.Fail(
                 "Email chưa được xác minh. Vui lòng kiểm tra hộp thư hoặc yêu cầu gửi lại email xác minh");
 
+        // ── Sinh token ────────────────────────────────────────────────────────
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshTokenValue = _jwtService.GenerateRefreshToken();
 
-        // Kiểm tra IP mới — gửi cảnh báo nếu chưa từng đăng nhập từ IP này
+        // ── Kiểm tra IP mới — fire-and-forget email cảnh báo ─────────────────
         var isNewIp = !await _refreshTokenRepo.HasLoginFromIpAsync(user.Id, request.IpAddress);
-        if (isNewIp && user.IsEmailVerified)
+        if (isNewIp)
         {
             var supportUrl = $"{_config["App:BaseUrl"]}/support";
             _ = _emailSender.SendAsync(new SendEmailMessage
             {
                 To = user.Email,
                 Subject = "Cảnh báo đăng nhập từ thiết bị mới",
-                Body = EmailTemplates.SuspiciousLogin(user.FullName, request.IpAddress, request.UserAgent, supportUrl),
+                Body = EmailTemplates.SuspiciousLogin(
+                    user.FullName, request.IpAddress, request.UserAgent, supportUrl),
                 Template = "SuspiciousLogin"
             });
         }
 
-        await _refreshTokenRepo.AddAsync(new RefreshToken
+        // ── Gộp RefreshToken + UpdateUser vào 1 SaveChanges ──────────────────
+        user.LastLoginAt = DateTime.UtcNow;
+        await _userRepo.AddRefreshTokenAndUpdateUserAsync(user, new RefreshToken
         {
             UserId = user.Id,
             Token = refreshTokenValue,
@@ -90,10 +112,8 @@ public class LoginHandler : IRequestHandler<LoginCommand, ApiResponse<AuthRespon
             CreatedAt = DateTime.UtcNow
         });
 
-        user.LastLoginAt = DateTime.UtcNow;
-        await _userRepo.UpdateAsync(user);
-
-        await _auditLogService.LogAsync(
+        // Fire-and-forget audit log — không block response
+        _ = _auditLogService.LogAsync(
             userId: user.Id.ToString(),
             userEmail: user.Email,
             action: "Login",

@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿// File: Qtemplate.Application/Features/Auth/Commands/RenewToken/RenewTokenHandler.cs
+
+using MediatR;
 using Qtemplate.Application.DTOs;
 using Qtemplate.Application.DTOs.User;
 using Qtemplate.Application.Services.Interfaces;
@@ -23,7 +25,8 @@ public class RefreshTokenHandler : IRequestHandler<RenewTokenCommand, ApiRespons
         _jwtService = jwtService;
     }
 
-    public async Task<ApiResponse<AuthResponseDto>> Handle(RenewTokenCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<AuthResponseDto>> Handle(
+        RenewTokenCommand request, CancellationToken cancellationToken)
     {
         var token = await _refreshTokenRepo.GetByTokenAsync(request.RefreshToken);
 
@@ -40,21 +43,19 @@ public class RefreshTokenHandler : IRequestHandler<RenewTokenCommand, ApiRespons
         if (user is null || !user.IsActive)
             return ApiResponse<AuthResponseDto>.Fail("Tài khoản không tồn tại hoặc đã bị khóa");
 
-        token.IsRevoked = true;
-        token.RevokedAt = DateTime.UtcNow;
-        token.RevokedReason = "Được thay thế bởi token mới";
-
         var newAccessToken = _jwtService.GenerateAccessToken(user);
         var newRefreshTokenValue = _jwtService.GenerateRefreshToken();
 
+        // ── Gộp revoke + add mới vào 1 SaveChangesAsync ──────────────────────
+        token.IsRevoked = true;
+        token.RevokedAt = DateTime.UtcNow;
+        token.RevokedReason = "Được thay thế bởi token mới";
         token.ReplacedByToken = newRefreshTokenValue;
-        await _refreshTokenRepo.UpdateAsync(token);
 
-        await _refreshTokenRepo.AddAsync(new RefreshToken
+        await _refreshTokenRepo.RevokeAndAddAsync(token, new RefreshToken
         {
             UserId = user.Id,
             Token = newRefreshTokenValue,
-            ReplacedByToken = token.Token,
             IpAddress = request.IpAddress,
             UserAgent = request.UserAgent,
             ExpiresAt = DateTime.UtcNow.AddDays(7),

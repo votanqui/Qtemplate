@@ -197,6 +197,7 @@ public class SuspiciousBehaviorScanner
         if (user.IsActive)
         {
             user.IsActive = false;
+            user.BlockedUntil = expiredAt;
             user.UpdatedAt = DateTime.UtcNow;
             await _userRepo.UpdateAsync(user);
 

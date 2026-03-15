@@ -283,12 +283,6 @@ D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\scopedcss\bundle\Qtemplate.
 D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets.build.json
 D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets.development.json
 D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets\msbuild.Qtemplate.Microsoft.AspNetCore.StaticWebAssets.props
-D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets\msbuild.Qtemplate.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets\msbuild.build.Qtemplate.props
-D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Qtemplate.props
-D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Qtemplate.props
-D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets.pack.json
 D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\Qtemplate.csproj.Up2Date
 D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\Qtemplate.dll
 D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\refint\Qtemplate.dll
@@ -304,4 +298,9 @@ D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\MassTransit.dll
 D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\MassTransit.Abstractions.dll
 D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\MassTransit.RabbitMqTransport.dll
 D:\source\repos\Qtemplate\Qtemplate\bin\Debug\net8.0\RabbitMQ.Client.dll
+D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\rjimswa.dswa.cache.json
+D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\source\repos\Qtemplate\Qtemplate\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

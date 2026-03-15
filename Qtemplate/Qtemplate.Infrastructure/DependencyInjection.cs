@@ -15,6 +15,9 @@ using Qtemplate.Infrastructure.Services.Email;
 using Qtemplate.Infrastructure.Services.Notification;
 using Qtemplate.Infrastructure.Services.Security;
 using Qtemplate.Infrastructure.Services.OrderPayment;
+using Qtemplate.Infrastructure.Services.Coupon;
+using Qtemplate.Infrastructure.Services.DailyStat;
+using Qtemplate.Infrastructure.Services.Affiliate;
 namespace Qtemplate.Infrastructure;
 
 public static class DependencyInjection
@@ -75,12 +78,13 @@ public static class DependencyInjection
         services.AddScoped<IEmailLogRepository, EmailLogRepository>();
 
         // ── Services ──────────────────────────────────────────────────────────
-        services.AddScoped<IAuditLogService, AuditLogService>();
+        services.AddSingleton<IAuditLogService, AuditLogService>();
         services.AddScoped<IFileUploadService, FileUploadService>();
         services.AddScoped<INotificationService, NotificationService>();
         // security
         services.AddScoped<SuspiciousBehaviorScanner>();
         services.AddHostedService<SuspiciousBehaviorBackgroundService>();
+        services.AddHostedService<AutoUnblockService>();
         services.AddScoped<ISecurityScanLogRepository, SecurityScanLogRepository>();
         // ── AI Moderation ─────────────────────────────────────────────────────
         services.AddHttpClient<IAiModerationService, AiModerationService>();
@@ -92,9 +96,17 @@ public static class DependencyInjection
 
         services.AddHostedService<OrderPaymentReminderService>();
 
+        services.AddHostedService<CouponAutoDisableService>();
+
+        services.AddHostedService<DailyStatAggregationService>();
+
+        services.AddHostedService<RefreshTokenCleanupService>();
+
+        // Affiliate
+        services.AddHostedService<AffiliateCommissionService>();
+
         services.AddMassTransit(x =>
         {
-            x.AddConsumer<EmailConsumer>();
             x.AddConsumer<EmailConsumer>();
 
             x.UsingRabbitMq((ctx, cfg) =>

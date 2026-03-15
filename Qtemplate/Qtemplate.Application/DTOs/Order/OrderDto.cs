@@ -77,3 +77,8 @@ public class CancelReasonDto
 {
     public string? Reason { get; set; }
 }
+public class UpdateOrderStatusDto
+{
+    public string NewStatus { get; set; } = string.Empty;
+    public string? Note { get; set; }
+}

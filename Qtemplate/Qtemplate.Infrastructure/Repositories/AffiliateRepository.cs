@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// File: Qtemplate.Infrastructure/Repositories/AffiliateRepository.cs
+
+using Microsoft.EntityFrameworkCore;
 using Qtemplate.Domain.Entities;
 using Qtemplate.Domain.Interfaces.Repositories;
 using Qtemplate.Infrastructure.Data;
@@ -11,36 +13,24 @@ public class AffiliateRepository : IAffiliateRepository
     public AffiliateRepository(AppDbContext db) => _db = db;
 
     public async Task<Affiliate?> GetByIdAsync(int id) =>
-        await _db.Affiliates
-            .Include(a => a.User)
-            .FirstOrDefaultAsync(a => a.Id == id);
+        await _db.Affiliates.Include(a => a.User).FirstOrDefaultAsync(a => a.Id == id);
 
     public async Task<Affiliate?> GetByUserIdAsync(Guid userId) =>
-        await _db.Affiliates
-            .Include(a => a.Transactions)
-            .FirstOrDefaultAsync(a => a.UserId == userId);
+        await _db.Affiliates.Include(a => a.Transactions).FirstOrDefaultAsync(a => a.UserId == userId);
 
     public async Task<Affiliate?> GetByCodeAsync(string code) =>
-        await _db.Affiliates
-            .FirstOrDefaultAsync(a => a.AffiliateCode == code && a.IsActive);
+        await _db.Affiliates.FirstOrDefaultAsync(a => a.AffiliateCode == code && a.IsActive);
 
     public async Task<(List<Affiliate> Items, int Total)> GetAdminListAsync(
         bool? isActive, int page, int pageSize)
     {
-        var query = _db.Affiliates
-            .Include(a => a.User)
-            .AsQueryable();
-
-        if (isActive.HasValue)
-            query = query.Where(a => a.IsActive == isActive.Value);
-
+        var query = _db.Affiliates.Include(a => a.User).AsQueryable();
+        if (isActive.HasValue) query = query.Where(a => a.IsActive == isActive.Value);
         var total = await query.CountAsync();
         var items = await query
             .OrderByDescending(a => a.TotalEarned)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((page - 1) * pageSize).Take(pageSize)
             .ToListAsync();
-
         return (items, total);
     }
 
@@ -68,14 +58,68 @@ public class AffiliateRepository : IAffiliateRepository
             .Where(t => t.AffiliateId == affiliateId)
             .OrderByDescending(t => t.CreatedAt)
             .ToListAsync();
+
     public async Task<AffiliateTransaction?> GetTransactionByIdAsync(int id) =>
-       await _db.AffiliateTransactions
-           .Include(t => t.Affiliate)
-           .FirstOrDefaultAsync(t => t.Id == id);
+        await _db.AffiliateTransactions
+            .Include(t => t.Affiliate)
+            .FirstOrDefaultAsync(t => t.Id == id);
 
     public async Task UpdateTransactionAsync(AffiliateTransaction tx)
     {
         _db.AffiliateTransactions.Update(tx);
         await _db.SaveChangesAsync();
+    }
+
+    // ── Paged transactions ────────────────────────────────────────────────────
+
+    public async Task<(List<AffiliateTransaction> Items, int Total)> GetMyTransactionsPagedAsync(
+        Guid userId, string? status, int page, int pageSize)
+    {
+        var affiliate = await _db.Affiliates
+            .FirstOrDefaultAsync(a => a.UserId == userId);
+
+        if (affiliate is null) return (new List<AffiliateTransaction>(), 0);
+
+        var query = _db.AffiliateTransactions
+            .Include(t => t.Order)
+            .Where(t => t.AffiliateId == affiliate.Id)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(status))
+            query = query.Where(t => t.Status == status);
+
+        var total = await query.CountAsync();
+        var items = await query
+            .OrderByDescending(t => t.CreatedAt)
+            .Skip((page - 1) * pageSize).Take(pageSize)
+            .ToListAsync();
+
+        return (items, total);
+    }
+
+    public async Task<(Affiliate? Affiliate, List<AffiliateTransaction> Items, int Total)> GetAdminTransactionsPagedAsync(
+        int affiliateId, string? status, int page, int pageSize)
+    {
+        var affiliate = await _db.Affiliates
+            .Include(a => a.User)
+            .FirstOrDefaultAsync(a => a.Id == affiliateId);
+
+        if (affiliate is null) return (null, new List<AffiliateTransaction>(), 0);
+
+        var query = _db.AffiliateTransactions
+            .Include(t => t.Order)
+            .Where(t => t.AffiliateId == affiliateId)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(status))
+            query = query.Where(t => t.Status == status);
+
+        var total = await query.CountAsync();
+        var items = await query
+            .OrderByDescending(t => t.CreatedAt)
+            .Skip((page - 1) * pageSize).Take(pageSize)
+            .ToListAsync();
+
+        return (affiliate, items, total);
     }
 }

@@ -16,7 +16,7 @@ public static class SettingKeys
     public const string GeminiApiKey = "gemini_api_key";
     public const string GeminiModel = "gemini_model";
     public const string AffiliateCommissionRate = "Affiliate.CommissionRate";
-
+    public const string AffiliateAutoApproveDays = "affiliate.auto_approve_days";
     // ── Security Scanner ─────────────────────────────────────────────────────
 
     public const string SecurityScanIntervalMinutes = "security_scan_interval_minutes";
@@ -35,4 +35,5 @@ public static class SettingKeys
     /// Số phút sau khi tạo đơn thì auto-cancel (default: 60)
     public const string OrderAutoCancelMinutes = "order.auto_cancel_minutes";
 
+    public const string RefreshTokenRetentionDays = "auth.refresh_token_retention_days";
 }

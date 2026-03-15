@@ -16,14 +16,15 @@ public class GetDashboardStatsHandler
     {
         var to = (request.To ?? DateTime.UtcNow).Date.AddDays(1).AddSeconds(-1);
         var from = (request.From ?? to.AddDays(-29)).Date;
+        var now = DateTime.UtcNow;
 
+        // Tất cả query đều có date range — không load toàn bảng
         var orders = await _stats.GetOrdersInRangeAsync(from, to, includeItems: true);
         var payments = await _stats.GetPaymentsInRangeAsync(from, to);
         var coupons = await _stats.GetAllCouponsAsync();
         var couponUsage = await _stats.GetCouponUsageAsync();
 
         var paid = orders.Where(o => o.Status == "Paid").ToList();
-        var now = DateTime.UtcNow;
 
         // ── Order stats ──
         var topTemplates = paid
@@ -75,13 +76,16 @@ public class GetDashboardStatsHandler
                 CancelledOrders = orders.Count(o => o.Status == "Cancelled"),
                 TotalRevenue = paid.Sum(o => o.FinalAmount),
                 TotalDiscount = paid.Sum(o => o.DiscountAmount),
-                RevenueByDay = paid.GroupBy(o => o.CreatedAt.ToString("yyyy-MM-dd"))
+                RevenueByDay = paid
+                    .GroupBy(o => o.CreatedAt.ToString("yyyy-MM-dd"))
                     .Select(g => new RevenueByPeriodDto { Label = g.Key, Revenue = g.Sum(o => o.FinalAmount), Orders = g.Count() })
                     .OrderBy(x => x.Label).ToList(),
-                RevenueByMonth = paid.GroupBy(o => o.CreatedAt.ToString("yyyy-MM"))
+                RevenueByMonth = paid
+                    .GroupBy(o => o.CreatedAt.ToString("yyyy-MM"))
                     .Select(g => new RevenueByPeriodDto { Label = g.Key, Revenue = g.Sum(o => o.FinalAmount), Orders = g.Count() })
                     .OrderBy(x => x.Label).ToList(),
-                RevenueByYear = paid.GroupBy(o => o.CreatedAt.ToString("yyyy"))
+                RevenueByYear = paid
+                    .GroupBy(o => o.CreatedAt.ToString("yyyy"))
                     .Select(g => new RevenueByPeriodDto { Label = g.Key, Revenue = g.Sum(o => o.FinalAmount), Orders = g.Count() })
                     .OrderBy(x => x.Label).ToList(),
                 TopTemplates = topTemplates,

@@ -1,20 +1,16 @@
 ﻿using System.Text.Json;
 using Qtemplate.Application.Services.Interfaces;
-using Qtemplate.Infrastructure.Data;
 using AuditLogEntity = Qtemplate.Domain.Entities.AuditLog;
 
 namespace Qtemplate.Infrastructure.Services.AuditLog;
 
 public class AuditLogService : IAuditLogService
 {
-    private readonly AppDbContext _context;
+    private readonly AuditLogQueue _queue;
 
-    public AuditLogService(AppDbContext context)
-    {
-        _context = context;
-    }
+    public AuditLogService(AuditLogQueue queue) => _queue = queue;
 
-    public async Task LogAsync(
+    public Task LogAsync(
         string? userId,
         string? userEmail,
         string action,
@@ -24,7 +20,7 @@ public class AuditLogService : IAuditLogService
         object? newValues = null,
         string? ipAddress = null)
     {
-        var log = new AuditLogEntity
+        _queue.Enqueue(new AuditLogEntity
         {
             UserId = userId,
             UserEmail = userEmail,
@@ -35,9 +31,8 @@ public class AuditLogService : IAuditLogService
             NewValues = newValues != null ? JsonSerializer.Serialize(newValues) : null,
             IpAddress = ipAddress,
             CreatedAt = DateTime.UtcNow
-        };
+        });
 
-        await _context.AuditLogs.AddAsync(log);
-        await _context.SaveChangesAsync();
+        return Task.CompletedTask;
     }
 }

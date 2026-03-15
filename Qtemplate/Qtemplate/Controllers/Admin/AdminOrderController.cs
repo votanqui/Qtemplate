@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Qtemplate.Application.DTOs.Order;
 using Qtemplate.Application.Features.Orders.Commands.CancelOrder;
+using Qtemplate.Application.Features.Orders.Commands.UpdateOrderStatus;
 using Qtemplate.Application.Features.Orders.Queries.GetOrderDetail;
 using Qtemplate.Application.Features.Orders.Queries.GetOrders;
 using System.Security.Claims;
@@ -22,7 +23,7 @@ public class AdminOrderController : ControllerBase
         var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         return Guid.TryParse(claim, out var id) ? id : Guid.Empty;
     }
-
+    private string GetUserEmail() => User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
     // GET /api/admin/orders?status=&search=&page=&pageSize=
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] GetOrdersQuery query)
@@ -54,6 +55,19 @@ public class AdminOrderController : ControllerBase
             UserId = GetUserId(),
             IsAdmin = true,
             CancelReason = dto.Reason
+        });
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+    [HttpPatch("{id:guid}/status")]
+    public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] UpdateOrderStatusDto dto)
+    {
+        var result = await _mediator.Send(new UpdateOrderStatusCommand
+        {
+            OrderId = id,
+            AdminId = GetUserId(),
+            AdminEmail = GetUserEmail(),
+            NewStatus = dto.NewStatus,
+            Note = dto.Note,
         });
         return result.Success ? Ok(result) : BadRequest(result);
     }

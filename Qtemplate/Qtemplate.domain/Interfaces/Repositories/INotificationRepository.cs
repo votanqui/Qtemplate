@@ -11,4 +11,6 @@ public interface INotificationRepository
     Task UpdateRangeAsync(List<Notification> notifications);
     Task AddAsync(Notification notification);
     Task AddRangeAsync(List<Notification> notifications);
+    Task<(List<Notification> Items, int Total)> GetAdminPagedAsync(
+    Guid? userId, string? type, string? search, int page, int pageSize);
 }

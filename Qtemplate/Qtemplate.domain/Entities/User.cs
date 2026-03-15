@@ -15,6 +15,8 @@ public class User
     public string? ResetPasswordToken { get; set; }
     public DateTime? ResetPasswordExpiry { get; set; }
     public DateTime? LastLoginAt { get; set; }
+
+    public DateTime? BlockedUntil { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
 

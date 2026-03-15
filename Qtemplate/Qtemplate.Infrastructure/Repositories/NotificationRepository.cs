@@ -60,4 +60,34 @@ public class NotificationRepository : INotificationRepository
         await _context.Notifications.AddRangeAsync(notifications);
         await _context.SaveChangesAsync();
     }
+    public async Task<(List<Notification> Items, int Total)> GetAdminPagedAsync(
+       Guid? userId, string? type, string? search, int page, int pageSize)
+    {
+        var query = _context.Notifications
+            .Include(n => n.User)
+            .AsQueryable();
+
+        if (userId.HasValue)
+            query = query.Where(n => n.UserId == userId.Value);
+
+        if (!string.IsNullOrWhiteSpace(type))
+            query = query.Where(n => n.Type == type);
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var kw = search.ToLower();
+            query = query.Where(n =>
+                n.Title.ToLower().Contains(kw) ||
+                n.Message.ToLower().Contains(kw));
+        }
+
+        var total = await query.CountAsync();
+        var items = await query
+            .OrderByDescending(n => n.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, total);
+    }
 }
