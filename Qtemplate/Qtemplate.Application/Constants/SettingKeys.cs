@@ -36,4 +36,18 @@ public static class SettingKeys
     public const string OrderAutoCancelMinutes = "order.auto_cancel_minutes";
 
     public const string RefreshTokenRetentionDays = "auth.refresh_token_retention_days";
+
+    // ── MỚI: Cleanup retention ────────────────────────────────────────────────
+    /// Số ngày giữ AuditLogs + RequestLogs (default: 90)
+    public const string LogRetentionDays = "cleanup.log_retention_days";
+    /// Số ngày giữ Notifications đã đọc (default: 30)
+    public const string NotificationRetentionDays = "cleanup.notification_retention_days";
+    /// Số ngày giữ raw Analytics sau khi đã aggregate (default: 30)
+    public const string AnalyticsRetentionDays = "cleanup.analytics_retention_days";
+    /// Số ngày ticket Open/InProgress không có reply thì tự đóng (default: 7)
+    public const string TicketAutoCloseDays = "ticket.auto_close_days";
+    /// Bật/tắt tự đóng ticket (default: true)
+    public const string TicketAutoCloseEnabled = "ticket.auto_close_enabled";
+    /// DRY-RUN cho orphaned file cleanup — true=chỉ log, false=xóa thật (default: true)
+    public const string OrphanedFileDryRun = "cleanup.orphan_dry_run";
 }

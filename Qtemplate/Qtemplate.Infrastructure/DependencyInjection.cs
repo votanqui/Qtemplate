@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Qtemplate.Application.Services.Interfaces;
@@ -6,18 +7,19 @@ using Qtemplate.Domain.Interfaces.Repositories;
 using Qtemplate.Infrastructure.Data;
 using Qtemplate.Infrastructure.Repositories;
 using Qtemplate.Infrastructure.Services;
+using Qtemplate.Infrastructure.Services.Affiliate;
 using Qtemplate.Infrastructure.Services.AuditLog;
 using Qtemplate.Infrastructure.Services.Auth;
-using Qtemplate.Infrastructure.Services.Email;
-using Qtemplate.Infrastructure.Services.FileUpload;
-using MassTransit;
-using Qtemplate.Infrastructure.Services.Email;
-using Qtemplate.Infrastructure.Services.Notification;
-using Qtemplate.Infrastructure.Services.Security;
-using Qtemplate.Infrastructure.Services.OrderPayment;
+using Qtemplate.Infrastructure.Services.Cleanup;
 using Qtemplate.Infrastructure.Services.Coupon;
 using Qtemplate.Infrastructure.Services.DailyStat;
-using Qtemplate.Infrastructure.Services.Affiliate;
+using Qtemplate.Infrastructure.Services.Email;
+using Qtemplate.Infrastructure.Services.Email;
+using Qtemplate.Infrastructure.Services.FileUpload;
+using Qtemplate.Infrastructure.Services.Notification;
+using Qtemplate.Infrastructure.Services.OrderPayment;
+using Qtemplate.Infrastructure.Services.Security;
+using Qtemplate.Infrastructure.Services.Ticket;
 namespace Qtemplate.Infrastructure;
 
 public static class DependencyInjection
@@ -104,6 +106,17 @@ public static class DependencyInjection
 
         // Affiliate
         services.AddHostedService<AffiliateCommissionService>();
+
+        //clean up
+        services.AddHostedService<LogCleanupService>();
+        services.AddHostedService<NotificationCleanupService>();
+        services.AddHostedService<AnalyticsCleanupService>();
+        //ticket
+        services.AddHostedService<TicketAutoCloseService>();
+        services.AddHostedService<OrphanedFileCleanupService>();
+
+
+
 
         services.AddMassTransit(x =>
         {
