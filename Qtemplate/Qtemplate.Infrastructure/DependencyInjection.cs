@@ -64,6 +64,8 @@ public static class DependencyInjection
         services.AddScoped<IBannerRepository, BannerRepository>();
         services.AddScoped<IAffiliateRepository, AffiliateRepository>();
 
+        // ── Post (Bảng tin / Tin tức) ─────────────────────────────────────────
+        services.AddScoped<IPostRepository, PostRepository>();
         // ── Settings / Analytics ──────────────────────────────────────────────
         services.AddScoped<ISettingRepository, SettingRepository>();
         services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();

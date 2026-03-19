@@ -797,6 +797,210 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Qtemplate.Controllers.Admin.AdminPostController",
+    "Method": "GetList",
+    "RelativePath": "api/admin/posts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Qtemplate.Controllers.Admin.AdminPostController",
+    "Method": "Create",
+    "RelativePath": "api/admin/posts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "thumbnailFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "slug",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "excerpt",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "content",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "thumbnailUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "isFeatured",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "sortOrder",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "tags",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "metaTitle",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "metaDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "publishedAt",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Qtemplate.Controllers.Admin.AdminPostController",
+    "Method": "Update",
+    "RelativePath": "api/admin/posts/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "thumbnailFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "slug",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "excerpt",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "content",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "thumbnailUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "isFeatured",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "sortOrder",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "tags",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "metaTitle",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "metaDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "publishedAt",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Qtemplate.Controllers.Admin.AdminPostController",
+    "Method": "Delete",
+    "RelativePath": "api/admin/posts/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Qtemplate.Controllers.Admin.AdminLogController",
     "Method": "GetRefreshTokens",
     "RelativePath": "api/admin/refresh-tokens",
@@ -2422,6 +2626,53 @@
       {
         "Name": "body",
         "Type": "Qtemplate.Application.DTOs.payments.SepayWebhookRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Qtemplate.Controllers.PostController",
+    "Method": "GetList",
+    "RelativePath": "api/posts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "isFeatured",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Qtemplate.Controllers.PostController",
+    "Method": "GetBySlug",
+    "RelativePath": "api/posts/{slug}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "slug",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],

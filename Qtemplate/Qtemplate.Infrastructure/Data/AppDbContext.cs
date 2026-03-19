@@ -67,6 +67,9 @@ public class AppDbContext : DbContext
     public DbSet<DailyStat> DailyStats => Set<DailyStat>();
     public DbSet<SecurityScanLog> SecurityScanLogs => Set<SecurityScanLog>();
 
+    // Bảng tin / Tin tức
+    public DbSet<Post> Posts => Set<Post>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // ======================================================
@@ -352,6 +355,34 @@ public class AppDbContext : DbContext
             e.Property(x => x.Violation).HasMaxLength(50).IsRequired();
             e.Property(x => x.Action).HasMaxLength(50).IsRequired();
             e.Property(x => x.IpAddress).HasMaxLength(50);
+        });
+
+        // ======================================================
+        // POST (Bảng tin / Tin tức)
+        // ======================================================
+        modelBuilder.Entity<Post>(e =>
+        {
+            // Unique slug
+            e.HasIndex(p => p.Slug).IsUnique();
+
+            // Index cho public list: lọc theo Status + sắp xếp theo PublishedAt
+            e.HasIndex(p => new { p.Status, p.PublishedAt });
+
+            // Index cho lọc bài nổi bật
+            e.HasIndex(p => p.IsFeatured);
+
+            // Giới hạn độ dài cột
+            e.Property(p => p.Title).HasMaxLength(300).IsRequired();
+            e.Property(p => p.Slug).HasMaxLength(300).IsRequired();
+            e.Property(p => p.Excerpt).HasMaxLength(500);
+            e.Property(p => p.ThumbnailUrl).HasMaxLength(500);
+            e.Property(p => p.Status).HasMaxLength(20).HasDefaultValue("Draft");
+            e.Property(p => p.AuthorId).HasMaxLength(100).IsRequired();
+            e.Property(p => p.AuthorName).HasMaxLength(200).IsRequired();
+            e.Property(p => p.Tags).HasMaxLength(500);
+            e.Property(p => p.MetaTitle).HasMaxLength(300);
+            e.Property(p => p.MetaDescription).HasMaxLength(500);
+            e.Property(p => p.ViewCount).HasDefaultValue(0);
         });
     }
 }

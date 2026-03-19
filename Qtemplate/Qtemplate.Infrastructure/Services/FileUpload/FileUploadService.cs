@@ -226,4 +226,9 @@ public class FileUploadService : IFileUploadService
             url.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
         if (File.Exists(filePath)) File.Delete(filePath);
     }
+
+    public Task<string> SavePostImageAsync(Stream s, string name, long size)
+        => SaveImageAsync(s, name, size, "post-images");
+
+    public void DeletePostImage(string? relativeUrl) => DeleteFileInWebRoot("post-images", relativeUrl);
 }

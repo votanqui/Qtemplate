@@ -8,6 +8,10 @@ public interface IFileUploadService
     Task<string> SavePreviewZipAsync(Stream stream, string fileName, long fileSize, Guid templateId);
     Task<string> SaveTemplateImageAsync(Stream fileStream, string originalFileName, long fileSize);
     Task<string> SaveVersionZipAsync(Stream zipStream, string originalFileName, long fileSize, Guid templateId, string version);
+
+    Task<string> SavePostImageAsync(Stream fileStream, string originalFileName, long fileSize);
+    void DeletePostImage(string? relativeUrl);
+
     void DeleteAvatar(string? relativeUrl);
     void DeleteThumbnail(string? relativeUrl);
     void DeleteBannerImage(string? relativeUrl);
