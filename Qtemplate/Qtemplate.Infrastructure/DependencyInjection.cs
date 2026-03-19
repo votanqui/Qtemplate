@@ -11,6 +11,7 @@ using Qtemplate.Infrastructure.Services.Affiliate;
 using Qtemplate.Infrastructure.Services.AuditLog;
 using Qtemplate.Infrastructure.Services.Auth;
 using Qtemplate.Infrastructure.Services.Cleanup;
+using Qtemplate.Infrastructure.Services.Community;
 using Qtemplate.Infrastructure.Services.Coupon;
 using Qtemplate.Infrastructure.Services.DailyStat;
 using Qtemplate.Infrastructure.Services.Email;
@@ -116,10 +117,10 @@ public static class DependencyInjection
         //ticket
         services.AddHostedService<TicketAutoCloseService>();
         services.AddHostedService<OrphanedFileCleanupService>();
+        //communtity
+        services.AddScoped<ICommunityRepository, CommunityRepository>();
 
-
-
-
+        services.AddScoped<ICommunityRealtimeService, CommunityRealtimeService>();
         services.AddMassTransit(x =>
         {
             x.AddConsumer<EmailConsumer>();

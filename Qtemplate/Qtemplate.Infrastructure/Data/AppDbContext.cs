@@ -69,7 +69,9 @@ public class AppDbContext : DbContext
 
     // Bảng tin / Tin tức
     public DbSet<Post> Posts => Set<Post>();
-
+      public DbSet<CommunityPost>    CommunityPosts    => Set<CommunityPost>();
+      public DbSet<CommunityComment> CommunityComments => Set<CommunityComment>();
+      public DbSet<CommunityLike>    CommunityLikes    => Set<CommunityLike>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // ======================================================
@@ -384,5 +386,39 @@ public class AppDbContext : DbContext
             e.Property(p => p.MetaDescription).HasMaxLength(500);
             e.Property(p => p.ViewCount).HasDefaultValue(0);
         });
+               modelBuilder.Entity<CommunityPost>(e =>
+               {
+                   e.HasIndex(p => p.UserId);
+                   e.HasIndex(p => p.CreatedAt);
+                   e.HasIndex(p => p.IsHidden);
+                   e.Property(p => p.Content).HasMaxLength(3000).IsRequired();
+                   e.Property(p => p.ImageUrl).HasMaxLength(500);
+                   e.Property(p => p.HideReason).HasMaxLength(500);
+                  e.Property(p => p.LikeCount).HasDefaultValue(0);
+                  e.Property(p => p.CommentCount).HasDefaultValue(0);
+                e.Property(p => p.IsHidden).HasDefaultValue(false);
+              });
+        
+               modelBuilder.Entity<CommunityLike>(e =>
+                {
+                   // Unique: 1 user chỉ like 1 bài 1 lần
+                   e.HasIndex(l => new { l.PostId, l.UserId }).IsUnique();
+               });
+        
+               modelBuilder.Entity<CommunityComment>(e =>
+              {
+                   e.HasIndex(c => c.PostId);
+                   e.HasIndex(c => c.UserId);
+                   e.HasIndex(c => c.ParentId);
+                   e.HasIndex(c => c.IsHidden);
+                  e.Property(c => c.Content).HasMaxLength(1000).IsRequired();
+                  e.Property(c => c.IsHidden).HasDefaultValue(false);
+       
+                 // Self-referencing FK cho replies (restrict để tránh cascade)
+                   e.HasOne(c => c.Parent)
+                    .WithMany(c => c.Replies)
+                   .HasForeignKey(c => c.ParentId)
+                   .OnDelete(DeleteBehavior.Restrict);
+              });
     }
 }

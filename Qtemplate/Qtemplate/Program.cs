@@ -190,5 +190,6 @@ app.UseOutputCache();
 
 app.MapControllers();
 app.MapHub<NotificationHub>("/hubs/notifications");
+app.MapHub<CommunityHub>("/hubs/community");
 
 app.Run();
