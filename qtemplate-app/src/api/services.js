@@ -19,34 +19,34 @@ export const authApi = {
 // USER
 // ══════════════════════════════════════
 export const userApi = {
-  getProfile: () => api.get('/api/user/profile'),
+  getProfile: () => api.get('/api/User/profile'),
   updateProfile: (data) => api.put('/api/user/profile', data),
   updateAvatar: (file) => {
     const formData = new FormData();
     formData.append('file', file);
-    return api.put('/api/user/avatar', formData, {
+    return api.put('/api/User/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
-  deleteAccount: (password) => api.delete('/api/user/account', { data: { password } }),
+  deleteAccount: (password) => api.delete('/api/User/account', { data: { password } }),
   getPurchases: (page = 1, pageSize = 10) =>
-    api.get(`/api/user/purchases?page=${page}&pageSize=${pageSize}`),
+    api.get(`/api/User/purchases?page=${page}&pageSize=${pageSize}`),
   getDownloads: (page = 1, pageSize = 10) =>
-    api.get(`/api/user/downloads?page=${page}&pageSize=${pageSize}`),
+    api.get(`/api/User/downloads?page=${page}&pageSize=${pageSize}`),
   getWishlist: (page = 1, pageSize = 12) =>
-    api.get(`/api/user?page=${page}&pageSize=${pageSize}`),
+    api.get(`/api/User?page=${page}&pageSize=${pageSize}`),
   toggleWishlist: (templateId) =>
-    api.post(`/api/user/wishlist/${templateId}`),
+    api.post(`/api/User/wishlist/${templateId}`),
   getNotifications: (page = 1, pageSize = 20, unreadOnly = null) => {
-    let url = `/api/user/notifications?page=${page}&pageSize=${pageSize}`;
+    let url = `/api/User/notifications?page=${page}&pageSize=${pageSize}`;
     if (unreadOnly !== null) url += `&unreadOnly=${unreadOnly}`;
     return api.get(url);
   },
-  markNotificationRead: (id) => api.patch(`/api/user/notifications/${id}/read`),
-  markAllNotificationsRead: () => api.patch('/api/user/notifications/read-all'),
-  getMyReviews: () => api.get('/api/user/reviews'),
-  updateReview: (id, data) => api.put(`/api/user/reviews/${id}`, data),
-  deleteReview: (id) => api.delete(`/api/user/reviews/${id}`),
+  markNotificationRead: (id) => api.patch(`/api/User/notifications/${id}/read`),
+  markAllNotificationsRead: () => api.patch('/api/User/notifications/read-all'),
+  getMyReviews: () => api.get('/api/User/reviews'),
+  updateReview: (id, data) => api.put(`/api/User/reviews/${id}`, data),
+  deleteReview: (id) => api.delete(`/api/User/reviews/${id}`),
 };
 
 // ══════════════════════════════════════
@@ -132,4 +132,55 @@ export const publicApi = {
   getTags: () => api.get('/api/tags'),
   trackPageview: (data) => api.post('/api/analytics/track', data),
   updateTimeOnPage: (data) => api.patch('/api/analytics/time-on-page', data),
+};
+export const postApi = {
+  getList: (params = {}) => api.get('/api/posts', { params }),
+  getBySlug: (slug) => api.get(`/api/posts/${slug}`),
+};
+export const communityApi = {
+  // Feed
+  getFeed: (page = 1, pageSize = 20, sortBy = 'hot') =>
+    api.get('/api/community/feed', { params: { page, pageSize, sortBy } }),
+
+  // Posts — ảnh upload qua multipart, text qua query params (đúng với backend)
+  createPost: (content, imageFile = null) => {
+    const fd = new FormData();
+    if (imageFile) fd.append('imageFile', imageFile);
+    return api.post('/api/community/posts', fd, {
+      params: { content },
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+ 
+  updatePost: (id, content, imageFile = null, imageUrl = null) => {
+    const fd = new FormData();
+    if (imageFile) fd.append('imageFile', imageFile);
+    return api.put(`/api/community/posts/${id}`, fd, {
+      params: {
+        content,
+        ...(imageUrl !== undefined && imageUrl !== null ? { imageUrl } : {}),
+      },
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+ 
+  deletePost: (id) => api.delete(`/api/community/posts/${id}`),
+ 
+  toggleLike: (postId) => api.post(`/api/community/posts/${postId}/like`),
+ 
+  // Comments
+  getComments: (postId, page = 1, pageSize = 30) =>
+    api.get(`/api/community/posts/${postId}/comments`, { params: { page, pageSize } }),
+ 
+  createComment: (postId, content, parentId = null) =>
+    api.post(`/api/community/posts/${postId}/comments`, {
+      content,
+      ...(parentId !== null ? { parentId } : {}),
+    }),
+ 
+  updateComment: (commentId, content) =>
+    api.put(`/api/community/comments/${commentId}`, { content }),
+ 
+  deleteComment: (commentId) =>
+    api.delete(`/api/community/comments/${commentId}`),
 };

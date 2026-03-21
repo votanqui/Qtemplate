@@ -17,6 +17,8 @@ const NAV_SECTIONS = [
       { path: '/admin/tags',       icon: '🏷️',  label: 'Tags'      },
       { path: '/admin/banners',    icon: '🖼️',  label: 'Banners'   },
       { path: '/admin/media',      icon: '📁',  label: 'Media'     },
+           { path: '/admin/posts',      icon: '📰',  label: 'Bảng tin'   },
+     { path: '/admin/community',  icon: '👥',  label: 'Cộng đồng'  },
     ],
   },
   {

@@ -14,6 +14,7 @@ const ITEM_LABEL_KEYS = {
   '/':                         'nav.home',
   '/templates':                'nav.templates',
   '/sale':                     'nav.sale',
+  '/tin-tuc':                  'nav.news',
   '/dashboard/downloads':      'nav.downloads',
   '/dashboard/wishlist':       'nav.wishlist',
   '/dashboard/notifications':  'nav.notifications',
@@ -24,6 +25,7 @@ const ITEM_LABEL_KEYS = {
   '/dashboard/tickets':        'nav.support',
   '/dashboard/affiliate':      'nav.affiliate',
   '/dashboard/security':       'nav.security',
+   '/cong-dong': 'nav.community',
 };
 
 // Tooltip — dùng CSS :hover selector trực tiếp qua style tag injected một lần

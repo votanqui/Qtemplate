@@ -25,6 +25,8 @@ export const TRANSLATIONS = {
   'nav.logout':         { vi: 'Đăng xuất',    en: 'Logout' },
   'nav.user_default':   { vi: 'Người dùng',   en: 'User' },
   'nav.security':       { vi: 'Bảo mật',      en: 'Security' },
+  'nav.news':           { vi: 'Bảng tin',     en: 'News' },
+  'nav.community': { vi: 'Cộng đồng', en: 'Community' },
   // ── Bottom Nav ────────────────────────────────────────────────────────────
   'bottom.explore':     { vi: 'Khám phá',  en: 'Explore' },
   'bottom.profile':     { vi: 'Hồ sơ',     en: 'Profile' },
@@ -676,7 +678,96 @@ export const TRANSLATIONS = {
 'app.404_title':            { vi: '404 – Không tìm thấy',       en: '404 – Not found' },
 'app.404_back':             { vi: '← Về trang chủ',             en: '← Back to home' },
 
-// ── Common back ───────────────────────────────────────────────────────────
+// ── News / Bảng tin ───────────────────────────────────────────────────────
+'news.page_eyebrow':        { vi: 'Bảng tin',                    en: 'News' },
+'news.page_title':          { vi: 'Tin tức & Cập nhật',          en: 'News & Updates' },
+'news.page_subtitle':       { vi: 'Bài viết, hướng dẫn và cập nhật mới nhất từ chúng tôi', en: 'Latest articles, guides and updates from us' },
+'news.search_ph':           { vi: 'Tìm kiếm bài viết...',        en: 'Search articles...' },
+'news.empty_title':         { vi: 'Không có bài viết nào',       en: 'No articles found' },
+'news.clear_search':        { vi: 'Xoá tìm kiếm',                en: 'Clear search' },
+'news.prev':                { vi: '← Trước',                      en: '← Prev' },
+'news.next':                { vi: 'Sau →',                        en: 'Next →' },
+'news.featured_badge':      { vi: '⭐ Nổi bật',                   en: '⭐ Featured' },
+'news.read_time':           { vi: 'phút đọc',                    en: 'min read' },
+'news.views':               { vi: 'lượt xem',                    en: 'views' },
+'news.author_prefix':       { vi: '✍️',                           en: '✍️' },
+'news.date_prefix':         { vi: '📅',                           en: '📅' },
+'news.back':                { vi: '← Bảng tin',                  en: '← News' },
+'news.not_found_title':     { vi: 'Bài viết không tồn tại',      en: 'Article not found' },
+'news.not_found_desc':      { vi: 'Bài viết đã bị xóa hoặc chưa được công khai.', en: 'The article may have been deleted or is not yet published.' },
+'news.back_to_list':        { vi: '← Quay lại Bảng tin',         en: '← Back to News' },
+'news.other_articles':      { vi: '← Bài viết khác',             en: '← Other articles' },
+'news.tags_label':          { vi: 'Tags:',                        en: 'Tags:' },
+'land.news_eyebrow':        { vi: 'Bảng tin',                    en: 'News' },
+'land.news_title':          { vi: 'Tin tức mới nhất',            en: 'Latest news' },
+'land.news_subtitle':       { vi: 'Cập nhật, hướng dẫn và bài viết từ chúng tôi', en: 'Updates, guides and articles from us' },
+'land.news_see_all':        { vi: 'Xem tất cả',                  en: 'See all' },
+
+
+// ── community ─────────────────────────────────────────────────────────────
+'community.sort_hot':           { vi: '🔥 Nổi bật',                        en: '🔥 Hot' },
+'community.sort_new':           { vi: '🆕 Mới nhất',                       en: '🆕 New' },
+'community.sort_top':           { vi: '⭐ Hàng đầu',                       en: '⭐ Top' },
+
+'community.badge':              { vi: 'Cộng đồng',                         en: 'Community' },
+'community.page_title':         { vi: 'Diễn đàn Cộng đồng',                en: 'Community Forum' },
+'community.page_subtitle':      { vi: 'Chia sẻ, thảo luận và kết nối với cộng đồng Qtemplate', en: 'Share, discuss and connect with the Qtemplate community' },
+
+'community.composer_ph':        { vi: 'Chia sẻ điều gì đó... (Ctrl+Enter để đăng)', en: 'Share something... (Ctrl+Enter to post)' },
+'community.btn_post':           { vi: '🚀 Đăng',                           en: '🚀 Post' },
+'community.btn_save':           { vi: '💾 Lưu',                            en: '💾 Save' },
+'community.btn_cancel':         { vi: 'Huỷ',                               en: 'Cancel' },
+'community.btn_image':          { vi: '🖼 Ảnh',                            en: '🖼 Image' },
+'community.img_too_large':      { vi: 'Ảnh không được vượt quá 5MB',       en: 'Image must be under 5MB' },
+'community.content_too_long':   { vi: 'Nội dung không được vượt quá 3000 ký tự', en: 'Content must be under 3000 characters' },
+
+'community.guest_title':        { vi: 'Đăng nhập để tham gia cộng đồng',   en: 'Sign in to join the community' },
+'community.btn_login':          { vi: '🔐 Đăng nhập',                      en: '🔐 Sign in' },
+'community.btn_register':       { vi: '✨ Đăng ký',                        en: '✨ Register' },
+
+'community.btn_reply':          { vi: 'Trả lời',                           en: 'Reply' },
+'community.btn_reply_close':    { vi: '✕ Đóng',                           en: '✕ Close' },
+'community.btn_edit':           { vi: 'Sửa',                               en: 'Edit' },
+'community.btn_delete':         { vi: 'Xóa',                               en: 'Delete' },
+'community.btn_send':           { vi: 'Gửi',                               en: 'Send' },
+'community.reply_ph':           { vi: 'Trả lời',                           en: 'Reply to' },
+
+'community.comment_count':      { vi: 'bình luận',                         en: 'comments' },
+'community.comment_btn':        { vi: 'Bình luận',                         en: 'Comment' },
+'community.comment_ph':         { vi: 'Viết bình luận...',                 en: 'Write a comment...' },
+'community.comment_login':      { vi: 'Đăng nhập để bình luận',            en: 'Sign in to comment' },
+'community.comment_empty':      { vi: 'Chưa có bình luận nào — hãy là người đầu tiên!', en: 'No comments yet — be the first!' },
+'community.comment_loading':    { vi: 'Đang tải...',                       en: 'Loading...' },
+'community.comment_show_more':  { vi: 'Xem thêm',                         en: 'Show' },
+'community.comment_replies':    { vi: 'câu trả lời',                       en: 'more replies' },
+'community.comment_collapse':   { vi: '↑ Thu gọn bình luận',               en: '↑ Collapse comments' },
+'community.comment_more':       { vi: '↓ Xem thêm',                       en: '↓ Show more' },
+'community.comment_more_suffix':{ vi: 'bình luận',                         en: 'comments' },
+
+'community.post_edited':        { vi: '(đã chỉnh sửa)',                    en: '(edited)' },
+'community.post_btn_edit':      { vi: '✏️ Sửa',                           en: '✏️ Edit' },
+'community.post_btn_delete':    { vi: '🗑 Xóa',                           en: '🗑 Delete' },
+'community.post_delete_confirm':{ vi: 'Xóa bài viết này? Hành động không thể hoàn tác.', en: 'Delete this post? This action cannot be undone.' },
+'community.post_deleted_ok':    { vi: 'Đã xóa bài viết',                  en: 'Post deleted' },
+'community.comment_delete_confirm': { vi: 'Xóa bình luận này?',           en: 'Delete this comment?' },
+'community.post_updated_ok':    { vi: 'Đã cập nhật bài viết',             en: 'Post updated' },
+'community.post_created_ok':    { vi: 'Đã đăng bài!',                     en: 'Posted!' },
+'community.like_login_warn':    { vi: 'Vui lòng đăng nhập để thích bài viết', en: 'Please sign in to like posts' },
+
+'community.feed_empty_title':   { vi: 'Chưa có bài viết nào',             en: 'No posts yet' },
+'community.feed_empty_desc':    { vi: 'Hãy là người đầu tiên chia sẻ với cộng đồng!', en: 'Be the first to share with the community!' },
+'community.feed_load_more':     { vi: 'Xem thêm bài viết',                en: 'Load more posts' },
+'community.feed_loading':       { vi: '⏳ Đang tải...',                   en: '⏳ Loading...' },
+'community.feed_end':           { vi: 'Đã xem hết',                       en: 'Youve seen it all —' },
+'community.feed_end_suffix':    { vi: 'bài viết',                         en: 'posts' },
+'community.feed_new_banner':    { vi: 'bài viết mới — Nhấn để tải',       en: 'new posts — Click to load' },
+
+'community.time_just_now':      { vi: 'Vừa xong',                         en: 'Just now' },
+'community.time_mins':          { vi: 'phút trước',                       en: 'm ago' },
+'community.time_hours':         { vi: 'giờ trước',                        en: 'h ago' },
+'community.time_days':          { vi: 'ngày trước',                       en: 'd ago' },
+
+// ── common.back_home ──────────────────────────────────────────────────────
 'common.back_home':         { vi: 'Về trang chủ',               en: 'Back to home' },
 
 };

@@ -12,6 +12,8 @@ export const SIDEBAR_SECTIONS = [
       { path: '/',          icon: '🏠', label: 'Trang chủ' },
       { path: '/templates', icon: '🗂️', label: 'Templates' },
       { path: '/sale',      icon: '🔥', label: 'Săn Sale'  },
+       { path: '/tin-tuc',   icon: '📰', label: 'Bảng tin'  },
+       { path: '/cong-dong',  icon: '👥', label: 'Cộng đồng' },
     ],
   },
   {

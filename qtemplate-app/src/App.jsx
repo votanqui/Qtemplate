@@ -24,6 +24,9 @@ import { TicketsPage, TicketDetailPage } from './pages/user/TicketPages';
 import AffiliatePage from './pages/user/AffiliatePage';
 import OrderDetailPage from './pages/user/OrderDetailPage';
 import CouponsPage from './pages/public/CouponsPage';
+import NewsPage from './pages/public/NewsPage';
+import NewsDetailPage from './pages/public/NewsDetailPage';
+import CommunityPage from './pages/public/CommunityPage';
 // Admin pages
 import AdminUsersPage from './pages/admin/AdminUsersPage';
 import AdminCouponsPage from './pages/admin/AdminCouponsPage';
@@ -42,6 +45,8 @@ import AdminNotificationsPage from './pages/admin/AdminNotificationsPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 import AdminWishlistPage from './pages/admin/AdminWishlistPage';
 import AdminMediaPage from './pages/admin/AdminMediaPage';
+import AdminPostsPage from './pages/admin/AdminPostsPage';
+import AdminCommunityPage from './pages/admin/AdminCommunityPage';
 function AdminPlaceholder({ title }) {
   return (
     <div style={{ textAlign: 'center', paddingTop: 80, color: '#94a3b8' }}>
@@ -88,7 +93,9 @@ function App() {
             <Route path="/templates"        element={<Layout><TemplatesPage /></Layout>} />
             <Route path="/templates/:slug"  element={<Layout><TemplateDetailPage /></Layout>} />
             <Route path="/sale"             element={<Layout><SalePage /></Layout>} />
-
+            <Route path="/tin-tuc"          element={<Layout><NewsPage /></Layout>} />
+            <Route path="/tin-tuc/:slug"    element={<Layout><NewsDetailPage /></Layout>} />
+              <Route path="/cong-dong"       element={<Layout><CommunityPage /></Layout>} />
             {/* Protected dashboard */}
             <Route path="/dashboard/profile"       element={<Layout><ProtectedRoute><ProfilePage /></ProtectedRoute></Layout>} />
             <Route path="/dashboard/security"      element={<Layout><ProtectedRoute><SecurityPage /></ProtectedRoute></Layout>} />
@@ -122,6 +129,8 @@ function App() {
             <Route path="/admin/ip-blacklist" element={<AdminRoute><AdminIpBlacklistPage /></AdminRoute>} />
             <Route path="/admin/notifications" element={<AdminRoute><AdminNotificationsPage /></AdminRoute>} />
             <Route path="/admin/wishlist" element={<AdminRoute><AdminWishlistPage /></AdminRoute>} />
+            <Route path="/admin/posts" element={<AdminRoute><AdminPostsPage /></AdminRoute>} />
+            <Route path="/admin/community" element={<AdminRoute><AdminCommunityPage /></AdminRoute>} />
             {/* 404 */}
             <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
           </Routes>

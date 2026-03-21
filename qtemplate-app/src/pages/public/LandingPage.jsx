@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { templateApi, publicApi, userApi } from '../../api/services';
+import { templateApi, publicApi, userApi, postApi } from '../../api/services';
 import { toAbsoluteUrl } from '../../api/client';
 import { Price, useToast } from '../../components/ui';
 import { useAuth } from '../../context/AuthContext';
@@ -96,6 +96,75 @@ function TemplateCard({ tpl, onWishlist, wishlistLoading, isAuth }) {
   );
 }
 
+// ─── News card mini (cho Landing page) ───────────────────────────────────────
+function NewsCard({ post, featured = false }) {
+  const tags = (post.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+  const fmtDate = d => d ? new Date(d).toLocaleDateString('vi-VN', { day: '2-digit', month: 'short', year: 'numeric' }) : '';
+  return (
+    <Link to={`/tin-tuc/${post.slug}`} className="group block no-underline">
+      <div
+        className={`rounded-xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg ${featured ? 'sm:flex' : ''}`}
+        style={{ backgroundColor: 'var(--bg-card)', border: '1.5px solid var(--border)' }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = '#7c3aed40'; }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; }}
+      >
+        {/* Thumbnail */}
+        <div
+          className={`relative overflow-hidden ${featured ? 'sm:w-2/5 h-36 sm:h-auto' : 'h-36'}`}
+          style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.06), rgba(14,165,233,0.06))' }}
+        >
+          {post.thumbnailUrl ? (
+            <img
+              src={toAbsoluteUrl(post.thumbnailUrl)}
+              alt={post.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-4xl">📰</div>
+          )}
+          {post.isFeatured && (
+            <span
+              className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-black text-white"
+              style={{ background: 'linear-gradient(90deg,#f59e0b,#ef4444)' }}
+            >
+              ⭐ Nổi bật
+            </span>
+          )}
+        </div>
+        {/* Content */}
+        <div className={`p-3.5 flex flex-col gap-1.5 ${featured ? 'flex-1' : ''}`}>
+          {tags.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {tags.slice(0, 2).map(tag => (
+                <span key={tag} className="px-1.5 py-0.5 rounded-full text-[9px] font-semibold"
+                  style={{ background: 'rgba(124,58,237,0.1)', color: '#7c3aed' }}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+          <h3 className="font-bold text-sm leading-snug line-clamp-2 group-hover:text-violet-500 transition-colors"
+            style={{ color: 'var(--text-primary)', margin: 0 }}>
+            {post.title}
+          </h3>
+          {post.excerpt && (
+            <p className="text-xs leading-relaxed line-clamp-2" style={{ color: 'var(--text-muted)', margin: 0 }}>
+              {post.excerpt}
+            </p>
+          )}
+          <div className="flex items-center gap-2 text-[10px] mt-auto pt-1.5"
+            style={{ color: 'var(--text-muted)', borderTop: '1px solid var(--border)' }}>
+            <span>✍️ {post.authorName}</span>
+            <span>·</span>
+            <span>{fmtDate(post.publishedAt || post.createdAt)}</span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 // ─── Section header ───────────────────────────────────────────────────────────
 function SectionHeader({ eyebrow, title, subtitle, action }) {
   return (
@@ -134,6 +203,7 @@ export default function LandingPage() {
   const [categories,  setCategories]  = useState([]);
   const [banners,     setBanners]     = useState([]);
   const [bannerIdx,   setBannerIdx]   = useState(0);
+  const [latestPosts, setLatestPosts] = useState([]);
   const [wishlistLoading, setWishlistLoading] = useState({});
   const [heroVisible, setHeroVisible] = useState(false);
 
@@ -146,12 +216,14 @@ export default function LandingPage() {
       templateApi.getOnSaleList({ pageSize: 6 }),
       publicApi.getCategories(),
       publicApi.getBanners('Home'),
-    ]).then(([featRes, newRes, saleRes, catRes, banRes]) => {
+      postApi.getList({ page: 1, pageSize: 3 }),
+    ]).then(([featRes, newRes, saleRes, catRes, banRes, postsRes]) => {
       setFeatured(featRes.data.data?.items || []);
       setNewest(newRes.data.data?.items || []);
       setOnSale(saleRes.data.data?.items || []);
       setCategories(catRes.data.data || []);
       setBanners(banRes.data.data || []);
+      setLatestPosts(postsRes.data?.items || postsRes.data?.data?.items || []);
     }).catch(() => {});
   }, []);
 
@@ -543,6 +615,25 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          BẢNG TIN — Latest posts
+      ═══════════════════════════════════════════════════════ */}
+      {latestPosts.length > 0 && (
+        <section className="mb-10">
+          <SectionHeader
+            eyebrow="Bảng tin"
+            title="Tin tức mới nhất"
+            subtitle="Cập nhật, hướng dẫn và bài viết từ chúng tôi"
+            action={{ href: '/tin-tuc', label: 'Xem tất cả' }}
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {latestPosts.map((post, idx) => (
+              <NewsCard key={post.id} post={post} featured={idx === 0} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ═══════════════════════════════════════════════════════
           CTA BOTTOM

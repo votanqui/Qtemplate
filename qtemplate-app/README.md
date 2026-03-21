@@ -1,87 +1,115 @@
-# Qtemplate – Frontend
-
-React + Vite + Tailwind CSS frontend cho Qtemplate API.
-
-## Cài đặt
-
-```bash
-npm install
-cp .env.example .env
-# Sửa VITE_API_URL trong .env
-npm run dev
-```
-
-## Cấu trúc
 
 ```
-src/
-├── api/
-│   ├── client.js        # Axios instance + interceptors (auto refresh token)
-│   └── services.js      # Tất cả API calls (auth, user, templates, orders, tickets, affiliate, public)
-├── components/
-│   ├── auth/            # ProtectedRoute
-│   ├── layout/          # Layout + Sidebar
-│   └── ui/              # Spinner, Alert, Modal, Badge, Pagination, StarRating...
-├── context/
-│   └── AuthContext.jsx  # Auth state + login/register/logout
-└── pages/
-    ├── LoginPage.jsx
-    ├── RegisterPage.jsx
-    ├── AuthPages.jsx        # ForgotPassword, ResetPassword, VerifyEmail
-    ├── TemplatesPage.jsx    # Danh sách + lọc/tìm kiếm
-    ├── TemplateDetailPage.jsx # Chi tiết + mua + wishlist + review
-    ├── ProfilePage.jsx      # Hồ sơ + avatar
-    ├── SecurityPage.jsx     # Đổi mật khẩu + xóa tài khoản
-    ├── PurchasePages.jsx    # Purchases + Downloads + Wishlist
-    ├── NotificationsPage.jsx
-    ├── ReviewsPage.jsx
-    ├── TicketPages.jsx      # List + Detail + Create + Reply
-    ├── AffiliatePage.jsx
-    └── OrderDetailPage.jsx  # Chi tiết đơn + thanh toán QR + polling
+qtemplate-app
+├─ .env.example
+├─ index.html
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.js
+├─ public
+│  └─ Qtemplates.ico
+├─ qtemplate-app.zip
+├─ src
+│  ├─ api
+│  │  ├─ adminApi.js
+│  │  ├─ client.js
+│  │  └─ services.js
+│  ├─ App.jsx
+│  ├─ components
+│  │  ├─ admin
+│  │  │  └─ AdminLayout.jsx
+│  │  ├─ auth
+│  │  │  ├─ ProtectedAdminRoute.jsx
+│  │  │  └─ ProtectedRoute.jsx
+│  │  ├─ layout
+│  │  │  ├─ BottomNav.jsx
+│  │  │  ├─ DesktopSidebar.jsx
+│  │  │  ├─ Layout.jsx
+│  │  │  ├─ MobileSidebar.jsx
+│  │  │  ├─ navConfig.js
+│  │  │  ├─ RightPanel.jsx
+│  │  │  └─ ThemeToggle.jsx
+│  │  └─ ui
+│  │     ├─ AdminUI.jsx
+│  │     └─ index.jsx
+│  ├─ context
+│  │  ├─ AuthContext.jsx
+│  │  ├─ Langcontext.jsx
+│  │  ├─ NotificationContext.jsx
+│  │  └─ ThemeContext.jsx
+│  ├─ index.css
+│  ├─ main.jsx
+│  ├─ modals
+│  │  ├─ admin
+│  │  │  ├─ AffiliateDetailModal.jsx
+│  │  │  ├─ BannerFormModal.jsx
+│  │  │  ├─ BulkSaleModal.jsx
+│  │  │  ├─ CategoryFormModal.jsx
+│  │  │  ├─ CouponFormModal.jsx
+│  │  │  ├─ IpBlacklistAddModal.jsx
+│  │  │  ├─ MediaSetDownloadModal.jsx
+│  │  │  ├─ MediaUploadModal.jsx
+│  │  │  ├─ NotificationSendModal.jsx
+│  │  │  ├─ OrderDetailModal.jsx
+│  │  │  ├─ PostFormModal.jsx
+│  │  │  ├─ ReviewActionModal.jsx
+│  │  │  ├─ SettingCreateModal.jsx
+│  │  │  ├─ TagFormModal.jsx
+│  │  │  ├─ TemplateDetailModal.jsx
+│  │  │  ├─ TemplateFormModal.jsx
+│  │  │  └─ TicketDetailModal.jsx
+│  │  ├─ public
+│  │  │  └─ PreviewModal.jsx
+│  │  └─ user
+│  │     ├─ CreateTicketModal.jsx
+│  │     ├─ Ordercancelmodal.jsx
+│  │     ├─ Orderpaymentmodal.jsx
+│  │     └─ ReviewEditModal.jsx
+│  ├─ pages
+│  │  ├─ admin
+│  │  │  ├─ AdminAffiliatesPage.jsx
+│  │  │  ├─ AdminBannersPage.jsx
+│  │  │  ├─ AdminCategoriesPage.jsx
+│  │  │  ├─ AdminCouponsPage.jsx
+│  │  │  ├─ AdminIpBlacklistPage.jsx
+│  │  │  ├─ AdminLogsPage.jsx
+│  │  │  ├─ AdminMediaPage.jsx
+│  │  │  ├─ AdminNotificationsPage.jsx
+│  │  │  ├─ AdminOrdersPage.jsx
+│  │  │  ├─ AdminPostsPage.jsx
+│  │  │  ├─ AdminReviewsPage.jsx
+│  │  │  ├─ AdminSettingsPage.jsx
+│  │  │  ├─ AdminStatsPage.jsx
+│  │  │  ├─ AdminTagsPage.jsx
+│  │  │  ├─ AdminTemplatesPage.jsx
+│  │  │  ├─ AdminTicketsPage.jsx
+│  │  │  ├─ AdminUsersPage.jsx
+│  │  │  └─ AdminWishlistPage.jsx
+│  │  ├─ public
+│  │  │  ├─ AuthPages.jsx
+│  │  │  ├─ CouponsPage.jsx
+│  │  │  ├─ LandingPage.jsx
+│  │  │  ├─ LoginPage.jsx
+│  │  │  ├─ ProfilePage.jsx
+│  │  │  ├─ RegisterPage.jsx
+│  │  │  ├─ SalePage.jsx
+│  │  │  ├─ TemplateDetailPage.jsx
+│  │  │  └─ TemplatesPage.jsx
+│  │  └─ user
+│  │     ├─ AffiliatePage.jsx
+│  │     ├─ Downloadspage.jsx
+│  │     ├─ NotificationsPage.jsx
+│  │     ├─ OrderDetailPage.jsx
+│  │     ├─ PurchasePages.jsx
+│  │     ├─ ReviewsPage.jsx
+│  │     ├─ SecurityPage.jsx
+│  │     ├─ TicketPages.jsx
+│  │     └─ Wishlistpage.jsx
+│  ├─ utils
+│  │  └─ affiliate.js
+│  └─ {api,components
+│     └─ {auth,user,templates,orders,tickets,affiliate,layout,ui},pages,hooks,utils,context}
+├─ tailwind.config.js
+└─ vite.config.js
 
 ```
-
-## Tính năng đầy đủ
-
-### Auth
-- ✅ Đăng nhập / Đăng ký
-- ✅ Quên mật khẩu / Đặt lại mật khẩu
-- ✅ Xác minh email / Gửi lại email xác minh
-- ✅ Auto refresh token (Axios interceptor)
-- ✅ Logout
-
-### User
-- ✅ Xem và cập nhật hồ sơ
-- ✅ Upload avatar (multipart/form-data)
-- ✅ Đổi mật khẩu
-- ✅ Xóa tài khoản
-
-### Templates
-- ✅ Danh sách với lọc/tìm/phân trang
-- ✅ Chi tiết template
-- ✅ Toggle wishlist
-- ✅ Download (external + stream)
-- ✅ Preview iframe
-- ✅ Reviews (đọc + tạo + sửa + xóa)
-
-### Orders
-- ✅ Tạo đơn hàng
-- ✅ Apply coupon
-- ✅ Thanh toán chuyển khoản (QR code)
-- ✅ Polling trạng thái thanh toán
-- ✅ Hủy đơn
-
-### Tickets
-- ✅ Danh sách và chi tiết ticket
-- ✅ Tạo ticket mới
-- ✅ Reply ticket
-
-### Affiliate
-- ✅ Đăng ký affiliate
-- ✅ Xem stats và lịch sử hoa hồng
-- ✅ Copy link affiliate
-
-### Notifications
-- ✅ Danh sách thông báo
-- ✅ Đánh dấu đã đọc (1 hoặc tất cả)
-- ✅ Filter chưa đọc

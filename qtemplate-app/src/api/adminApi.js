@@ -519,3 +519,59 @@ export const adminWishlistApi = {
   getTop: (top = 10) =>
     api.get('/api/admin/wishlists/top', { params: { top } }),
 };
+export const adminPostApi = {
+  getList: (page = 1, pageSize = 20, search = '', status = '') =>
+    api.get('/api/admin/posts', {
+      params: { page, pageSize, ...(search && { search }), ...(status && { status }) },
+    }),
+ 
+  create: (params, thumbnailFile = null) => {
+    const fd = new FormData();
+    if (thumbnailFile) fd.append('thumbnailFile', thumbnailFile);
+    return api.post('/api/admin/posts', fd, {
+      params,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+ 
+  update: (id, params, thumbnailFile = null) => {
+    const fd = new FormData();
+    if (thumbnailFile) fd.append('thumbnailFile', thumbnailFile);
+    return api.put(`/api/admin/posts/${id}`, fd, {
+      params,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+ 
+  delete: (id) => api.delete(`/api/admin/posts/${id}`),
+};
+export const adminCommunityApi = {
+  getPosts: (page = 1, pageSize = 20, search = '', isHidden = null) =>
+    api.get('/api/admin/community/posts', {
+      params: {
+        page, pageSize,
+        ...(search    && { search }),
+        ...(isHidden !== null && { isHidden }),
+      },
+    }),
+ 
+  hidePost: (id, isHidden, reason = '') =>
+    api.patch(`/api/admin/community/posts/${id}/hide`, { isHidden, reason }),
+ 
+  deletePost: (id) =>
+    api.delete(`/api/admin/community/posts/${id}`),
+ 
+  getComments: (page = 1, pageSize = 20, isHidden = null) =>
+    api.get('/api/admin/community/comments', {
+      params: {
+        page, pageSize,
+        ...(isHidden !== null && { isHidden }),
+      },
+    }),
+ 
+  hideComment: (id, isHidden) =>
+    api.patch(`/api/admin/community/comments/${id}/hide`, { isHidden }),
+ 
+  deleteComment: (id) =>
+    api.delete(`/api/admin/community/comments/${id}`),
+};
